@@ -2,5 +2,5 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-$application = new \App\Application();
-echo $application->index();
+$core = new \Mj\PocketCore\Core();
+echo $core->index();
