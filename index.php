@@ -15,3 +15,5 @@ $app->router->get('/series', function () {
 $app->router->get('/about', function () {
     return 'about page';
 });
+
+$app->run();
