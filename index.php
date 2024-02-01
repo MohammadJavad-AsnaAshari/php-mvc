@@ -8,6 +8,10 @@ $app->router->get('/article', function () {
     return 'article page';
 });
 
+$app->router->get('/article/{id}/edit/{title}', function ($id, $title) {
+    return "article dynamic page. id: $id, title: $title";
+});
+
 $app->router->get('/series', function () {
     return 'series page';
 });
