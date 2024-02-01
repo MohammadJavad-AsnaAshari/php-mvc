@@ -4,12 +4,39 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fddff931df33794f88c832b6f164910b",
-    "packages": [],
+    "content-hash": "ceee1f77872d015386beed19ccbc1304",
+    "packages": [
+        {
+            "name": "mj/pocket-core",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "pocket",
+                "reference": "aa0b94643f2f675825ff91eeb228859dea14e1b9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mj\\PocketCore\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "MohammadJavad-AsnaAshari",
+                    "email": "mohammadjavadasnaashari@gmail.com"
+                }
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        }
+    ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "mj/pocket-core": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

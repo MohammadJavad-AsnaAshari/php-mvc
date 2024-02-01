@@ -1,0 +1,15 @@
+{
+    "name": "mj/pocket-core",
+    "autoload": {
+        "psr-4": {
+            "Mj\\PocketCore\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "MohammadJavad-AsnaAshari",
+            "email": "mohammadjavadasnaashari@gmail.com"
+        }
+    ],
+    "require": {}
+}

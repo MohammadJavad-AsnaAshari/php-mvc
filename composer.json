@@ -11,5 +11,13 @@
             "email": "mohammadjavadasnaashari@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "mj/pocket-core": "dev-master"
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "pocket"
+        }
+    ]
 }
