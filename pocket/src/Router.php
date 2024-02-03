@@ -42,6 +42,7 @@ class Router
             $callback = $routeCallback[0];
             $params = $routeCallback[1];
         }
+
         return call_user_func($callback, ...array_values($params));
     }
 
@@ -56,11 +57,15 @@ class Router
                 continue;
             }
 
-            if (preg_match_all('/\{(\w+)}/', $route, $matches)) {
+            if (preg_match_all('/\{(\w+)(:[^}]+)?}/', $route, $matches)) {
                 $routeNames = $matches[1];
             };
 
-            $routeRegex = "@^".preg_replace('/\{(\w+)}/', '([-\w]+)', $route)."$@";
+            $routeRegex = "@^".preg_replace_callback(
+                    '/\{\w+(:([^}]+))?}/',
+                    fn($matches) => isset($matches[2]) ? "({$matches[2]})" : "([-\w]+)",
+                    $route
+                )."$@";
 
             if (preg_match_all($routeRegex, $url, $matches)) {
                 $values = [];

@@ -4,12 +4,12 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 $app = new \Mj\PocketCore\Application();
 
-$app->router->get('/article', function () {
-    return 'article page';
+$app->router->get('/article/{id:\d+}', function ($id) {
+    return "article dynamic page. id: $id";
 });
 
-$app->router->get('/article/{id}/edit/{title}', function ($id, $title) {
-    return "article dynamic page. id: $id, title: $title";
+$app->router->get('/article', function () {
+    return 'article page';
 });
 
 $app->router->get('/series', function () {
