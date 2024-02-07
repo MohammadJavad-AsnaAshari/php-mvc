@@ -1,6 +1,11 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+$root = dirname(__DIR__).DIRECTORY_SEPARATOR;
+
+define('APP_PATH', $root.'app'.DIRECTORY_SEPARATOR);
+define('VENDOR_PATH', $root.'vendor'.DIRECTORY_SEPARATOR);
+
+require_once VENDOR_PATH."autoload.php";
 
 $app = new \Mj\PocketCore\Application();
 
@@ -21,7 +26,7 @@ $app->router->get('/about', function () {
 });
 
 $app->router->get('/article/create', function () {
-    include_once __DIR__ . "/article.html";
+    include_once __DIR__."/article.html";
 });
 
 $app->router->post('/article/create', function () {
