@@ -4,40 +4,66 @@ namespace Mj\PocketCore;
 
 class Router
 {
+    /**
+     * @var array|array[]
+     */
     private array $routeMap = [
         'get' => [],
         'post' => []
     ];
 
+    private Request $request;
+
+    public function __construct()
+    {
+        $this->request = new Request();
+    }
+
+    /**
+     * @param  string  $url
+     * @param $callback
+     * @return void
+     */
     public function get(string $url, $callback)
     {
         $this->routeMap['get'][$url] = $callback;
     }
 
+    /**
+     * @param  string  $url
+     * @param $callback
+     * @return void
+     */
     public function post(string $url, $callback)
     {
         $this->routeMap['post'][$url] = $callback;
     }
 
+    /**
+     * @return mixed|string
+     * @throws \Exception
+     */
     public function resolve()
     {
-        $method = strtolower($_SERVER["REQUEST_METHOD"]);
-        $url = strtolower($_SERVER['REQUEST_URI']);
-        $pos = strpos($url, '?'); // ? position
-
-        if ($pos) {
-            $url = substr($url, 0, $pos);
-        }
+        $method = $this->request->getMethod();
+        $url = $this->request->getUrl();
 
         if ($method === 'get' || $method === 'post') {
             $params = [];
-            return $this->callCallbackForUrl($method, $url, $params);
+            return $this->getCallbackForUrl($method, $url, $params);
         }
 
         return 'The `METHOD` is not set yet! 404';
     }
 
-    private function callCallbackForUrl(string $method, string $url, mixed $params): mixed
+    /**
+     * @param  string  $method
+     * @param  string  $url
+     * @param  mixed  $params
+     * @return mixed
+     * @throws \Exception
+     */
+    private function getCallbackForUrl(string $method, string $url, mixed $params): mixed
     {
         if (isset($this->routeMap[$method][$url])) {
             $callback = $this->routeMap[$method][$url];
@@ -54,7 +80,12 @@ class Router
         return call_user_func($callback, ...array_values($params));
     }
 
-    private function getCallbackFromDynamicRoute(string $method, string $url)
+    /**
+     * @param  string  $method
+     * @param  string  $url
+     * @return bool|array
+     */
+    private function getCallbackFromDynamicRoute(string $method, string $url): bool|array
     {
         $routes = $this->routeMap[$method];
 
@@ -69,11 +100,7 @@ class Router
                 $routeNames = $matches[1];
             };
 
-            $routeRegex = "@^".preg_replace_callback(
-                    '/\{\w+(:([^}]+))?}/',
-                    fn($matches) => isset($matches[2]) ? "({$matches[2]})" : "([-\w]+)",
-                    $route
-                )."$@";
+            $routeRegex = $this->convertRouteToRegex($route);
 
             if (preg_match_all($routeRegex, $url, $matches)) {
                 $values = [];
@@ -90,5 +117,18 @@ class Router
         }
 
         return false;
+    }
+
+    /**
+     * @param  string  $route
+     * @return string
+     */
+    private function convertRouteToRegex(string $route): string
+    {
+        return "@^".preg_replace_callback(
+                '/\{\w+(:([^}]+))?}/',
+                fn($matches) => isset($matches[2]) ? "({$matches[2]})" : "([-\w]+)",
+                $route
+            )."$@";
     }
 }
