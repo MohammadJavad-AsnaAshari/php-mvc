@@ -20,4 +20,12 @@ $app->router->get('/about', function () {
     return 'about page';
 });
 
+$app->router->get('/article/create', function () {
+    include_once __DIR__ . "/article.html";
+});
+
+$app->router->post('/article/create', function () {
+    return 'hello world! this is post method!';
+});
+
 $app->run();

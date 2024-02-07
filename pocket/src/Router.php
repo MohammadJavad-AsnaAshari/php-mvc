@@ -4,11 +4,19 @@ namespace Mj\PocketCore;
 
 class Router
 {
-    private array $routeMap = [];
+    private array $routeMap = [
+        'get' => [],
+        'post' => []
+    ];
 
     public function get(string $url, $callback)
     {
         $this->routeMap['get'][$url] = $callback;
+    }
+
+    public function post(string $url, $callback)
+    {
+        $this->routeMap['post'][$url] = $callback;
     }
 
     public function resolve()
@@ -21,15 +29,15 @@ class Router
             $url = substr($url, 0, $pos);
         }
 
-        if ($method === 'get') {
+        if ($method === 'get' || $method === 'post') {
             $params = [];
-            return $this->getCallbackForUrl($method, $url, $params);
+            return $this->callCallbackForUrl($method, $url, $params);
         }
 
         return 'The `METHOD` is not set yet! 404';
     }
 
-    private function getCallbackForUrl(string $method, string $url, mixed $params): mixed
+    private function callCallbackForUrl(string $method, string $url, mixed $params): mixed
     {
         if (isset($this->routeMap[$method][$url])) {
             $callback = $this->routeMap[$method][$url];
