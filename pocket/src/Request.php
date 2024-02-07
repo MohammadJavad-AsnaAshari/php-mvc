@@ -21,5 +21,35 @@ class Request
         return $url;
     }
 
+    public function all(): array
+    {
+        $data = [];
+        if ($this->isGet()) {
+            $data = filter_input_array(INPUT_GET, FILTER_SANITIZE_SPECIAL_CHARS);
+        } elseif ($this->isPost()) {
+            $data = filter_input_array(INPUT_POST, FILTER_SANITIZE_SPECIAL_CHARS);
+        }
 
+        return $data;
+    }
+
+    public function input(string $key): ?string
+    {
+        return $this->all()[$key] ?? null;
+    }
+
+    public function query(string $key): ?string
+    {
+        return filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+    }
+
+    private function isGet(): bool
+    {
+        return $this->getMethod() === 'get';
+    }
+
+    private function isPost(): bool
+    {
+        return $this->getMethod() === 'post';
+    }
 }
