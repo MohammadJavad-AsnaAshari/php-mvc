@@ -14,13 +14,21 @@ class Router
 
     private static Request $request;
 
-    public static function __callStatic($name, $arguments)
+    protected array $routeFiles = [];
+
+    public function __construct()
     {
         self::$request = new Request();
-        $method = strtolower($name);
-        if (in_array($method, ['get', 'post'])) {
-            self::$routeMap[$method][$arguments[0]] = $arguments[1];
-        }
+    }
+
+    public static function get(string $url, $callback): void
+    {
+        self::$routeMap['get'][$url] = $callback;
+    }
+
+    public static function post(string $url, $callback): void
+    {
+        self::$routeMap['post'][$url] = $callback;
     }
 
     /**
@@ -29,6 +37,10 @@ class Router
      */
     public function resolve()
     {
+        foreach ($this->routeFiles as $file) {
+            require_once $file;
+        }
+
         $method = self::$request->getMethod();
         $url = self::$request->getUrl();
 
@@ -38,6 +50,12 @@ class Router
         }
 
         throw new \Exception('The `METHOD` is not set yet!', 404);
+    }
+
+    public function setRouterFile(string $path): Router
+    {
+        $this->routeFiles[] = $path;
+        return $this;
     }
 
     /**
