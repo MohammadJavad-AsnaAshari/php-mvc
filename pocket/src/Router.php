@@ -37,7 +37,7 @@ class Router
             return $this->getCallbackForUrl($method, $url, $params);
         }
 
-        return 'The `METHOD` is not set yet! 404';
+        throw new \Exception('The `METHOD` is not set yet!', 404);
     }
 
     /**
@@ -54,7 +54,7 @@ class Router
         } else {
             $routeCallback = self::getCallbackFromDynamicRoute($method, $url);
             if (!$routeCallback) {
-                throw new \Exception('Not Found 404');
+                throw new \Exception('Route Not Found', 404);
             }
 
             $callback = $routeCallback[0];
