@@ -1,5 +1,8 @@
 <?php
 
+use Mj\PocketCore\Application;
+use Mj\PocketCore\Router;
+
 $root = dirname(__DIR__).DIRECTORY_SEPARATOR;
 
 define('APP_PATH', $root.'app'.DIRECTORY_SEPARATOR);
@@ -7,29 +10,29 @@ define('VENDOR_PATH', $root.'vendor'.DIRECTORY_SEPARATOR);
 
 require_once VENDOR_PATH."autoload.php";
 
-$app = new \Mj\PocketCore\Application();
+$app = new Application();
 
-$app->router->get('/article/{id:\d+}', function ($id) {
+Router::get('/article/{id:\d+}', function ($id) {
     return "article dynamic page. id: $id";
 });
 
-$app->router->get('/article', function () {
+Router::get('/article', function () {
     return 'article page';
 });
 
-$app->router->get('/series', function () {
+Router::get('/series', function () {
     return 'series page';
 });
 
-$app->router->get('/about', function () {
+Router::get('/about', function () {
     return 'about page';
 });
 
-$app->router->get('/article/create', function () {
+Router::get('/article/create', function () {
     include_once __DIR__."/article.html";
 });
 
-$app->router->post('/article/create', function () {
+Router::post('/article/create', function () {
     return 'hello world! this is post method!';
 });
 

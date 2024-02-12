@@ -7,36 +7,20 @@ class Router
     /**
      * @var array|array[]
      */
-    private array $routeMap = [
+    private static array $routeMap = [
         'get' => [],
         'post' => []
     ];
 
-    private Request $request;
+    private static Request $request;
 
-    public function __construct()
+    public static function __callStatic($name, $arguments)
     {
-        $this->request = new Request();
-    }
-
-    /**
-     * @param  string  $url
-     * @param $callback
-     * @return void
-     */
-    public function get(string $url, $callback)
-    {
-        $this->routeMap['get'][$url] = $callback;
-    }
-
-    /**
-     * @param  string  $url
-     * @param $callback
-     * @return void
-     */
-    public function post(string $url, $callback)
-    {
-        $this->routeMap['post'][$url] = $callback;
+        self::$request = new Request();
+        $method = strtolower($name);
+        if (in_array($method, ['get', 'post'])) {
+            self::$routeMap[$method][$arguments[0]] = $arguments[1];
+        }
     }
 
     /**
@@ -45,8 +29,8 @@ class Router
      */
     public function resolve()
     {
-        $method = $this->request->getMethod();
-        $url = $this->request->getUrl();
+        $method = self::$request->getMethod();
+        $url = self::$request->getUrl();
 
         if ($method === 'get' || $method === 'post') {
             $params = [];
@@ -63,12 +47,12 @@ class Router
      * @return mixed
      * @throws \Exception
      */
-    private function getCallbackForUrl(string $method, string $url, mixed $params): mixed
+    private static function getCallbackForUrl(string $method, string $url, mixed $params): mixed
     {
-        if (isset($this->routeMap[$method][$url])) {
-            $callback = $this->routeMap[$method][$url];
+        if (isset(self::$routeMap[$method][$url])) {
+            $callback = self::$routeMap[$method][$url];
         } else {
-            $routeCallback = $this->getCallbackFromDynamicRoute($method, $url);
+            $routeCallback = self::getCallbackFromDynamicRoute($method, $url);
             if (!$routeCallback) {
                 throw new \Exception('Not Found 404');
             }
@@ -85,9 +69,9 @@ class Router
      * @param  string  $url
      * @return bool|array
      */
-    private function getCallbackFromDynamicRoute(string $method, string $url): bool|array
+    private static function getCallbackFromDynamicRoute(string $method, string $url): bool|array
     {
-        $routes = $this->routeMap[$method];
+        $routes = self::$routeMap[$method];
 
         foreach ($routes as $route => $callback) {
             $routeNames = [];
@@ -100,7 +84,7 @@ class Router
                 $routeNames = $matches[1];
             };
 
-            $routeRegex = $this->convertRouteToRegex($route);
+            $routeRegex = self::convertRouteToRegex($route);
 
             if (preg_match_all($routeRegex, $url, $matches)) {
                 $values = [];
@@ -123,7 +107,7 @@ class Router
      * @param  string  $route
      * @return string
      */
-    private function convertRouteToRegex(string $route): string
+    private static function convertRouteToRegex(string $route): string
     {
         return "@^".preg_replace_callback(
                 '/\{\w+(:([^}]+))?}/',
