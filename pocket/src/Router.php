@@ -79,6 +79,14 @@ class Router
             $params = $routeCallback[1];
         }
 
+        if (is_array($callback)) {
+            $controllerClass = $callback[0];
+            $method = $callback[1];
+            $controller = new $controllerClass();
+
+            return $controller->$method(...array_values($params));
+        }
+
         return call_user_func($callback, ...array_values($params));
     }
 
