@@ -82,7 +82,14 @@ class Router
         if (is_array($callback)) {
             $controllerMethod = new \ReflectionMethod($callback[0], $callback[1]);
 
-            return $controllerMethod->invoke(new $callback[0], ...$params);
+            $autoInjection = [];
+            foreach ($controllerMethod->getParameters() as $value) {
+                if (class_exists($class = $value->getType()->getName())) {
+                    $autoInjection[$value->getName()] = new $class;
+                }
+            }
+
+            return $controllerMethod->invoke(new $callback[0], ...$autoInjection, ...$params);
         }
 
         return call_user_func($callback, ...array_values($params));
