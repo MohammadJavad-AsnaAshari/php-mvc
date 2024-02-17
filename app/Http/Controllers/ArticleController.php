@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Mj\PocketCore\Request;
+
 class ArticleController
 {
-    public function dynamic($id)
+    public function dynamic(Request $request, string $id)
     {
+        var_dump($request);
         return "article dynamic page. id: $id";
     }
 
-    public function index()
+    public function index(Request $request)
     {
+        var_dump($request);
         return 'article page';
     }
 
@@ -20,7 +24,7 @@ class ArticleController
         include_once $root;
     }
 
-    public function store()
+    public function store(Request $request)
     {
         return 'hello world! this is post method!';
     }
