@@ -80,11 +80,9 @@ class Router
         }
 
         if (is_array($callback)) {
-            $controllerClass = $callback[0];
-            $method = $callback[1];
-            $controller = new $controllerClass();
+            $controllerMethod = new \ReflectionMethod($callback[0], $callback[1]);
 
-            return $controller->$method(...array_values($params));
+            return $controllerMethod->invoke(new $callback[0], ...$params);
         }
 
         return call_user_func($callback, ...array_values($params));
