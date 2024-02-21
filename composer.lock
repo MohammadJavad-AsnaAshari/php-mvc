@@ -4,11 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ceee1f77872d015386beed19ccbc1304",
+    "content-hash": "9903e197b9e37df29336170f240241cf",
     "packages": [
         {
             "name": "mj/pocket-core",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "pocket",
