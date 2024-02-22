@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Mj\PocketCore\Application;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Request;
 
@@ -21,8 +22,9 @@ class ArticleController extends Controller
 
     public function create()
     {
-        $root = '../public/article.html';
-        include_once $root;
+        return $this->render("articles/create", [
+            'title' => 'Hello World'
+        ]);
     }
 
     public function store(Request $request)
@@ -44,5 +46,17 @@ class ArticleController extends Controller
         }
 
         return $request->query('id');
+    }
+
+    public function render(string $view, array $data): bool|string
+    {
+
+        foreach ($data as $key => $value) {
+            $$key = $value;
+        }
+
+        ob_start();
+        include_once Application::$ROOT_DIR . "resources/views/$view.php";
+        return ob_get_clean();
     }
 }
