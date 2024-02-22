@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
-class HomeController
+use Mj\PocketCore\Controller;
+
+class HomeController extends Controller
 {
     public function index(): string
     {
-        return 'this is home page';
+        return $this->render('home');
     }
 }

@@ -6,7 +6,7 @@ use Mj\PocketCore\Router;
 
 $root = dirname(__DIR__) . DIRECTORY_SEPARATOR;
 
-Router::get('/', [HomeController::class, 'index']);
+Router::get('/', 'home');
 
 Router::get('/article/{id:\d+}', [ArticleController::class, 'dynamic']);
 
