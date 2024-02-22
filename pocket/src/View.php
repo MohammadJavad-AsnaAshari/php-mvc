@@ -12,11 +12,11 @@ class View
     {
         $this->blade = new Blade(
             Application::$ROOT_DIR . 'resources/views',
-            Application::$ROOT_DIR . "storage/cache/view"
+            Application::$ROOT_DIR . "storage/cache/views"
         );
     }
 
-    public function render(string $view, array $data): string
+    public function render(string $view, array $data = []): string
     {
         return $this->blade->render($view, $data);
     }
