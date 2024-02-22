@@ -46,6 +46,7 @@ class Router
 
         if ($method === 'get' || $method === 'post') {
             $params = [];
+
             return $this->getCallbackForUrl($method, $url, $params);
         }
 
@@ -59,9 +60,9 @@ class Router
     }
 
     /**
-     * @param  string  $method
-     * @param  string  $url
-     * @param  mixed  $params
+     * @param string $method
+     * @param string $url
+     * @param mixed $params
      * @return mixed
      * @throws \Exception
      */
@@ -77,6 +78,10 @@ class Router
 
             $callback = $routeCallback[0];
             $params = $routeCallback[1];
+        }
+
+        if (is_string($callback)) {
+            return (new View)->render($callback);
         }
 
         if (is_array($callback)) {
@@ -96,8 +101,8 @@ class Router
     }
 
     /**
-     * @param  string  $method
-     * @param  string  $url
+     * @param string $method
+     * @param string $url
      * @return bool|array
      */
     private static function getCallbackFromDynamicRoute(string $method, string $url): bool|array
@@ -135,15 +140,15 @@ class Router
     }
 
     /**
-     * @param  string  $route
+     * @param string $route
      * @return string
      */
     private static function convertRouteToRegex(string $route): string
     {
-        return "@^".preg_replace_callback(
+        return "@^" . preg_replace_callback(
                 '/\{\w+(:([^}]+))?}/',
                 fn($matches) => isset($matches[2]) ? "({$matches[2]})" : "([-\w]+)",
                 $route
-            )."$@";
+            ) . "$@";
     }
 }
