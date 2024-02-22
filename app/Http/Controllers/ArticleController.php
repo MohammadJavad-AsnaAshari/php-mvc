@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Mj\PocketCore\Application;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Request;
+use Mj\PocketCore\View;
 
 class ArticleController extends Controller
 {
@@ -20,10 +20,11 @@ class ArticleController extends Controller
         return 'article page';
     }
 
-    public function create()
+    public function create(): string
     {
-        return $this->render("articles/create", [
-            'title' => 'Hello World'
+        return $this->render('articles/create', [
+            'title' => 'Hello World',
+            'auth' => true
         ]);
     }
 
@@ -48,20 +49,8 @@ class ArticleController extends Controller
         return $request->query('id');
     }
 
-    public function render(
-        string $view,
-        array $data,
-        $headerLayout = 'layouts/header.php',
-        $footerLayout = 'layouts/footer.php'
-    ): bool|string {
-        foreach ($data as $key => $value) {
-            $$key = $value;
-        }
-
-        ob_start();
-        include_once Application::$ROOT_DIR . "resources/views/$headerLayout";
-        include_once Application::$ROOT_DIR . "resources/views/$view.php";
-        include_once Application::$ROOT_DIR . "resources/views/$footerLayout";
-        return ob_get_clean();
+    public function render(string $view, array $data): string
+    {
+        return (new View)->render($view, $data);
     }
 }
