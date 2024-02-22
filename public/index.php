@@ -9,7 +9,7 @@ define('VENDOR_PATH', $root.'vendor'.DIRECTORY_SEPARATOR);
 
 require_once VENDOR_PATH."autoload.php";
 
-$app = new Application();
+$app = new Application($root);
 
 $app->router
     ->setRouterFile($root . 'routes' . DIRECTORY_SEPARATOR . 'web.php')
