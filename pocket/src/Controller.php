@@ -19,4 +19,9 @@ class Controller
 
         return $validation;
     }
+
+    public function render(string $view, array $data = []): string
+    {
+        return (new View)->render($view, $data);
+    }
 }

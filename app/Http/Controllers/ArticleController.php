@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Request;
-use Mj\PocketCore\View;
 
 class ArticleController extends Controller
 {
@@ -47,10 +46,5 @@ class ArticleController extends Controller
         }
 
         return $request->query('id');
-    }
-
-    public function render(string $view, array $data): string
-    {
-        return (new View)->render($view, $data);
     }
 }
