@@ -48,15 +48,20 @@ class ArticleController extends Controller
         return $request->query('id');
     }
 
-    public function render(string $view, array $data): bool|string
-    {
-
+    public function render(
+        string $view,
+        array $data,
+        $headerLayout = 'layouts/header.php',
+        $footerLayout = 'layouts/footer.php'
+    ): bool|string {
         foreach ($data as $key => $value) {
             $$key = $value;
         }
 
         ob_start();
+        include_once Application::$ROOT_DIR . "resources/views/$headerLayout";
         include_once Application::$ROOT_DIR . "resources/views/$view.php";
+        include_once Application::$ROOT_DIR . "resources/views/$footerLayout";
         return ob_get_clean();
     }
 }
