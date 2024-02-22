@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "mj/pocket-core": "dev-main"
+        "mj/pocket-core": "dev-main",
+        "rakit/validation": "^1.4"
     },
     "repositories": [
         {

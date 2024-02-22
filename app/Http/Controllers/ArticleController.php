@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Mj\PocketCore\Request;
+use Rakit\Validation\Validator;
 
 class ArticleController
 {
@@ -24,8 +25,27 @@ class ArticleController
         include_once $root;
     }
 
-    public function store(Request $request)
+    public function store(Request $request, Validator $validator)
     {
-        return 'hello world! this is post method!';
+        // make it
+        $validation = $validator->make($request->all(), [
+            'title' => 'required|min:5'
+        ]);
+
+        $validation->validate();
+
+        if ($validation->fails()) {
+            // handling errors
+            $errors = $validation->errors();
+            echo "<pre>";
+            print_r($errors->firstOfAll());
+            echo "</pre>";
+            exit;
+        } else {
+            // validation passes
+            echo "Success!";
+        }
+
+        return $request->query('id');
     }
 }
