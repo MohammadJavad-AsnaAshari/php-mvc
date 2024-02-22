@@ -1,1 +1,4 @@
 /vendor/
+/public/cache/
+/storage/
+/.idea
