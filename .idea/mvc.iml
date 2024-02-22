@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/pocket/src" isTestSource="false" packagePrefix="Mj\PocketCore\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mj/pocket-core" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/rakit/validation" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

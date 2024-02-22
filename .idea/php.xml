@@ -15,6 +15,7 @@
       <path value="$PROJECT_DIR$/pocket/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/composer" />
       <path value="$PROJECT_DIR$/vendor/mj/pocket-core" />
+      <path value="$PROJECT_DIR$/vendor/rakit/validation" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
