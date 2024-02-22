@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Mj\PocketCore\Controller;
 use Mj\PocketCore\Request;
-use Rakit\Validation\Validator;
 
-class ArticleController
+class ArticleController extends Controller
 {
     public function dynamic(Request $request, string $id)
     {
@@ -25,14 +25,11 @@ class ArticleController
         include_once $root;
     }
 
-    public function store(Request $request, Validator $validator)
+    public function store(Request $request)
     {
-        // make it
-        $validation = $validator->make($request->all(), [
-            'title' => 'required|min:5'
+        $validation = $this->validate($request->all(),[
+           'title' => 'required|min:5'
         ]);
-
-        $validation->validate();
 
         if ($validation->fails()) {
             // handling errors
