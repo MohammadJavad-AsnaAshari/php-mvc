@@ -2,3 +2,4 @@
 /public/cache/
 /storage/
 /.idea
+/.env

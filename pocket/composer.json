@@ -11,5 +11,7 @@
             "email": "mohammadjavadasnaashari@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+      "ext-pdo": "*"
+    }
 }
