@@ -13,11 +13,14 @@ class Migration
     public function applyMigrations()
     {
         $this->createMigrationsTable();
+        $appliedMigrations = array_map(fn($migration) => $migration->migration . '.php', $this->getAppliedMigrations());
 
         $migrationsDir = Application::$ROOT_DIR . "database/migrations";
-        $migrations = scandir($migrationsDir);
+        $files = scandir($migrationsDir);
 
         $newMigrations = [];
+
+        $migrations = array_diff($files, $appliedMigrations);
         foreach ($migrations as $migration) {
             if ($migration === '.' || $migration === "..") {
                 continue;
@@ -78,5 +81,14 @@ class Migration
         $statement->execute();
 
         return $statement->fetchColumn() ?? 0;
+    }
+
+    private function getAppliedMigrations(): ?array
+    {
+        $sql = "SELECT * FROM migrations";
+        $statement = $this->database->pdo->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
 }
