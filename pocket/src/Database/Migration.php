@@ -17,15 +17,24 @@ class Migration
         $migrationsDir = Application::$ROOT_DIR . "database/migrations";
         $migrations = scandir($migrationsDir);
 
+        $newMigrations = [];
         foreach ($migrations as $migration) {
             if ($migration === '.' || $migration === "..") {
                 continue;
             };
 
             $migrateInstance = require_once $migrationsDir . DIRECTORY_SEPARATOR . $migration;
+            $newMigrations[] = $migration;
+
             $this->log("applying migration $migration");
             $migrateInstance->up();
             $this->log("applied migration $migration");
+        }
+
+        if (!empty($newMigrations)) {
+            $this->saveMigrations($newMigrations);
+        } else {
+            $this->log('there is no migration to apply!');
         }
     }
 
@@ -48,5 +57,26 @@ class Migration
     {
         $time = date('Y-m-d H:i:s');
         echo "[$time] - $message" . PHP_EOL;
+    }
+
+    private function saveMigrations($newMigrations)
+    {
+        $batchNumber = $this->getLastBatchNumber() + 1;
+
+        $rows = array_map(fn($migration) => str_replace('.php', '', $migration), $newMigrations);
+        $migrations = implode(', ', array_map(fn($migration) => "('$migration', '$batchNumber')", $rows));
+
+        $sql = "INSERT INTO migrations (migration, batch) VALUES $migrations";
+
+        $this->database->pdo->exec($sql);
+    }
+
+    private function getLastBatchNumber(): int
+    {
+        $sql = "SELECT MAX(batch) AS MAX FROM migrations";
+        $statement = $this->database->pdo->prepare($sql);
+        $statement->execute();
+
+        return $statement->fetchColumn() ?? 0;
     }
 }
