@@ -10,4 +10,7 @@ require_once VENDOR_PATH."autoload.php";
 
 $app = new Application($root);
 
+/*
+ * You have to run `php database/migration` in you command line to apply migrations.
+ */
 $app->database->migration->applyMigrations();
