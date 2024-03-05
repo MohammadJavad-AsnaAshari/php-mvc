@@ -52,7 +52,6 @@ class Migration
             migration VARCHAR(255) NOT NULL,
             batch INT NOT NULL
         ) ENGINE=INNODB;";
-
         $this->database->pdo->exec($sql);
     }
 
@@ -70,24 +69,22 @@ class Migration
         $migrations = implode(', ', array_map(fn($migration) => "('$migration', '$batchNumber')", $rows));
 
         $sql = "INSERT INTO migrations (migration, batch) VALUES $migrations";
-
-        $this->database->pdo->exec($sql);
+        $statement = $this->database->pdo->prepare($sql);
+        $statement->execute();
     }
 
     private function getLastBatchNumber(): int
     {
         $sql = "SELECT MAX(batch) AS MAX FROM migrations";
-        $statement = $this->database->pdo->prepare($sql);
-        $statement->execute();
+        $statement = $this->database->pdo->query($sql);
 
         return $statement->fetchColumn() ?? 0;
     }
 
     private function getAppliedMigrations(): ?array
     {
-        $sql = "SELECT * FROM migrations";
-        $statement = $this->database->pdo->prepare($sql);
-        $statement->execute();
+        $sql = "SELECT migration FROM migrations";
+        $statement = $this->database->pdo->query($sql);
 
         return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
