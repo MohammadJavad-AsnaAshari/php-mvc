@@ -43,6 +43,25 @@ class Migration
 
     public function rollbackMigrations()
     {
+        $migrationsDir = Application::$ROOT_DIR . "database/migrations";
+        $appliedMigrations = array_reverse($this->getAppliedMigrations());
+        $lastBatch = $this->getLastBatchNumber();
+        $mustRollbackMigrations = array_filter($appliedMigrations, fn($migration) => $migration->batch === $lastBatch);
+
+        foreach ($mustRollbackMigrations as $migration) {
+            $migrateInstance = require_once $migrationsDir . DIRECTORY_SEPARATOR . $migration->migration . '.php';
+
+            $this->log("rolling back migration {$migration->migration}");
+            $migrateInstance->down();
+            $this->log("rolled back migration {$migration->migration}");
+        }
+
+        if (!empty($mustRollbackMigrations)) {
+            $deleteMigrations = array_map(fn($migration) => $migration->id, $mustRollbackMigrations);
+            $this->deleteMigrations($deleteMigrations);
+        } else {
+            $this->log('there is no migration to rollback!');
+        }
     }
 
     public function createMigrationsTable()
@@ -83,9 +102,17 @@ class Migration
 
     private function getAppliedMigrations(): ?array
     {
-        $sql = "SELECT migration FROM migrations";
+        $sql = "SELECT * FROM migrations";
         $statement = $this->database->pdo->query($sql);
 
         return $statement->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    private function deleteMigrations(array $migration): void
+    {
+        $migrationsId = implode(', ', $migration);
+        $sql = "DELETE FROM migrations WHERE id IN ($migrationsId)";
+        $statement = $this->database->pdo->prepare($sql);
+        $statement->execute();
     }
 }

@@ -11,6 +11,12 @@ require_once VENDOR_PATH."autoload.php";
 $app = new Application($root);
 
 /*
- * You have to run `php database/migration` in you command line to apply migrations.
+ * You have to run `php database/migration` in your command line to apply migrations.
+ * You have to run `php database/migration --rollback` in your command line to rollback migrations.
  */
-$app->database->migration->applyMigrations();
+
+match ($argv[1] ?? false) {
+    '--rollback' => $app->database->migration->rollbackMigrations(),
+    default => $app->database->migration->applyMigrations()
+};
+
