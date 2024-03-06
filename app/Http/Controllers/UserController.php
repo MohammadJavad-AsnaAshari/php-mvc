@@ -7,6 +7,12 @@ use Mj\PocketCore\Controller;
 
 class UserController extends Controller
 {
+    private User $user;
+    public function __construct()
+    {
+        $this->user = new User();
+    }
+
     public function create(): string
     {
         $data = [
@@ -14,9 +20,7 @@ class UserController extends Controller
             'email' => 'example1@gmail.com',
             'password' => password_hash('password', PASSWORD_DEFAULT),
         ];
-
-        $user = new User();
-        $user->create($data);
+        $this->user->create($data);
 
         return 'user created!';
     }
