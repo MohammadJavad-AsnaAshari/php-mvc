@@ -25,4 +25,19 @@ class Model extends Database
 
         return $statement->execute();
     }
+
+    public function update(int $id, array $data): bool
+    {
+        $dataKeys = array_keys($data);
+        $fields = implode(', ', array_map(fn($key) => "$key = :$key", $dataKeys));
+
+        $sql = "UPDATE $this->table SET $fields WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':id', $id);
+        foreach ($data as $key => $value) {
+            $statement->bindValue(":$key", $value);
+        }
+
+        return $statement->execute();
+    }
 }
