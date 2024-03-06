@@ -10,4 +10,19 @@ class Model extends Database
     {
         parent::__construct();
     }
+
+    public function create(array $data): bool
+    {
+        $dataKeys = array_keys($data);
+        $fields = implode(', ', $dataKeys);
+        $params = implode(', ', array_map(fn($key) => ":$key", $dataKeys));
+
+        $sql = "INSERT INTO $this->table ($fields) VALUES ($params)";
+        $statement = $this->pdo->prepare($sql);
+        foreach ($data as $key => $value) {
+            $statement->bindValue(":$key", $value);
+        }
+
+        return $statement->execute();
+    }
 }
