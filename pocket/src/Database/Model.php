@@ -28,6 +28,9 @@ class Model extends Database
 
     public function update(int $id, array $data): bool
     {
+        // Add 'updated_at' field to the data array with the current timestamp
+        $data['updated_at'] = date('Y-m-d H:i:s');
+
         $dataKeys = array_keys($data);
         $fields = implode(', ', array_map(fn($key) => "$key = :$key", $dataKeys));
 
