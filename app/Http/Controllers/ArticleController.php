@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Request;
 
@@ -21,10 +22,15 @@ class ArticleController extends Controller
 
     public function create(): string
     {
-        return $this->render('articles/create', [
-            'title' => 'Hello World',
-            'auth' => true
-        ]);
+        $data = [
+            'title' => 'This is article 1',
+            'body' => 'This is article body 1',
+        ];
+
+        $article = (new Article());
+        $article->create($data);
+
+        return 'article created!';
     }
 
     public function store(Request $request)
