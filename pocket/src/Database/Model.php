@@ -40,4 +40,13 @@ class Model extends Database
 
         return $statement->execute();
     }
+
+    public function delete(int $id): bool
+    {
+        $sql = "DELETE FROM $this->table WHERE id = :id";
+        $statement = $this->pdo->prepare($sql);
+        $statement->bindValue(':id', $id);
+
+        return $statement->execute();
+    }
 }
