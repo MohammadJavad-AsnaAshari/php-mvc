@@ -24,4 +24,16 @@ class UserController extends Controller
 
         return 'user created!';
     }
+
+    public function update(int $id): string
+    {
+        $data = [
+            'name' => 'name update 1',
+            'email' => 'example.update1@gmail.com',
+            'password' => password_hash('password-update', PASSWORD_DEFAULT),
+        ];
+        $this->user->update($id, $data);
+
+        return "user {$id} updated!";
+    }
 }
