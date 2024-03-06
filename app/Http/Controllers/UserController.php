@@ -36,4 +36,11 @@ class UserController extends Controller
 
         return "user {$id} updated!";
     }
+
+    public function delete(int $id)
+    {
+        $this->user->delete($id);
+
+        return 'user deleted!';
+    }
 }
