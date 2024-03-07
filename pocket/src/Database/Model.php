@@ -5,6 +5,7 @@ namespace Mj\PocketCore\Database;
 class Model extends Database
 {
     protected string $table;
+    protected \PDOStatement $statement;
 
     public function __construct()
     {
@@ -18,28 +19,22 @@ class Model extends Database
         $params = implode(', ', array_map(fn($key) => ":$key", $dataKeys));
 
         $sql = "INSERT INTO $this->table ($fields) VALUES ($params)";
-        $statement = $this->pdo->prepare($sql);
+        $this->statement = $this->pdo->prepare($sql);
         foreach ($data as $key => $value) {
-            $statement->bindValue(":$key", $value);
+            $this->statement->bindValue(":$key", $value);
         }
 
-        return $statement->execute();
+        return $this->statement->execute();
     }
 
     public function get(): bool|array
     {
-        $sql = "SELECT * FROM $this->table";
-        $query = $this->pdo->query($sql);
-
-        return $query->fetchAll(\PDO::FETCH_OBJ);
+        return $this->result()->statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
     public function first()
     {
-        $sql = "SELECT * FROM $this->table";
-        $query = $this->pdo->query($sql);
-
-        return $query->fetch(\PDO::FETCH_OBJ);
+        return $this->result()->statement->fetch(\PDO::FETCH_OBJ);
     }
 
     public function update(int $id, array $data): bool
@@ -51,21 +46,30 @@ class Model extends Database
         $fields = implode(', ', array_map(fn($key) => "$key = :$key", $dataKeys));
 
         $sql = "UPDATE $this->table SET $fields WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(':id', $id);
+        $this->statement = $this->pdo->prepare($sql);
+        $this->statement->bindValue(':id', $id);
         foreach ($data as $key => $value) {
-            $statement->bindValue(":$key", $value);
+            $this->statement->bindValue(":$key", $value);
         }
 
-        return $statement->execute();
+        return $this->statement->execute();
     }
 
     public function delete(int $id): bool
     {
         $sql = "DELETE FROM $this->table WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(':id', $id);
+        $this->statement = $this->pdo->prepare($sql);
+        $this->statement->bindValue(':id', $id);
 
-        return $statement->execute();
+        return $this->statement->execute();
+    }
+
+    public function result(): self
+    {
+        $sql = "SELECT * FROM $this->table";
+        $this->statement = $this->pdo->prepare($sql);
+        $this->statement->execute();
+
+        return $this;
     }
 }
