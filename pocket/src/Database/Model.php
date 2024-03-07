@@ -7,6 +7,8 @@ class Model extends Database
     protected string $table;
     protected \PDOStatement $statement;
     protected string $selectedItems = '*';
+    protected array $whereItems = [];
+    protected array $valuesForBind = [];
     protected ?int $limit = null;
 
     public function __construct()
@@ -69,10 +71,16 @@ class Model extends Database
     public function result(): self
     {
         $sql = "SELECT $this->selectedItems FROM $this->table";
+        if (!empty($this->whereItems)) {
+            $sql .= " WHERE " . implode(' AND ', $this->whereItems);
+        }
         if (isset($this->limit)) {
             $sql .= " LIMIT $this->limit";
         }
         $this->statement = $this->pdo->prepare($sql);
+        foreach ($this->valuesForBind as $column => $value) {
+            $this->statement->bindValue(":$column", $value);
+        }
         $this->statement->execute();
 
         return $this;
@@ -88,6 +96,14 @@ class Model extends Database
     public function limit(int $limit): self
     {
         $this->limit = $limit;
+
+        return $this;
+    }
+
+    public function where(string $column, string|int|bool $value, string $operator = "="): self
+    {
+        $this->whereItems[] = "$column $operator :$column";
+        $this->valuesForBind[$column] = $value;
 
         return $this;
     }
