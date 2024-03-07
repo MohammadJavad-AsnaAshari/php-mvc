@@ -26,6 +26,22 @@ class Model extends Database
         return $statement->execute();
     }
 
+    public function get(): bool|array
+    {
+        $sql = "SELECT * FROM $this->table";
+        $query = $this->pdo->query($sql);
+
+        return $query->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    public function first()
+    {
+        $sql = "SELECT * FROM $this->table";
+        $query = $this->pdo->query($sql);
+
+        return $query->fetch(\PDO::FETCH_OBJ);
+    }
+
     public function update(int $id, array $data): bool
     {
         // Add 'updated_at' field to the data array with the current timestamp
