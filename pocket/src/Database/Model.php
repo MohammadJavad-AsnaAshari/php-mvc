@@ -107,4 +107,9 @@ class Model extends Database
 
         return $this;
     }
+
+    public function find(string|int|bool $value, string $column = 'id')
+    {
+        return $this->where($column, $value)->first();
+    }
 }
