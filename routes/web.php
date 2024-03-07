@@ -15,3 +15,5 @@ Router::post('/article/create', [ArticleController::class, 'store']);
 Router::get('/user/create', [UserController::class, 'create']);
 Router::get('/user/update/{id}', [UserController::class, 'update']);
 Router::get('/user/delete/{id}', [UserController::class, 'delete']);
+
+Router::get('/admin', 'admin.master');
