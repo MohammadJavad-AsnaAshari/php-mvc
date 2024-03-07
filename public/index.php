@@ -14,6 +14,7 @@ $app = new Application($root);
 
 $app->router
     ->setRouterFile($root . 'routes' . DIRECTORY_SEPARATOR . 'web.php')
-    ->setRouterFile($root . 'routes' . DIRECTORY_SEPARATOR . 'api.php');
+    ->setRouterFile($root . 'routes' . DIRECTORY_SEPARATOR . 'api.php')
+    ->setRouterFile($root . 'routes' . DIRECTORY_SEPARATOR . 'admin.php');
 
 $app->run();
