@@ -5,6 +5,7 @@ namespace Mj\PocketCore\Database;
 class Model extends Database
 {
     protected string $table;
+    protected string $sql;
     protected \PDOStatement $statement;
     protected string $selectedItems = '*';
     protected array $whereItems = [];
@@ -16,14 +17,18 @@ class Model extends Database
         parent::__construct();
     }
 
+    /**
+     * @param array $data
+     * @return bool
+     */
     public function create(array $data): bool
     {
         $dataKeys = array_keys($data);
         $fields = implode(', ', $dataKeys);
         $params = implode(', ', array_map(fn($key) => ":$key", $dataKeys));
 
-        $sql = "INSERT INTO $this->table ($fields) VALUES ($params)";
-        $this->statement = $this->pdo->prepare($sql);
+        $this->sql = "INSERT INTO $this->table ($fields) VALUES ($params)";
+        $this->statement = $this->pdo->prepare($this->sql);
         foreach ($data as $key => $value) {
             $this->statement->bindValue(":$key", $value);
         }
@@ -31,16 +36,27 @@ class Model extends Database
         return $this->statement->execute();
     }
 
+    /**
+     * @return bool|array
+     */
     public function get(): bool|array
     {
         return $this->result()->statement->fetchAll(\PDO::FETCH_OBJ);
     }
 
+    /**
+     * @return mixed
+     */
     public function first()
     {
         return $this->limit(1)->result()->statement->fetch(\PDO::FETCH_OBJ);
     }
 
+    /**
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
     public function update(int $id, array $data): bool
     {
         // Add 'updated_at' field to the data array with the current timestamp
@@ -49,8 +65,8 @@ class Model extends Database
         $dataKeys = array_keys($data);
         $fields = implode(', ', array_map(fn($key) => "$key = :$key", $dataKeys));
 
-        $sql = "UPDATE $this->table SET $fields WHERE id = :id";
-        $this->statement = $this->pdo->prepare($sql);
+        $this->sql = "UPDATE $this->table SET $fields WHERE id = :id";
+        $this->statement = $this->pdo->prepare($this->sql);
         $this->statement->bindValue(':id', $id);
         foreach ($data as $key => $value) {
             $this->statement->bindValue(":$key", $value);
@@ -59,33 +75,35 @@ class Model extends Database
         return $this->statement->execute();
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
-        $sql = "DELETE FROM $this->table WHERE id = :id";
-        $this->statement = $this->pdo->prepare($sql);
+        $this->sql = "DELETE FROM $this->table WHERE id = :id";
+        $this->statement = $this->pdo->prepare($this->sql);
         $this->statement->bindValue(':id', $id);
 
         return $this->statement->execute();
     }
 
+    /**
+     * @return $this
+     */
     public function result(): self
     {
-        $sql = "SELECT $this->selectedItems FROM $this->table";
-        if (!empty($this->whereItems)) {
-            $sql .= " WHERE " . implode(' AND ', $this->whereItems);
-        }
-        if (isset($this->limit)) {
-            $sql .= " LIMIT $this->limit";
-        }
-        $this->statement = $this->pdo->prepare($sql);
-        foreach ($this->valuesForBind as $column => $value) {
-            $this->statement->bindValue(":$column", $value);
-        }
+        $this->sql = "SELECT $this->selectedItems FROM $this->table";
+        $this->appendWhereClause()->appendLimitClause();
+        $this->prepareAndBind();
         $this->statement->execute();
 
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function select(): self
     {
         $this->selectedItems = implode(', ', func_get_args());
@@ -93,6 +111,10 @@ class Model extends Database
         return $this;
     }
 
+    /**
+     * @param int $limit
+     * @return $this
+     */
     public function limit(int $limit): self
     {
         $this->limit = $limit;
@@ -100,6 +122,12 @@ class Model extends Database
         return $this;
     }
 
+    /**
+     * @param string $column
+     * @param string|int|bool $value
+     * @param string $operator
+     * @return $this
+     */
     public function where(string $column, string|int|bool $value, string $operator = "="): self
     {
         $this->whereItems[] = "$column $operator :$column";
@@ -108,8 +136,48 @@ class Model extends Database
         return $this;
     }
 
+    /**
+     * @param string|int|bool $value
+     * @param string $column
+     * @return mixed
+     */
     public function find(string|int|bool $value, string $column = 'id')
     {
         return $this->where($column, $value)->first();
+    }
+
+    /**
+     * @return self
+     */
+    private function appendWhereClause(): self
+    {
+        if (!empty($this->whereItems)) {
+            $this->sql .= " WHERE " . implode(' AND ', $this->whereItems);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    private function appendLimitClause(): self
+    {
+        if (isset($this->limit)) {
+            $this->sql .= " LIMIT $this->limit";
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return void
+     */
+    private function prepareAndBind(): void
+    {
+        $this->statement = $this->pdo->prepare($this->sql);
+        foreach ($this->valuesForBind as $column => $value) {
+            $this->statement->bindValue(":$column", $value);
+        }
     }
 }
