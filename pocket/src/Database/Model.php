@@ -7,6 +7,7 @@ class Model extends Database
     protected string $table;
     protected \PDOStatement $statement;
     protected string $selectedItems = '*';
+    protected ?int $limit = null;
 
     public function __construct()
     {
@@ -35,7 +36,7 @@ class Model extends Database
 
     public function first()
     {
-        return $this->result()->statement->fetch(\PDO::FETCH_OBJ);
+        return $this->limit(1)->result()->statement->fetch(\PDO::FETCH_OBJ);
     }
 
     public function update(int $id, array $data): bool
@@ -68,6 +69,9 @@ class Model extends Database
     public function result(): self
     {
         $sql = "SELECT $this->selectedItems FROM $this->table";
+        if (isset($this->limit)) {
+            $sql .= " LIMIT $this->limit";
+        }
         $this->statement = $this->pdo->prepare($sql);
         $this->statement->execute();
 
@@ -77,6 +81,13 @@ class Model extends Database
     public function select(): self
     {
         $this->selectedItems = implode(', ', func_get_args());
+
+        return $this;
+    }
+
+    public function limit(int $limit): self
+    {
+        $this->limit = $limit;
 
         return $this;
     }
