@@ -6,6 +6,7 @@ class Model extends Database
 {
     protected string $table;
     protected \PDOStatement $statement;
+    protected string $selectedItems = '*';
 
     public function __construct()
     {
@@ -66,9 +67,16 @@ class Model extends Database
 
     public function result(): self
     {
-        $sql = "SELECT * FROM $this->table";
+        $sql = "SELECT $this->selectedItems FROM $this->table";
         $this->statement = $this->pdo->prepare($sql);
         $this->statement->execute();
+
+        return $this;
+    }
+
+    public function select(): self
+    {
+        $this->selectedItems = implode(', ', func_get_args());
 
         return $this;
     }
