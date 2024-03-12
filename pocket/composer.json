@@ -3,7 +3,10 @@
     "autoload": {
         "psr-4": {
             "Mj\\PocketCore\\": "src/"
-        }
+        },
+        "files": [
+            "./src/helpers.php"
+        ]
     },
     "authors": [
         {
