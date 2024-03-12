@@ -11,6 +11,9 @@ class Application
     public Router $router;
     public static string $ROOT_DIR;
     public Database $database;
+    public Request $request;
+    public Response $response;
+    public Session $session;
 
     public function __construct(string $root_dir)
     {
@@ -22,6 +25,9 @@ class Application
 
         $this->router = new Router();
         $this->database = new Database();
+        $this->request = new Request();
+        $this->response = new Response();
+        $this->session = new Session();
     }
 
     public function run()
