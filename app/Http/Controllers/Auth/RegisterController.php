@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Mj\PocketCore\Controller;
 
 class RegisterController extends Controller
@@ -31,9 +32,15 @@ class RegisterController extends Controller
         if ($validation->fails()) {
             // handling errors
             return redirect('/auth/sign-up');
-        } else {
-            // validation passes
-            echo "Success!";
         }
+
+        $validatedData = $validation->getValidatedData();
+        unset($validatedData['confirm_password']);
+
+        $user = new User();
+        $user->create([
+            ...$validatedData,
+            'password' => password_hash($validatedData['password'], PASSWORD_DEFAULT)
+        ]);
     }
 }
