@@ -21,10 +21,10 @@
                         Name
                     </label>
                     <div class="mt-1">
-                        <input id="name" name="name" type="text" autocomplete="name" required
+                        <input id="name" name="name" type="text" autocomplete="name" value="{{ $old('name') }}" required
                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         @if($errors->has('name'))
-                            <span>{{ $errors->first('name') }}</span>
+                            <span style="color: red; font-weight: bolder">{{ $errors->first('name') }}</span>
                         @endif
                     </div>
                 </div>
@@ -34,11 +34,12 @@
                         Email
                     </label>
                     <div class="mt-1">
-                        <input id="email" name="email" type="email" autocomplete="email" required
-                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-
+                        <input id="email" name="email" type="email" autocomplete="email" value="{{ $old('email') }}"
+                               required
+                               class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                        >
                         @if($errors->has('email'))
-                            <span>{{ $errors->first('email') }}</span>
+                            <span style="color: red; font-weight: bolder">{{ $errors->first('email') }}</span>
                         @endif
                     </div>
                 </div>
@@ -48,11 +49,11 @@
                         Password
                     </label>
                     <div class="mt-1">
-                        <input id="password" name="password" type="password" autocomplete="current-password" required
+                        <input id="password" name="password" type="password" autocomplete="current-password"
+                               value="{{ $old('password') }}" required
                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-
                         @if($errors->has('password'))
-                            <span>{{ $errors->first('password') }}</span>
+                            <span style="color: red; font-weight: bolder">{{ $errors->first('password') }}</span>
                         @endif
                     </div>
                 </div>
@@ -63,11 +64,10 @@
                     </label>
                     <div class="mt-1">
                         <input id="confirm_password" name="confirm_password" type="password"
-                               autocomplete="current-password" required
+                               autocomplete="current-password" value="{{ $old('current_password') }}" required
                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-
                         @if($errors->has('confirm_password'))
-                            <span class="invalid-feedback">{{ $errors->first('confirm_password') }}</span>
+                            <span style="color: red; font-weight: bolder">{{ $errors->first('confirm_password') }}</span>
                         @endif
                     </div>
                 </div>
@@ -79,8 +79,6 @@
                     </button>
                 </div>
             </form>
-
-
         </div>
     </div>
 </div>
