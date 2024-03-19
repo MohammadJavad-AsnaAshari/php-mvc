@@ -18,7 +18,7 @@ class Controller
         $validation->validate();
 
         if ($validation->fails()) {
-            response()->withErrors($validation->errors);
+            response()->withErrors($validation->errors)->withInputs();
         }
 
         return $validation;
