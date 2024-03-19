@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use Mj\PocketCore\Controller;
-use Mj\PocketCore\Request;
 
 class RegisterController extends Controller
 {
     public function signUpView()
     {
-        var_dump(session()->flash('errors'));
         return $this->render('auth.signUp');
     }
 
@@ -32,7 +30,6 @@ class RegisterController extends Controller
 
         if ($validation->fails()) {
             // handling errors
-            session()->flash('errors', $validation->errors());
             return redirect('/auth/sign-up');
         } else {
             // validation passes

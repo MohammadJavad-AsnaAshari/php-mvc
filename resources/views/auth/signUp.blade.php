@@ -23,6 +23,9 @@
                     <div class="mt-1">
                         <input id="name" name="name" type="text" autocomplete="name" required
                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        @if($errors->has('name'))
+                            <span>{{ $errors->first('name') }}</span>
+                        @endif
                     </div>
                 </div>
 
@@ -34,8 +37,8 @@
                         <input id="email" name="email" type="email" autocomplete="email" required
                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
 
-                        @if(session()->get('validation'))
-                        <span class="text-red-500 text-sm"><?= 'hi' ?></span>
+                        @if($errors->has('email'))
+                            <span>{{ $errors->first('email') }}</span>
                         @endif
                     </div>
                 </div>
@@ -47,6 +50,10 @@
                     <div class="mt-1">
                         <input id="password" name="password" type="password" autocomplete="current-password" required
                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+
+                        @if($errors->has('password'))
+                            <span>{{ $errors->first('password') }}</span>
+                        @endif
                     </div>
                 </div>
 
@@ -58,6 +65,10 @@
                         <input id="confirm_password" name="confirm_password" type="password"
                                autocomplete="current-password" required
                                class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+
+                        @if($errors->has('confirm_password'))
+                            <span class="invalid-feedback">{{ $errors->first('confirm_password') }}</span>
+                        @endif
                     </div>
                 </div>
 
