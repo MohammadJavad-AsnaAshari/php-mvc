@@ -81,7 +81,7 @@ class Router
         }
 
         if (is_string($callback)) {
-            return (new View)->render($callback);
+            return app()->view->render($callback);
         }
 
         if (is_array($callback)) {

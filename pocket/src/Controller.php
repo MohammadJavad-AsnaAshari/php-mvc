@@ -30,6 +30,6 @@ class Controller
 
     public function render(string $view, array $data = []): string
     {
-        return (new View)->render($view, $data);
+        return app()->view->render($view, $data);
     }
 }
