@@ -14,6 +14,10 @@ Router::post('/auth/register', [RegisterController::class, 'register']);
 Router::get('/auth/login', [LoginController::class, 'loginView']);
 Router::post('/auth/login', [LoginController::class, 'login']);
 
+Router::get('/panel', function () {
+    dd(auth()->user()->name);
+});
+
 Router::get('/article/{id:\d+}', [ArticleController::class, 'dynamic']);
 Router::get('/article', [ArticleController::class, 'index']);
 Router::get('/article/create', [ArticleController::class, 'create']);
