@@ -32,8 +32,7 @@ class RegisterController extends Controller
         $validatedData = $validation->getValidatedData();
         unset($validatedData['confirm_password']);
 
-        $user = new User();
-        $user->create([
+        (new User())->create([
             ...$validatedData,
             'password' => password_hash($validatedData['password'], PASSWORD_DEFAULT)
         ]);
