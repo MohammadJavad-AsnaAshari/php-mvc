@@ -7,17 +7,12 @@ use Mj\PocketCore\Controller;
 
 class RegisterController extends Controller
 {
-    public function signUpView()
+    public function registerView()
     {
-        return $this->render('auth.signUp');
+        return $this->render('auth.register');
     }
 
-    public function loginView()
-    {
-        return $this->render('auth.login');
-    }
-
-    public function signUp()
+    public function register()
     {
         $validation = $this->validate(
             request()->all(),
@@ -31,7 +26,7 @@ class RegisterController extends Controller
 
         if ($validation->fails()) {
             // handling errors
-            return redirect('/auth/sign-up');
+            return redirect('/auth/register');
         }
 
         $validatedData = $validation->getValidatedData();

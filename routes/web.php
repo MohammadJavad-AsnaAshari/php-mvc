@@ -8,10 +8,8 @@ use App\Http\Controllers\Auth\RegisterController;
 
 Router::get('/', [HomeController::class, 'index']);
 
-Router::get('/auth/sign-up', [RegisterController::class, 'signUpView']);
-Router::post('/auth/sign-up', [RegisterController::class, 'signUp']);
-
-Router::get('/auth/login', [RegisterController::class, 'loginView']);
+    Router::get('/auth/register', [RegisterController::class, 'registerView']);
+Router::post('/auth/register', [RegisterController::class, 'register']);
 
 Router::get('/article/{id:\d+}', [ArticleController::class, 'dynamic']);
 Router::get('/article', [ArticleController::class, 'index']);
