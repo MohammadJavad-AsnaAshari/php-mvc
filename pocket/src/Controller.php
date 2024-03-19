@@ -2,6 +2,7 @@
 
 namespace Mj\PocketCore;
 
+use Mj\PocketCore\Validation\Rules\UniqueRule;
 use Rakit\Validation\Validation;
 use Rakit\Validation\Validator;
 
@@ -10,6 +11,7 @@ class Controller
     protected function validate(array $data, array $rules, array $message = []): Validation
     {
         $validator = new Validator($message);
+        $validator->addValidator('unique', new UniqueRule());
 
         // make it
         $validation = $validator->make($data, $rules);

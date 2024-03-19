@@ -2,20 +2,19 @@
 
 namespace Mj\PocketCore\Database;
 
+use Mj\PocketCore\Database\Trait\Relation;
+use PDOStatement;
+
 class Model extends Database
 {
+    use Relation;
     protected string $table;
     protected string $sql;
-    protected \PDOStatement $statement;
+    protected PDOStatement $statement;
     protected string $selectedItems = '*';
     protected array $whereItems = [];
     protected array $valuesForBind = [];
     protected ?int $limit = null;
-
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * @param array $data
@@ -144,6 +143,13 @@ class Model extends Database
     public function find(string|int|bool $value, string $column = 'id')
     {
         return $this->where($column, $value)->first();
+    }
+
+    public function from(string $table): self
+    {
+        $this->table = $table;
+
+        return $this;
     }
 
     /**
