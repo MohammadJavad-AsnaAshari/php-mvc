@@ -17,6 +17,10 @@ class Controller
         // validate
         $validation->validate();
 
+        if ($validation->fails()) {
+            response()->withErrors($validation->errors);
+        }
+
         return $validation;
     }
 
