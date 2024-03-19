@@ -5,9 +5,9 @@ namespace Mj\PocketCore\Validation\Rules;
 use Mj\PocketCore\Database\Model;
 use Rakit\Validation\Rule;
 
-class UniqueRule extends Rule
+class ExistsRule extends Rule
 {
-    protected $message = ":attribute :value has been used";
+    protected $message = ":attribute :value is not exists";
 
     protected $fillableParams = ['table', 'column'];
 
@@ -22,6 +22,6 @@ class UniqueRule extends Rule
 
         $data = (new Model())->from($table)->where($column, $value)->first();
 
-        return !$data;
+        return !!$data;
     }
 }
