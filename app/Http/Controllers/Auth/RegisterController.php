@@ -23,7 +23,7 @@ class RegisterController extends Controller
             request()->all(),
             [
                 'name' => 'required|min:3|max:255',
-                'email' => 'required|email||max:255',
+                'email' => 'required|email||max:255|unique:users,email',
                 'password' => 'required|min:6||max:255',
                 'confirm_password' => 'required|same:password',
             ]
@@ -42,5 +42,7 @@ class RegisterController extends Controller
             ...$validatedData,
             'password' => password_hash($validatedData['password'], PASSWORD_DEFAULT)
         ]);
+
+        return redirect('/auth/login');
     }
 }
