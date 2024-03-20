@@ -3,6 +3,7 @@
 namespace Mj\PocketCore;
 
 use Dotenv\Dotenv;
+use Exception;
 use Mj\PocketCore\Database\Database;
 
 class Application
@@ -34,6 +35,18 @@ class Application
 
     public function run()
     {
-        echo $this->router->resolve();
+        try {
+            echo $this->router->resolve();
+        } catch (Exception $exception) {
+            if ($exception->getCode()) {
+                $errorCode = $exception->getCode();
+            } else {
+                $errorCode = 500;
+            }
+
+            echo $this->view->render("errors.$errorCode", [
+                'error' => $exception
+            ]);
+        }
     }
 }

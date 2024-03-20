@@ -2,6 +2,8 @@
 
 namespace Mj\PocketCore;
 
+use Mj\PocketCore\Exceptions\NotFoundException;
+
 class Router
 {
     /**
@@ -50,7 +52,7 @@ class Router
             return $this->getCallbackForUrl($method, $url, $params);
         }
 
-        throw new \Exception('The `METHOD` is not set yet!', 404);
+        throw new NotFoundException('The `METHOD` is not set yet!');
     }
 
     public function setRouterFile(string $path): Router
@@ -73,7 +75,7 @@ class Router
         } else {
             $routeCallback = self::getCallbackFromDynamicRoute($method, $url);
             if (!$routeCallback) {
-                throw new \Exception('Route Not Found', 404);
+                throw new NotFoundException();
             }
 
             $callback = $routeCallback[0];
