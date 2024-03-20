@@ -2,30 +2,60 @@
 
 namespace Mj\PocketCore\Database;
 
+use Mj\PocketCore\Database\Trait\Relation;
+use PDOStatement;
+
 class Model extends Database
 {
+    use Relation;
     protected string $table;
+    protected string $sql;
+    protected PDOStatement $statement;
+    protected string $selectedItems = '*';
+    protected array $whereItems = [];
+    protected array $valuesForBind = [];
+    protected ?int $limit = null;
 
-    public function __construct()
-    {
-        parent::__construct();
-    }
-
+    /**
+     * @param array $data
+     * @return bool
+     */
     public function create(array $data): bool
     {
         $dataKeys = array_keys($data);
         $fields = implode(', ', $dataKeys);
         $params = implode(', ', array_map(fn($key) => ":$key", $dataKeys));
 
-        $sql = "INSERT INTO $this->table ($fields) VALUES ($params)";
-        $statement = $this->pdo->prepare($sql);
+        $this->sql = "INSERT INTO $this->table ($fields) VALUES ($params)";
+        $this->statement = $this->pdo->prepare($this->sql);
         foreach ($data as $key => $value) {
-            $statement->bindValue(":$key", $value);
+            $this->statement->bindValue(":$key", $value);
         }
 
-        return $statement->execute();
+        return $this->statement->execute();
     }
 
+    /**
+     * @return bool|array
+     */
+    public function get(): bool|array
+    {
+        return $this->result()->statement->fetchAll(\PDO::FETCH_OBJ);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function first()
+    {
+        return $this->limit(1)->result()->statement->fetch(\PDO::FETCH_OBJ);
+    }
+
+    /**
+     * @param int $id
+     * @param array $data
+     * @return bool
+     */
     public function update(int $id, array $data): bool
     {
         // Add 'updated_at' field to the data array with the current timestamp
@@ -34,22 +64,126 @@ class Model extends Database
         $dataKeys = array_keys($data);
         $fields = implode(', ', array_map(fn($key) => "$key = :$key", $dataKeys));
 
-        $sql = "UPDATE $this->table SET $fields WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(':id', $id);
+        $this->sql = "UPDATE $this->table SET $fields WHERE id = :id";
+        $this->statement = $this->pdo->prepare($this->sql);
+        $this->statement->bindValue(':id', $id);
         foreach ($data as $key => $value) {
-            $statement->bindValue(":$key", $value);
+            $this->statement->bindValue(":$key", $value);
         }
 
-        return $statement->execute();
+        return $this->statement->execute();
     }
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function delete(int $id): bool
     {
-        $sql = "DELETE FROM $this->table WHERE id = :id";
-        $statement = $this->pdo->prepare($sql);
-        $statement->bindValue(':id', $id);
+        $this->sql = "DELETE FROM $this->table WHERE id = :id";
+        $this->statement = $this->pdo->prepare($this->sql);
+        $this->statement->bindValue(':id', $id);
 
-        return $statement->execute();
+        return $this->statement->execute();
+    }
+
+    /**
+     * @return $this
+     */
+    public function result(): self
+    {
+        $this->sql = "SELECT $this->selectedItems FROM $this->table";
+        $this->appendWhereClause()->appendLimitClause();
+        $this->prepareAndBind();
+        $this->statement->execute();
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function select(): self
+    {
+        $this->selectedItems = implode(', ', func_get_args());
+
+        return $this;
+    }
+
+    /**
+     * @param int $limit
+     * @return $this
+     */
+    public function limit(int $limit): self
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * @param string $column
+     * @param string|int|bool $value
+     * @param string $operator
+     * @return $this
+     */
+    public function where(string $column, string|int|bool $value, string $operator = "="): self
+    {
+        $this->whereItems[] = "$column $operator :$column";
+        $this->valuesForBind[$column] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @param string|int|bool $value
+     * @param string $column
+     * @return mixed
+     */
+    public function find(string|int|bool $value, string $column = 'id')
+    {
+        return $this->where($column, $value)->first();
+    }
+
+    public function from(string $table): self
+    {
+        $this->table = $table;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    private function appendWhereClause(): self
+    {
+        if (!empty($this->whereItems)) {
+            $this->sql .= " WHERE " . implode(' AND ', $this->whereItems);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    private function appendLimitClause(): self
+    {
+        if (isset($this->limit)) {
+            $this->sql .= " LIMIT $this->limit";
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return void
+     */
+    private function prepareAndBind(): void
+    {
+        $this->statement = $this->pdo->prepare($this->sql);
+        foreach ($this->valuesForBind as $column => $value) {
+            $this->statement->bindValue(":$column", $value);
+        }
     }
 }

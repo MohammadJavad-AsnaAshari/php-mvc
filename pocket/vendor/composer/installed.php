@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'mj/pocket-core',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => 'd70657b7bfbbc1ad3c6f995d9f85563b77e9bb4e',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => 'd559fa00addf205c947ea5fda175336a56780e07',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'mj/pocket-core' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => 'd70657b7bfbbc1ad3c6f995d9f85563b77e9bb4e',
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => 'd559fa00addf205c947ea5fda175336a56780e07',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
