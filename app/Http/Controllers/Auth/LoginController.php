@@ -10,17 +10,13 @@ class LoginController extends Controller
 {
     public function loginView()
     {
-        if (!auth()->check()) {
-            // Check if the user was redirected to the login page from a previous page
-            $previousUrl = $_SERVER['HTTP_REFERER'];
+        // Check if the user was redirected to the login page from a previous page
+        $previousUrl = $_SERVER['HTTP_REFERER'];
 
-            // Store the previous URL in the session
-            session()->set('url.previous', $previousUrl);
+        // Store the previous URL in the session
+        session()->set('url.previous', $previousUrl);
 
-            return $this->render('auth.login');
-        }
-
-        return redirect('/');
+        return $this->render('auth.login');
     }
 
     public function login()

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Middlewares;
+namespace Mj\PocketCore\Middleware;
 
 use Mj\PocketCore\Exceptions\UnauthorizedException;
 
-class AuthMiddleware
+class Authenticated
 {
     public function handle()
     {

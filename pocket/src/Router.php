@@ -3,6 +3,7 @@
 namespace Mj\PocketCore;
 
 use Mj\PocketCore\Exceptions\NotFoundException;
+use Mj\PocketCore\Middleware\Middleware;
 
 class Router
 {
@@ -10,6 +11,11 @@ class Router
      * @var array|array[]
      */
     private static array $routeMap = [
+        'get' => [],
+        'post' => []
+    ];
+
+    private static array $routeMiddleware = [
         'get' => [],
         'post' => []
     ];
@@ -23,16 +29,16 @@ class Router
         self::$request = new Request();
     }
 
-    public static function get(string $url, $callback, array $middlewares = []): void
+    public static function get(string $url, $callback, array $middleware = []): void
     {
         self::$routeMap['get'][$url] = $callback;
-        self::$routeMap['middlewares']['get'][$url] = $middlewares;
+        self::$routeMiddleware['get'][$url] = $middleware;
     }
 
-    public static function post(string $url, $callback, array $middlewares = []): void
+    public static function post(string $url, $callback, array $middleware = []): void
     {
         self::$routeMap['post'][$url] = $callback;
-        self::$routeMap['middlewares']['post'][$url] = $middlewares;
+        self::$routeMiddleware['post'][$url] = $middleware;
     }
 
     /**
@@ -84,19 +90,17 @@ class Router
             $params = $routeCallback[1];
         }
 
-        // Check if there are any middleware attached to the current route
-        $middlewares = self::$routeMap['middlewares'][$method][$url] ?? [];
-
-        // Loop through the middleware and execute them
-        $request = self::$request; // Get the current request object
-        $next = function () use ($callback, $params) {
-            // Define a closure that calls the route callback with the $params array
-            return call_user_func($callback, ...array_values($params));
-        };
-
-        foreach ($middlewares as $middleware) {
-            $middlewareInstance = new $middleware;
-            $request = $middlewareInstance->handle($request, $next); // Pass the current request object and the closure to the middleware's handle method
+        // Execute middleware
+        if (isset(self::$routeMiddleware[$method][$url])) {
+            foreach (self::$routeMiddleware[$method][$url] as $middleware) {
+                // Check if middleware is a class name
+                if (is_string($middleware) && class_exists($middleware)) {
+                    $middlewareInstance = new $middleware;
+                    $middlewareInstance->handle();
+                } else {
+                    Middleware::resolve($middleware);
+                }
+            }
         }
 
         if (is_string($callback)) {
