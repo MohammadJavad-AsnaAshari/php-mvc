@@ -22,7 +22,7 @@ return new class {
 
     public function down(): void
     {
-        $sql = "ALTER TABLE articles DROP CONSTRAINT fk_users_id";
+        $sql = "ALTER TABLE articles DROP CONSTRAINT fk_user_id";
         $this->database->pdo->exec($sql);
 
         $sql = "ALTER TABLE articles DROP COLUMN user_id";

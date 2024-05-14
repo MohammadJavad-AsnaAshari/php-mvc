@@ -18,7 +18,7 @@ return new class{
 
     public function down(): void
     {
-        $sql = "ALTER TABLE users DROP CONSTRAINT unique_email";
+        $sql = "ALTER TABLE users DROP CONSTRAINT email_unique";
 
         $this->database->pdo->exec($sql);
     }
