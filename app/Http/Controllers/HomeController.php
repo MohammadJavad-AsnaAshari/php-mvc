@@ -6,8 +6,13 @@ use Mj\PocketCore\Controller;
 
 class HomeController extends Controller
 {
-    public function index(): string
+    public function indexHome(): string
     {
-        return $this->render('home');
+        return $this->render('client.home');
+    }
+
+    public function indexShop(): string
+    {
+        return $this->render('client.shop');
     }
 }
