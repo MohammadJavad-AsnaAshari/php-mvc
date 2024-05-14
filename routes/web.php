@@ -2,21 +2,26 @@
 
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Mj\PocketCore\Router;
 use App\Http\Controllers\Auth\RegisterController;
 
-Router::get('/', [HomeController::class, 'index']);
+Router::get('/', [HomeController::class, 'indexHome']);
+Router::get('/shop', [HomeController::class, 'indexShop']);
 
 Router::get('/auth/register', [RegisterController::class, 'registerView']);
 Router::post('/auth/register', [RegisterController::class, 'register']);
 Router::get('/auth/login', [LoginController::class, 'loginView']);
 Router::post('/auth/login', [LoginController::class, 'login']);
+Router::get('/auth/logout', [LogoutController::class, 'logout']);
 
 Router::get('/panel', function () {
-    dd(auth()->user()->name);
-});
+    if (auth()->check()) {
+        dd(auth()->user()->name);
+    }
+}, [\App\Http\Middlewares\AuthMiddleware::class]);
 
 Router::get('/article/{id:\d+}', [ArticleController::class, 'dynamic']);
 Router::get('/article', [ArticleController::class, 'index']);
