@@ -6,7 +6,7 @@ use App\Models\User;
 
 class Auth
 {
-    public function check(): bool
+    public function check(): bool|null
     {
         return session()->get('auth_user');
     }
