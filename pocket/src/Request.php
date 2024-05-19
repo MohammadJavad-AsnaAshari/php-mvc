@@ -38,6 +38,17 @@ class Request
         return $this->all()[$key] ?? null;
     }
 
+    public function has(string $key): bool
+    {
+        if ($this->isGet()) {
+            return isset($_GET[$key]);
+        } elseif ($this->isPost()) {
+            return isset($_POST[$key]);
+        }
+
+        return false;
+    }
+
     public function query(string $key): ?string
     {
         return filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
