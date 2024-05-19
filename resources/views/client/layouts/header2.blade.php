@@ -62,11 +62,16 @@
                 <a href="">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                 </a>
-{{--                    TODO: implement search bar --}}
-                <form class="form-inline ">
-                    <button class="btn nav_search-btn" type="submit">
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </button>
+                <form action="/shop" class="form-inline " method="GET">
+                    <div class="input-group">
+                        <input name="search" placeholder="..." class="form-control" type="text"
+                               value="{{ request()->has('search') ? request('search') : '' }}">
+                        <button class="btn nav_search-btn" type="submit">
+                              <span class="ml-3">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                              </span>
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>

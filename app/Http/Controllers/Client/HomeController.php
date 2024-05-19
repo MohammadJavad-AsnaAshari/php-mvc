@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Models\Product;
 use Mj\PocketCore\Controller;
 
 class HomeController extends Controller
@@ -13,6 +14,15 @@ class HomeController extends Controller
 
     public function indexShop(): string
     {
-        return $this->render('client.shop');
+        $products = (new Product());
+
+        if (request()->has('search')) {
+            $search = request('search');
+            $products = $products->where('name', $search, 'LIKE');
+        }
+
+        $products = $products->get();
+
+        return $this->render('client.shop', compact('products'));
     }
 }
