@@ -7,7 +7,7 @@ use PDOStatement;
 
 class Model extends Database
 {
-    use Relation;
+//    use Relation;
     protected string $table;
     protected string $sql;
     protected PDOStatement $statement;
@@ -129,6 +129,10 @@ class Model extends Database
      */
     public function where(string $column, string|int|bool $value, string $operator = "="): self
     {
+        if ($operator === 'LIKE') {
+            $value = '%' . $value . '%';
+        }
+
         $this->whereItems[] = "$column $operator :$column";
         $this->valuesForBind[$column] = $value;
 
