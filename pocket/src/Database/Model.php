@@ -40,7 +40,17 @@ class Model extends Database
      */
     public function get(): bool|array
     {
-        return $this->result()->statement->fetchAll(\PDO::FETCH_OBJ);
+        //return $this->result()->statement->fetchAll(\PDO::FETCH_OBJ);
+
+        $results = $this->result()->statement->fetchAll(\PDO::FETCH_ASSOC);
+        $objects = [];
+        foreach ($results as $row) {
+            $object = new static();
+            $object->setProperties($row);
+            $objects[] = $object;
+        }
+
+        return $objects;
     }
 
     /**
@@ -48,7 +58,16 @@ class Model extends Database
      */
     public function first()
     {
-        return $this->limit(1)->result()->statement->fetch(\PDO::FETCH_OBJ);
+        //return $this->limit(1)->result()->statement->fetch(\PDO::FETCH_OBJ);
+
+        $result = $this->limit(1)->result()->statement->fetch(\PDO::FETCH_ASSOC);
+        if ($result) {
+            $object = new static();
+            $object->setProperties($result);
+            return $object;
+        }
+
+        return null;
     }
 
     /**
@@ -188,6 +207,13 @@ class Model extends Database
         $this->statement = $this->pdo->prepare($this->sql);
         foreach ($this->valuesForBind as $column => $value) {
             $this->statement->bindValue(":$column", $value);
+        }
+    }
+
+    protected function setProperties(array $properties)
+    {
+        foreach ($properties as $key => $value) {
+            $this->$key = $value;
         }
     }
 }
