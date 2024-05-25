@@ -22,3 +22,6 @@ Router::get('/panel', function () {
 },
     [\App\Http\Middlewares\AuthMiddleware::class]
 );
+
+Router::get('/products/edit/{product}', [HomeController::class, 'productEdit']);
+Router::post('/products/update/{product}', [HomeController::class, 'productUpdate']);

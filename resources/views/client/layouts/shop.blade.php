@@ -12,7 +12,7 @@
                         <div class="box">
                             <a href="">
                                 <div class="img-box">
-                                    <img src="images/p8.png" alt="">
+                                    <img src="{{ $product->getImageURL() }}" alt="">
                                 </div>
                                 <div class="detail-box">
                                     <h6>{{ $product->name }}</h6>
