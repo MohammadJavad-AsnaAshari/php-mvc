@@ -2,11 +2,13 @@
 
 namespace Mj\PocketCore;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 class Request
 {
     public function getMethod(): string
     {
-        return strtolower($_SERVER["REQUEST_METHOD"]);
+        return strtolower($_SERVER['REQUEST_METHOD']);
     }
 
     public function getUrl(): string
@@ -21,7 +23,7 @@ class Request
         return $url;
     }
 
-    public function all(): array
+    public function all(): array|null
     {
         $data = [];
         if ($this->isGet()) {
@@ -52,6 +54,29 @@ class Request
     public function query(string $key): ?string
     {
         return filter_input(INPUT_GET, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+    }
+
+    public function hasFile(string $key): bool
+    {
+        return isset($_FILES[$key]);
+    }
+
+    public function file(string $key)
+    {
+        if ($this->hasFile($key)) {
+            return new UploadedFile($_FILES[$key]['tmp_name'], $_FILES[$key]['name'], $_FILES[$key]['type'], $_FILES[$key]['error'], $_FILES[$key]['size']);
+        }
+
+        return null;
+    }
+
+    public function move(string $destination, string $newName)
+    {
+        if ($this->hasFile('image')) {
+            return move_uploaded_file($this->file('image')->getPathname(), $destination . '/' . $newName);
+        }
+
+        return false;
     }
 
     private function isGet(): bool
