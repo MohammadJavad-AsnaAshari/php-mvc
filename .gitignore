@@ -1,6 +1,8 @@
 /vendor/
 /public/cache/
+/public/storage/*
 /storage/
 /.idea
 /.env
 /node_modules
+/pocket/vendor
