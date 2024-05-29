@@ -25,3 +25,13 @@ Router::get('/panel', function () {
 
 Router::get('/products/edit/{product}', [HomeController::class, 'productEdit']);
 Router::post('/products/update/{product}', [HomeController::class, 'productUpdate']);
+
+Router::get('/test', function () {
+    $user = auth()->user();
+    $articles = $user->articles()->get();
+
+//    dd($articles);
+    foreach($articles as $article){
+        echo $article->title . "<br>";
+    }
+});
