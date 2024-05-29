@@ -7,7 +7,7 @@ use PDOStatement;
 
 class Model extends Database
 {
-//    use Relation;
+    use Relation;
     protected string $table;
     protected string $sql;
     protected PDOStatement $statement;
