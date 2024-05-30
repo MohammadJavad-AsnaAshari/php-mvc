@@ -6,6 +6,8 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\HomeController;
 use App\Models\Comment;
 use App\Models\Product;
+use App\Models\Role;
+use App\Models\User;
 use Mj\PocketCore\Router;
 
 Router::get('/', [HomeController::class, 'indexHome']);
@@ -59,4 +61,36 @@ Router::get('/test/comment/product/{comment}', function ($comment) {
     $comment = (new Comment())->find($comment);
 
     dd($comment->product()->first());
+});
+
+Router::get('/test/role/admin' , function() {
+    try {
+        $user = (new User())->find(1);
+        $roles = $user->roles();
+        foreach ($roles as $role) {
+            echo $role->name . "<br>";
+        }
+    } catch (Exception $exception) {
+        echo $exception->getMessage();
+    }
+});
+
+Router::get('/test/user/admin', function () {
+    try {
+        $role = (new Role())->find(1);
+        $users = $role->users();
+        foreach ($users as $user) {
+            echo $user->name . "<br>";
+        }
+    } catch (Exception $exception) {
+        echo $exception->getMessage();
+    }
+});
+
+Router::get('/test/where_in', function() {
+    $users = (new User())->whereIn('id', [2, 1])->get();
+
+    foreach ($users as $user) {
+        echo $user->name . "<br>";
+    }
 });
