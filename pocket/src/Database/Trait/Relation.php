@@ -21,4 +21,32 @@ trait Relation
 
         return $relatedModel;
     }
+
+    public function belongsToMany($relatedModel, $pivotTable = null, $foreignKey = null, $relatedKey = null)
+    {
+        $relatedModel = new $relatedModel();
+
+        $tableNames = [$this->table, $relatedModel->table];
+        sort($tableNames);
+
+        $pivotTable = $pivotTable ?? (substr($tableNames[0], 0, -1) . '_' . substr($tableNames[1], 0, -1));
+        $foreignKey = $foreignKey ?? (substr($this->table, 0, -1) . '_id');
+        $relatedKey = $relatedKey ?? (substr($relatedModel->table, 0, -1) . '_id');
+
+        $pivotModel = new static();
+        $pivotModel->from($pivotTable);
+        $pivotModel->where($foreignKey, $this->id);
+        $pivotResults = $pivotModel->get();
+
+        $relatedIds = [];
+        foreach ($pivotResults as $pivotResult) {
+            $relatedIds[] = $pivotResult->$relatedKey;
+        }
+
+        $relatedModel->from($relatedModel->table);
+        $relatedModel->whereIn('id', $relatedIds);
+        $relatedResults = $relatedModel->get();
+
+        return $relatedResults;
+    }
 }

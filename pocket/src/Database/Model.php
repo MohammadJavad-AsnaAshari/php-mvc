@@ -158,6 +158,17 @@ class Model extends Database
         return $this;
     }
 
+    public function whereIn(string $column, array $values): self
+    {
+        $placeholders = implode(', ', array_map(fn($value) => ":{$column}_{$value}", $values));
+        $this->whereItems[] = "$column IN ($placeholders)";
+        foreach ($values as $value) {
+            $this->valuesForBind["{$column}_{$value}"] = $value;
+        }
+
+        return $this;
+    }
+
     /**
      * @param string|int|bool $value
      * @param string $column
