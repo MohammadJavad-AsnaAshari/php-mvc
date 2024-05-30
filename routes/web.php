@@ -30,7 +30,7 @@ Router::post('/products/update/{product}', [HomeController::class, 'productUpdat
 
 
 // -------------------------------------------------- test --------------------------------------------------
-Router::get('/test', function () {
+Router::get('/test/user/articles', function () {
     $user = auth()->user();
     $articles = $user->articles()->get();
 
