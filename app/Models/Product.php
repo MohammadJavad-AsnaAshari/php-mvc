@@ -8,6 +8,11 @@ class Product extends Model
 {
     protected string $table = 'products';
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class, 'product_id');
+    }
+
     public function getImageURL()
     {
         if ($this->image) {
