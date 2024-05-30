@@ -7,7 +7,7 @@ trait Relation
     public function hasMany($relatedModel, $foreignKey = null)
     {
         $relatedModel = new $relatedModel();
-        $foreignKey = $foreignKey ?? $relatedModel->table . '_id';
+        $foreignKey = $foreignKey ?? (substr($this->table, 0, -1) . '_id');
         $relatedModel->where($foreignKey, $this->id)->get();
 
         return $relatedModel;

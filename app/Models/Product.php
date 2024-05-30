@@ -10,7 +10,7 @@ class Product extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'product_id');
+        return $this->hasMany(Comment::class);
     }
 
     public function getImageURL()

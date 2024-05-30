@@ -10,11 +10,11 @@ class User extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class, 'user_id');
+        return $this->hasMany(Comment::class);
     }
 
     public function articles()
     {
-        return $this->hasMany(Article::class, 'user_id');
+        return $this->hasMany(Article::class);
     }
 }
