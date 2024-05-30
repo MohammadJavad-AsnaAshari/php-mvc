@@ -12,4 +12,13 @@ trait Relation
 
         return $relatedModel;
     }
+
+    public function belongsTo($relatedModel, $foreignKey = null)
+    {
+        $relatedModel = new $relatedModel();
+        $foreignKey = $foreignKey ?? 'id';
+        $relatedModel->where($foreignKey, $this->id)->first();
+
+        return $relatedModel;
+    }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\HomeController;
+use App\Models\Comment;
 use App\Models\Product;
 use Mj\PocketCore\Router;
 
@@ -46,4 +47,16 @@ Router::get('/test/product/comments/{product}', function ($product) {
     foreach ($comments as $comment) {
         echo $comment->comment . "<br>";
     }
+});
+
+Router::get('/test/comment/user/{comment}', function ($comment) {
+    $comment = (new Comment())->find($comment);
+
+    dd($comment->user()->first());
+});
+
+Router::get('/test/comment/product/{comment}', function ($comment) {
+    $comment = (new Comment())->find($comment);
+
+    dd($comment->product()->first());
 });
