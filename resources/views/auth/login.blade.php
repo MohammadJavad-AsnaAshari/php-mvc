@@ -1,5 +1,4 @@
-@extends('layouts.master')
-@section('title', 'Login')
+@extends('layouts.master', ['title' => 'Login'])
 
 <link href="/css/tailwind.min.css" rel="stylesheet">
 

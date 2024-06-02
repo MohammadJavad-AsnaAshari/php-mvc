@@ -14,6 +14,9 @@
     <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
 
     <title>
+        @isset($title)
+            {{ $title }} |
+        @endisset
         <?= $_ENV['APP_NAME']?>
     </title>
 
