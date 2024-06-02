@@ -10,14 +10,14 @@
                 @foreach($products as $product)
                     <div class="col-sm-6 col-md-4 col-lg-3">
                         <div class="box">
-                            <a href="">
+                            <a href="/shop/{{ $product->id }}">
                                 <div class="img-box">
                                     <img src="{{ $product->getImageURL() }}" alt="">
                                 </div>
                                 <div class="detail-box">
                                     <h6>{{ $product->name }}</h6>
                                     <h6>Price
-                                        <span>{{ $product->price }}</span>
+                                        <span>{{ $product->price }} $</span>
                                     </h6>
                                 </div>
                                 <div class="new">

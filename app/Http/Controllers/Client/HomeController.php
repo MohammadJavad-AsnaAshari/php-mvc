@@ -10,28 +10,9 @@ use Rakit\Validation\Validation;
 
 class HomeController extends Controller
 {
-    public function indexHome(): string
+    public function index(): string
     {
         return $this->render('client.home');
-    }
-
-    public function indexShop(): string
-    {
-        $products = new Product();
-
-        if (request()->has('search')) {
-            $search = request('search');
-            $products = $products->where('name', $search, 'LIKE');
-        }
-
-        $products = $products->get();
-
-        return $this->render('client.shop', compact('products'));
-    }
-
-    public function popular()
-    {
-        return view('client.popular');
     }
 
     public function aboutUs()

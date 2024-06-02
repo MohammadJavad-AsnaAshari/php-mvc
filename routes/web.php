@@ -4,16 +4,19 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\ShopController;
 use App\Models\Comment;
 use App\Models\Product;
 use App\Models\Role;
 use App\Models\User;
 use Mj\PocketCore\Router;
 
-Router::get('/', [HomeController::class, 'indexHome']);
-Router::get('/shop', [HomeController::class, 'indexShop']);
-Router::get('/popular', [HomeController::class, 'popular']);
+Router::get('/', [HomeController::class, 'index']);
 Router::get('/about-us', [HomeController::class, 'aboutUs']);
+
+Router::get('/shop', [ShopController::class, 'index']);
+Router::get('/shop/{product}', [ShopController::class, 'show']);
+Router::get('/popular', [ShopController::class, 'popular']);
 
 Router::get('/auth/register', [RegisterController::class, 'registerView'], ['guest']);
 Router::post('/auth/register', [RegisterController::class, 'register'], ['guest']);
