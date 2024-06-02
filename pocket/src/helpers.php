@@ -2,6 +2,7 @@
 
 use Mj\PocketCore\Application;
 use Mj\PocketCore\Auth;
+use Mj\PocketCore\Controller;
 use Mj\PocketCore\Request;
 use Mj\PocketCore\Response;
 use Mj\PocketCore\Session;
@@ -57,6 +58,13 @@ if (!function_exists('auth')) {
     function auth(): Auth
     {
         return new Auth();
+    }
+}
+
+if (!function_exists('view')) {
+    function view(string $view, array $data = [])
+    {
+        return (new Controller())->render($view, $data);
     }
 }
 
