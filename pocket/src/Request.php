@@ -79,6 +79,11 @@ class Request
         return false;
     }
 
+    public function urlIs(string $url)
+    {
+        return $this->getUrl() === $url;
+    }
+
     private function isGet(): bool
     {
         return $this->getMethod() === 'get';
