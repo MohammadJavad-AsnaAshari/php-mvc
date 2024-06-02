@@ -16,14 +16,19 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item active">
+                <li class="nav-item {{ request()->urlIs('/shop') ? 'active' : ''}}">
                     <a class="nav-link" href="/shop">
                         Shop
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="why.blade.php">
-                        Why Us
+                <li class="nav-item {{ request()->urlIs('/popular') ? 'active' : ''}}">
+                    <a class="nav-link" href="/popular">
+                        Popular
+                    </a>
+                </li>
+                <li class="nav-item {{ request()->urlIs('/about-us') ? 'active' : '' }}">
+                    <a class="nav-link" href="/about-us">
+                        About Us
                     </a>
                 </li>
                 <li class="nav-item">
@@ -62,17 +67,6 @@
                 <a href="">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                 </a>
-                <form action="/shop" class="form-inline " method="GET">
-                    <div class="input-group">
-                        <input name="search" placeholder="..." class="form-control" type="text"
-                               value="{{ request()->has('search') ? request('search') : '' }}">
-                        <button class="btn nav_search-btn" type="submit">
-                              <span class="ml-3">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                              </span>
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
     </nav>

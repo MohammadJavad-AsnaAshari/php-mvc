@@ -29,6 +29,16 @@ class HomeController extends Controller
         return $this->render('client.shop', compact('products'));
     }
 
+    public function popular()
+    {
+        return view('client.popular');
+    }
+
+    public function aboutUs()
+    {
+        return view('client.about-us');
+    }
+
     public function productEdit(int $product)
     {
         if ($product = (new Product())->where('id', $product)->first()) {

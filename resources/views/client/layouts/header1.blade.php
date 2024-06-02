@@ -21,9 +21,14 @@
                         Shop
                     </a>
                 </li>
+                <li class="nav-item {{ request()->urlIs('/popular') ? 'active' : ''}}">
+                    <a class="nav-link" href="/popular">
+                        Popular
+                    </a>
+                </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="why.blade.php">
-                        Why Us
+                    <a class="nav-link" href="/about-us">
+                        About Us
                     </a>
                 </li>
                 <li class="nav-item">
