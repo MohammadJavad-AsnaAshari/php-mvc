@@ -24,7 +24,10 @@ class Auth
     public function user()
     {
         $userId = session()->get('auth_user');
+        if ($userId) {
+            return (new User())->find($userId);
+        }
 
-        return (new User())->find($userId);
+        return null;
     }
 }
