@@ -17,7 +17,6 @@ return new class{
               `description` VARCHAR(255) NOT NULL,
               `specification` VARCHAR(255) NOT NULL,
               `price` INT NOT NULL,
-              `like` INT DEFAULT 0,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );";

@@ -12,6 +12,7 @@ return new class{
     public function up(): void
     {
         $sql = "CREATE TABLE IF NOT EXISTS `role_user` (
+              `id` INT AUTO_INCREMENT PRIMARY KEY,
               `role_id` INT NOT NULL,
               `user_id` INT NOT NULL,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
