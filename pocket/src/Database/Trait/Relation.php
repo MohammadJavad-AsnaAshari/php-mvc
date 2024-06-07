@@ -43,10 +43,14 @@ trait Relation
             $relatedIds[] = $pivotResult->$relatedKey;
         }
 
-        $relatedModel->from($relatedModel->table);
-        $relatedModel->whereIn('id', $relatedIds);
-        $relatedResults = $relatedModel->get();
+        if (count($relatedIds) !== 0) {
+            $relatedModel->from($relatedModel->table);
+            $relatedModel->whereIn('id', $relatedIds);
+            $relatedResults = $relatedModel->get();
 
-        return $relatedResults;
+            return $relatedResults;
+        }
+
+        return null;
     }
 }

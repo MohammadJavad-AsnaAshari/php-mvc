@@ -8,6 +8,7 @@ use PDOStatement;
 class Model extends Database
 {
     use Relation;
+
     protected string $table;
     protected string $sql;
     protected PDOStatement $statement;
@@ -184,6 +185,23 @@ class Model extends Database
         $this->table = $table;
 
         return $this;
+    }
+
+    public function count(): int
+    {
+        $this->selectedItems = 'COUNT(*) as total';
+        $this->result();
+        $count = $this->statement->fetchColumn();
+
+        return (int)$count;
+    }
+
+    public function exists(): bool
+    {
+        $this->limit(1);
+        $this->result();
+
+        return $this->statement->rowCount() > 0;
     }
 
     /**
