@@ -37,7 +37,10 @@
     <div class="btn-box">
         <div class="pr-2">
             <a href="#" class="btn btn-success"
-               style="background-color: #28a745; border-color: #28a745 !important; color: #fff !important;">
+               style="background-color: #28a745; border-color: #28a745; color: #fff;
+              transition: background-color 0.3s, border-color 0.3s, color 0.3s;"
+               onmouseover="this.style.backgroundColor='#fff'; this.style.borderColor='#28a745'; this.style.color='#28a745';"
+               onmouseout="this.style.backgroundColor='#28a745'; this.style.borderColor='#28a745'; this.style.color='#fff';">
                 Purchase Now
             </a>
         </div>
