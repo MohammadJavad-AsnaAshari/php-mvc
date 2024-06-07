@@ -17,7 +17,7 @@
                     <h5>{{ $product->name }}</h5>
 
                     <h6 class="text-uppercase mt-4"><i class="fa fa-heart"></i> Likes :</h6>
-                    <h5 class="text-success">{{ $product->like }}</h5>
+                    <h5 class="text-success">{{ $productLikes }}</h5>
 
                     <h6 class="text-uppercase mt-4"><i class="fa fa-ticket"></i> Description : </h6>
                     <p>{{ $product->description }}</p>
@@ -35,16 +35,39 @@
         </div>
     </div>
     <div class="btn-box">
-        <style></style>
-        <a href="#" class="btn btn-success" style="background-color: #28a745; border-color: #28a745 !important; color: #fff !important;">
-            Purchase Now
-        </a>
+        <div class="pr-2">
+            <a href="#" class="btn btn-success"
+               style="background-color: #28a745; border-color: #28a745 !important; color: #fff !important;">
+                Purchase Now
+            </a>
+        </div>
+        @if(auth()->user())
+            @if(auth()->user()->likesPost($product->id))
+                <form action="/shop/{{ $product->id }}/unlike" method="POST">
+                    <button type="submit" class="fw-light nav-link fs-6">
+                        <span class="fa fa-heart me-1"></span>
+                        {{ $productLikes }}
+                    </button>
+                </form>
+            @else
+                <form action="/shop/{{ $product->id }}/like" method="POST">
+                    <button type="submit" class="fw-light nav-link fs-6">
+                        <span class="fa fa-heart-o me-1"></span>
+                        {{ $productLikes }}
+                    </button>
+                </form>
+            @endif
+        @else
+            <a href="/auth/login" class="fw-light nav-link fs-5">
+                <i class="fa fa-heart-o"></i>
+                {{ $productLikes }}
+            </a>
+        @endif
     </div>
 
     <div class="btn-box text-center mt-5">
         <a href="/shop" class="btn btn-primary">
             View All Products
         </a>
-    </div>
     </div>
 </section>

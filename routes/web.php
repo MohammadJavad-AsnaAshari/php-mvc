@@ -16,6 +16,8 @@ Router::get('/about-us', [HomeController::class, 'aboutUs']);
 
 Router::get('/shop', [ShopController::class, 'index']);
 Router::get('/shop/{product}', [ShopController::class, 'show']);
+Router::post('/shop/{product}/like', [ShopController::class, 'like']);
+Router::post('/shop/{product}/unlike', [ShopController::class, 'unlike']);
 Router::get('/popular', [ShopController::class, 'popular']);
 
 Router::get('/auth/register', [RegisterController::class, 'registerView'], ['guest']);

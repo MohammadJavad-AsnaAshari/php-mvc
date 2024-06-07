@@ -22,4 +22,20 @@ class User extends Model
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public function likes()
+    {
+        return $this->belongsToMany(Product::class, 'product_like', 'user_id', 'product_id');
+    }
+
+    public function likesPost(int $product)
+    {
+        $pivotModel = new static();
+        $pivotModel->from('product_like');
+        $pivotModel->where('user_id', $this->id)
+            ->where('product_id', $product)
+            ->limit(1);
+
+        return $pivotModel->exists();
+    }
 }
