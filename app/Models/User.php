@@ -38,4 +38,16 @@ class User extends Model
 
         return $pivotModel->exists();
     }
+
+    public function hasRole($role)
+    {
+        $roles = $this->roles();
+        foreach ($roles as $r) {
+            if ($r->name === $role) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

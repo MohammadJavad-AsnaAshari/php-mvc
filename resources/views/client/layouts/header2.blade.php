@@ -16,17 +16,17 @@
                 <li class="nav-item ">
                     <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
-                <li class="nav-item {{ request()->urlIs('/shop') ? 'active' : ''}}">
+                <li class="nav-item {{ isUrl('/shop') ? 'active' : ''}}">
                     <a class="nav-link" href="/shop">
                         Shop
                     </a>
                 </li>
-                <li class="nav-item {{ request()->urlIs('/popular') ? 'active' : ''}}">
+                <li class="nav-item {{ isUrl('/popular')}}">
                     <a class="nav-link" href="/popular">
                         Popular
                     </a>
                 </li>
-                <li class="nav-item {{ request()->urlIs('/about-us') ? 'active' : '' }}">
+                <li class="nav-item {{ isUrl('/about-us')}}">
                     <a class="nav-link" href="/about-us">
                         About Us
                     </a>
@@ -42,6 +42,12 @@
             </ul>
             <div class="user_option">
                 @if(auth()->check())
+                    @if(auth()->user()->hasRole('admin'))
+                        <a href="/admin-panel">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Admin Panel</span>
+                        </a>
+                    @endif
                     <a href="">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         <span>{{ auth()->user()->name }}</span>

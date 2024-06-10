@@ -21,7 +21,7 @@
                         Shop
                     </a>
                 </li>
-                <li class="nav-item {{ request()->urlIs('/popular') ? 'active' : ''}}">
+                <li class="nav-item {{ isUrl('/popular') }}">
                     <a class="nav-link" href="/popular">
                         Popular
                     </a>
@@ -42,6 +42,12 @@
             </ul>
             <div class="user_option">
                 @if(auth()->check())
+                    @if(auth()->user()->hasRole('admin'))
+                        <a href="/admin-panel">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Admin Panel</span>
+                        </a>
+                    @endif
                     <a href="">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         <span>{{ auth()->user()->name }}</span>
