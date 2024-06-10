@@ -9,7 +9,7 @@ class UniqueRule extends Rule
 {
     protected $message = ":attribute :value has been used";
 
-    protected $fillableParams = ['table', 'column'];
+    protected $fillableParams = ['table', 'column', 'except'];
 
     public function check($value): bool
     {
@@ -19,6 +19,11 @@ class UniqueRule extends Rule
         // getting parameters
         $column = $this->parameter('column');
         $table = $this->parameter('table');
+        $except = $this->parameter('except');
+
+        if ($except AND $except == $value) {
+            return true;
+        }
 
         $data = (new Model())->from($table)->where($column, $value)->first();
 
