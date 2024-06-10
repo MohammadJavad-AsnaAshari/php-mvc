@@ -79,7 +79,7 @@ class Request
         return false;
     }
 
-    public function urlIs(string $url)
+    public function isUrl(string $url)
     {
         return $this->getUrl() === $url;
     }

@@ -68,4 +68,22 @@ if (!function_exists('view')) {
     }
 }
 
+if (!function_exists('isActive')) {
+    function isActive($key, $activeClassName = 'active')
+    {
+        if (is_array($key)) {
+            return in_array(request()->getUrl(), $key) ? $activeClassName : '';
+        }
+
+        return request()->getUrl() === $key ? $activeClassName : '';
+    }
+}
+
+if (!function_exists('isUrl')) {
+    function isUrl($url, $activeClassName = 'active')
+    {
+        return request()->isUrl($url) ? $activeClassName : '';
+    }
+}
+
 
