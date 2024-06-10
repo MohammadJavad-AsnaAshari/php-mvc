@@ -65,17 +65,17 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ isActive(['/admin-panel/roles', '/admin-panel/users/permissions'], "menu-open") }}">
+                <li class="nav-item {{ isActive(['/admin-panel/roles', '/admin-panel/roles/create', '/admin-panel/permissions'], "menu-open") }}">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-people-fill"></i>
+                        <i class="nav-icon bi bi-shield-fill"></i>
                         <p>
                             Access
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item {{ isActive('/admin-panel/roles', '/admin-panel/roles') }}">
-                            <a href="/admin-panel/users" class="nav-link {{ isUrl('/admin-panel/roles')}}">
+                        <li class="nav-item {{ isActive('/admin-panel/roles') }}">
+                            <a href="/admin-panel/roles" class="nav-link {{ isUrl('/admin-panel/roles') }}">
                                 <i class="nav-icon bi bi-check"></i>
                                 <p>Roles</p>
                             </a>
