@@ -32,9 +32,6 @@ Router::get('/user-panel/edit/{userId}', [UserPanelController::class, 'edit'], [
 Router::post('/user-panel/update', [UserPanelController::class, 'update'], ['auth']);
 Router::post('/user-panel/delete', [UserPanelController::class, 'delete'], ['auth']);
 
-Router::get('/products/edit/{product}', [HomeController::class, 'productEdit']);
-Router::post('/products/update/{product}', [HomeController::class, 'productUpdate']);
-
 
 
 // -------------------------------------------------- test --------------------------------------------------
