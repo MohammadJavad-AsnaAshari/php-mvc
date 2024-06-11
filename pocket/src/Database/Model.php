@@ -130,6 +130,25 @@ class Model extends Database
         return $this;
     }
 
+    public function query(string $sql, array $values = []): array
+    {
+        $this->statement = $this->pdo->prepare($sql);
+        foreach ($values as $key => $value) {
+            $this->statement->bindValue(":$key", $value);
+        }
+        $this->statement->execute();
+
+        $results = $this->statement->fetchAll(\PDO::FETCH_ASSOC);
+        $objects = [];
+        foreach ($results as $row) {
+            $object = new static();
+            $object->setProperties($row);
+            $objects[] = $object;
+        }
+
+        return $objects;
+    }
+
     /**
      * @param int $limit
      * @return $this
@@ -203,6 +222,48 @@ class Model extends Database
 
         return $this->statement->rowCount() > 0;
     }
+
+    /**
+     * @param string $table
+     * @param string $firstColumn
+     * @param string $secondColumn
+     * @param string $operator
+     * @return $this
+     */
+    public function leftJoin(string $table, string $firstColumn, string $secondColumn, string $operator = '='): self
+    {
+        $this->sql .= " LEFT JOIN $table ON $firstColumn $operator $secondColumn";
+
+        return $this;
+    }
+
+    /**
+     * @param string $table
+     * @param string $firstColumn
+     * @param string $secondColumn
+     * @param string $operator
+     * @return $this
+     */
+    public function rightJoin(string $table, string $firstColumn, string $secondColumn, string $operator = '='): self
+    {
+        $this->sql .= " RIGHT JOIN $table ON $firstColumn $operator $secondColumn";
+
+        return $this;
+    }
+
+//    /**
+//     * @return $this
+//     */
+//    private function appendFromClause(): self
+//    {
+//        if (!empty($this->selectedTables)) {
+//            $this->sql = "SELECT $this->selectedItems FROM $this->selectedTables";
+//        } else {
+//            $this->sql = "SELECT $this->selectedItems FROM $this->table";
+//        }
+//
+//        return $this;
+//    }
 
     /**
      * @return self

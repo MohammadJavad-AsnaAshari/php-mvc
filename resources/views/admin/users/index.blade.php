@@ -38,7 +38,7 @@
                             <th>User Name</th>
                             <th>Email</th>
                             <th>Date</th>
-{{--                            <th>Status</th>--}}
+                            <th>Access</th>
                             <th>Action</th>
                         </tr>
                         @foreach($users as $user)
@@ -56,6 +56,9 @@
 {{--                                @else--}}
 {{--                                    <td><span class="badge bg-danger">Inactive</span></td>--}}
 {{--                                @endif--}}
+                                <td>
+                                   {{ $user->roles }}
+                                </td>
                                 <td class="d-flex">
                                     <a href="/admin-panel/users/edit/{{ $user->id }}" class="btn btn-sm btn-primary">
                                         edit

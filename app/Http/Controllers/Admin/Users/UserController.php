@@ -11,7 +11,13 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = (new User())->get();
+        $sql = "SELECT users.*, GROUP_CONCAT(roles.name) as roles
+                FROM users
+                LEFT JOIN role_user ON users.id = role_user.user_id
+                LEFT JOIN roles ON role_user.role_id = roles.id
+                GROUP BY users.id
+                ";
+        $users = (new User())->query($sql);
 
         return view('admin.users.index', compact('users'));
     }
