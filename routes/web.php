@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\Dashboard\UserPanelController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ShopController;
 use App\Models\Comment;
@@ -26,13 +27,10 @@ Router::get('/auth/login', [LoginController::class, 'loginView'], ['guest']);
 Router::post('/auth/login', [LoginController::class, 'login'], ['guest']);
 Router::get('/auth/logout', [LogoutController::class, 'logout']);
 
-Router::get('/panel', function () {
-    if (auth()->check()) {
-        dd(auth()->user()->name);
-    }
-},
-    [\App\Http\Middlewares\AuthMiddleware::class]
-);
+Router::get('/user-panel/{userId}', [UserPanelController::class, 'show'], ['auth']);
+Router::get('/user-panel/edit/{userId}', [UserPanelController::class, 'edit'], ['auth']);
+Router::post('/user-panel/update', [UserPanelController::class, 'update'], ['auth']);
+Router::post('/user-panel/delete', [UserPanelController::class, 'delete'], ['auth']);
 
 Router::get('/products/edit/{product}', [HomeController::class, 'productEdit']);
 Router::post('/products/update/{product}', [HomeController::class, 'productUpdate']);

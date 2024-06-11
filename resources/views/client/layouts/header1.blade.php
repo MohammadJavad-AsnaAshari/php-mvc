@@ -48,7 +48,7 @@
                             <span>Admin Panel</span>
                         </a>
                     @endif
-                    <a href="">
+                    <a href="/user-panel/{{ auth()->user()->id }}">
                         <i class="fa fa-user" aria-hidden="true"></i>
                         <span>{{ auth()->user()->name }}</span>
                     </a>
