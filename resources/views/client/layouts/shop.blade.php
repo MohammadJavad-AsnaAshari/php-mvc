@@ -30,7 +30,7 @@
             @endif
         </div>
         <div class="btn-box">
-            <a href="">
+            <a href="/shop?products=all">
                 View All Products
             </a>
         </div>

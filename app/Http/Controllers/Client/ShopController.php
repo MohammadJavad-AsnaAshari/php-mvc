@@ -15,6 +15,10 @@ class ShopController extends Controller
     {
         $products = new Product();
 
+        if (!request()->has('products') || request('products') !== 'all') {
+            $products->limit(8);
+        }
+
         if (request()->has('search')) {
             $search = request('search');
             $products = $products->where('name', $search, 'LIKE');
@@ -35,7 +39,15 @@ class ShopController extends Controller
 
     public function popular()
     {
-        return view('client.popular');
+        $sql = "SELECT products.*, COUNT(product_like.id) as likes
+            FROM products
+            LEFT JOIN product_like ON products.id = product_like.product_id
+            GROUP BY products.id
+            ORDER BY likes DESC
+            LIMIT 4";
+        $products = (new Product())->query($sql);
+
+        return view('client.popular', compact('products'));
     }
 
     public function like(int $product)
