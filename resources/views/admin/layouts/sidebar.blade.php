@@ -39,12 +39,6 @@
                                 <p>Index</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ isActive('/admin-panel/users/*') }}">
-                            <a href="/admin-panel/users/*" class="nav-link {{ isUrl('/admin-panel/users/*')}}">
-                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/users/*') ? 'bi-person-fill' : 'bi-person' }}"></i>
-                                <p>Show</p>
-                            </a>
-                        </li>
                         <li class="nav-item {{ isActive('/admin-panel/create') }}">
                             <a href="/admin-panel/users/create" class="nav-link {{ isUrl('/admin-panel/users/create')}}">
                                 <i class="nav-icon bi {{ request()->isUrl('/admin-panel/users/create') ? 'bi-person-fill' : 'bi-person' }}"></i>
