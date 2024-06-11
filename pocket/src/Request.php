@@ -58,7 +58,7 @@ class Request
 
     public function hasFile(string $key): bool
     {
-        return isset($_FILES[$key]);
+        return (isset($_FILES[$key]) && !empty($_FILES[$key]['name']));
     }
 
     public function file(string $key)
