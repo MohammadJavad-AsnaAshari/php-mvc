@@ -82,6 +82,41 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item {{ isActive(['/admin-panel/products', '/admin-panel/products/create'], "menu-open") }}">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-ui-checks-grid"></i>
+                        <p>
+                            Products
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item {{ isActive('/admin-panel/products') }}">
+                            <a href="/admin-panel/products" class="nav-link {{ isUrl('/admin-panel/products')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/products') ? 'bi-patch-check-fill' : 'bi-patch-check' }}"></i>
+                                <p>Index</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ isActive('/admin-panel/create') }}">
+                            <a href="/admin-panel/products/create" class="nav-link {{ isUrl('/admin-panel/products/create')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/products/create') ? 'bi-patch-check-fill' : 'bi-patch-check' }}"></i>
+                                <p>Create</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ isActive('/admin-panel/edit/*') }}">
+                            <a href="/admin-panel/products" class="nav-link {{ isUrl('/admin-panel/products')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/products') ? 'bi-patch-check-fill' : 'bi-patch-check' }}"></i>
+                                <p>Edit</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ isActive('/admin-panel/products') }}">
+                            <a href="/admin-panel/products" class="nav-link {{ isUrl('/admin-panel/products')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/products') ? 'bi-patch-check-fill' : 'bi-patch-check' }}"></i>
+                                <p>Delete</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
                 <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-tree-fill"></i>
                         <p>
                             UI Elements

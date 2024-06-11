@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Dashboard\AdminPanelController;
+use App\Http\Controllers\Admin\Products\ProductController;
 use App\Http\Controllers\Admin\Rules\RuleController;
 use App\Http\Controllers\Admin\Users\UserController;
 use Mj\PocketCore\Router;
@@ -22,3 +23,10 @@ Router::get('/admin-panel/roles/edit/{roleId}', [RuleController::class, 'edit'],
 Router::post('/admin-panel/roles/store', [RuleController::class, 'store'], ['auth', 'admin']);
 Router::post('/admin-panel/roles/update', [RuleController::class, 'update'], ['auth', 'admin']);
 Router::post('/admin-panel/roles/delete', [RuleController::class, 'delete'], ['auth', 'admin']);
+
+Router::get('/admin-panel/products', [ProductController::class, 'index'], ['auth', 'admin']);
+Router::get('/admin-panel/products/create', [ProductController::class, 'create'], ['auth', 'admin']);
+Router::post('/admin-panel/products/store', [ProductController::class, 'store'], ['auth', 'admin']);
+Router::get('/admin-panel/products/edit/{productId}', [ProductController::class, 'edit'], ['auth', 'admin']);
+Router::post('/admin-panel/products/update', [ProductController::class, 'update'], ['auth', 'admin']);
+Router::post('/admin-panel/products/delete', [ProductController::class, 'delete'], ['auth', 'admin']);
