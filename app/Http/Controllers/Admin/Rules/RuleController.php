@@ -34,6 +34,11 @@ class RuleController extends Controller
             ]
         );
 
+        if ($validation->fails()) {
+            // handling errors
+            return redirect('/admin-panel/users/create');
+        }
+
         $validatedData = $validation->getValidatedData();
 
         (new Role())->create([...$validatedData]);
