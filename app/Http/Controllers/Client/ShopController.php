@@ -4,16 +4,14 @@ namespace App\Http\Controllers\Client;
 
 use App\Models\Product;
 use App\Models\User;
-use Dotenv\Validator;
 use Mj\PocketCore\Controller;
-use Mj\PocketCore\Request;
-use Rakit\Validation\Validation;
 
 class ShopController extends Controller
 {
     public function index(): string
     {
         $products = new Product();
+        $orderBy = 'DESC';
 
         if (!request()->has('products') || request('products') !== 'all') {
             $products->limit(8);
@@ -24,7 +22,14 @@ class ShopController extends Controller
             $products = $products->where('name', $search, 'LIKE');
         }
 
-        $products = $products->get();
+        if (request()->has('order-by')) {
+            $param = strtoupper(request('order-by'));
+            if ($param === 'ASC' || $param === 'DESC') {
+                $orderBy = $param;
+            }
+        }
+
+        $products = $products->orderBy('created_at', $orderBy)->get();
 
         return $this->render('client.shop', compact('products'));
     }

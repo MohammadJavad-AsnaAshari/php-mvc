@@ -11,7 +11,7 @@
     <!-- end hero area -->
 
     <!-- shop section -->
-    @include('client.layouts.shop-home')
+    @include('client.layouts.shop')
     <!-- end shop section -->
 
     <!-- why section -->
