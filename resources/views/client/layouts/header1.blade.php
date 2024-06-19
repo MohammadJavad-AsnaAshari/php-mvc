@@ -37,7 +37,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="contact.blade.php">Contact Us</a>
+                    <a class="nav-link" href="/contact-us">Contact Us</a>
                 </li>
             </ul>
             <div class="user_option">

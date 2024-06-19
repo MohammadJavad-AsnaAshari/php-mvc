@@ -14,6 +14,7 @@ use Mj\PocketCore\Router;
 
 Router::get('/', [HomeController::class, 'index']);
 Router::get('/about-us', [HomeController::class, 'aboutUs']);
+Router::get('/contact-us', [HomeController::class, 'contactUs']);
 
 Router::get('/shop', [ShopController::class, 'index']);
 Router::get('/shop/{product}', [ShopController::class, 'show']);
