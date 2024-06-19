@@ -36,8 +36,8 @@ class ProductController extends Controller
             request()->all(),
             [
                 'name' => 'required|min:3|max:255',
-                'description' => 'required',
-                'specification' => 'required',
+                'description' => 'required|max:255',
+                'specification' => 'required|max:255',
                 'price' => 'required|numeric|min:0',
             ]
         );
@@ -78,15 +78,15 @@ class ProductController extends Controller
                 request()->all(),
                 [
                     'name' => 'required|min:3|max:255',
-                    'description' => 'required',
-                    'specification' => 'required',
+                    'description' => 'required|max:255',
+                    'specification' => 'required|max:255',
                     'price' => 'required|numeric|min:0',
                 ]
             );
 
             if ($validation->fails()) {
                 // handling errors
-                return redirect('/admin-panel/products/create');
+                return redirect('/admin-panel/products/update');
             }
 
             $validatedData = $validation->getValidatedData();
