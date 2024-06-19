@@ -16,6 +16,7 @@ class Model extends Database
     protected array $whereItems = [];
     protected array $valuesForBind = [];
     protected ?int $limit = null;
+    protected string $orderBy;
 
     /**
      * @param array $data
@@ -113,7 +114,7 @@ class Model extends Database
     public function result(): self
     {
         $this->sql = "SELECT $this->selectedItems FROM $this->table";
-        $this->appendWhereClause()->appendLimitClause();
+        $this->appendWhereClause()->appendOrderByClause()->appendLimitClause();
         $this->prepareAndBind();
         $this->statement->execute();
 
@@ -185,6 +186,13 @@ class Model extends Database
         foreach ($values as $value) {
             $this->valuesForBind["{$column}_{$value}"] = $value;
         }
+
+        return $this;
+    }
+
+    public function orderBy(string $column, string $direction = 'ASC'): self
+    {
+        $this->orderBy = "$column $direction";
 
         return $this;
     }
@@ -284,6 +292,15 @@ class Model extends Database
     {
         if (isset($this->limit)) {
             $this->sql .= " LIMIT $this->limit";
+        }
+
+        return $this;
+    }
+
+    private function appendOrderByClause(): self
+    {
+        if (!empty($this->orderBy)) {
+            $this->sql .= " ORDER BY $this->orderBy";
         }
 
         return $this;
