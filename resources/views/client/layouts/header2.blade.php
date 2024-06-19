@@ -31,12 +31,7 @@
                         About Us
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="testimonial.blade.php">
-                        Testimonial
-                    </a>
-                </li>
-                <li class="nav-item">
+                <li class="nav-item {{ isUrl('/contact-us')}}">
                     <a class="nav-link" href="/contact-us">Contact Us</a>
                 </li>
             </ul>
