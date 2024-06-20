@@ -95,6 +95,6 @@ class UserPanelController extends Controller
      */
     private function hasAceess(int $userId): bool
     {
-        return auth()->user()->id === $userId || auth()->user()->hasPermission('user');
+        return auth()->user()->id === $userId || auth()->user()->hasPermission('admin');
     }
 }
