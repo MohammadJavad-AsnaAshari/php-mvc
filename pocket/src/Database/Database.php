@@ -25,4 +25,19 @@ class Database
             exit;
         }
     }
+
+    public function beginTransaction(): bool
+    {
+        return $this->pdo->beginTransaction();
+    }
+
+    public function commit(): bool
+    {
+        return $this->pdo->commit();
+    }
+
+    public function rollback(): bool
+    {
+        return $this->pdo->rollback();
+    }
 }

@@ -207,6 +207,18 @@ class Model extends Database
         return $this->where($column, $value)->first();
     }
 
+    public function pluck(string $column = 'id')
+    {
+        $results = $this->get();
+        $pluckedResults = [];
+
+        foreach ($results as $result) {
+            $pluckedResults[] = $result->$column;
+        }
+
+        return $pluckedResults;
+    }
+
     public function from(string $table): self
     {
         $this->table = $table;
@@ -258,20 +270,6 @@ class Model extends Database
 
         return $this;
     }
-
-//    /**
-//     * @return $this
-//     */
-//    private function appendFromClause(): self
-//    {
-//        if (!empty($this->selectedTables)) {
-//            $this->sql = "SELECT $this->selectedItems FROM $this->selectedTables";
-//        } else {
-//            $this->sql = "SELECT $this->selectedItems FROM $this->table";
-//        }
-//
-//        return $this;
-//    }
 
     /**
      * @return self
