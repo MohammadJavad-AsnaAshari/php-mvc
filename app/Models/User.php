@@ -39,11 +39,11 @@ class User extends Model
         return $pivotModel->exists();
     }
 
-    public function hasRole($role)
+    public function hasPermission($permission)
     {
-        $roles = $this->roles();
-        foreach ($roles as $r) {
-            if ($r->name === $role) {
+        $permissions = $this->permissions();
+        foreach ($permissions as $r) {
+            if ($r->name === $permission) {
                 return true;
             }
         }

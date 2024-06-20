@@ -37,7 +37,7 @@
             </ul>
             <div class="user_option">
                 @if(auth()->check())
-                    @if(auth()->user()->hasRole('admin'))
+                    @if(auth()->user()->hasPermission('admin'))
                         <a href="/admin-panel">
                             <i class="fa fa-shield" aria-hidden="true"></i>
                             <span>Admin Panel</span>

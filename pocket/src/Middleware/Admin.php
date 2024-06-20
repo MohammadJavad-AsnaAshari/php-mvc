@@ -8,7 +8,7 @@ class Admin
 {
     public function handle()
     {
-        if (!auth()->check() || !auth()->user()->hasRole('admin')) {
+        if (!auth()->check() || !auth()->user()->hasPermission('admin')) {
             throw new UnauthorizedException();
         }
     }
