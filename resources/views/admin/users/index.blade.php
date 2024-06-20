@@ -38,7 +38,8 @@
                             <th>User Name</th>
                             <th>Email</th>
                             <th>Date</th>
-                            <th>Access</th>
+                            <th>Permissions</th>
+                            <th>Rules</th>
                             <th>Action</th>
                         </tr>
                         @foreach($users as $user)
@@ -56,6 +57,9 @@
 {{--                                @else--}}
 {{--                                    <td><span class="badge bg-danger">Inactive</span></td>--}}
 {{--                                @endif--}}
+                                <td>
+                                   {{ $user->permissions }}
+                                </td>
                                 <td>
                                    {{ $user->roles }}
                                 </td>
