@@ -23,9 +23,21 @@ class User extends Model
         return $this->belongsToMany(Role::class);
     }
 
+    public function attachRole(int $roleId)
+    {
+        $query = "INSERT INTO role_user (user_id, role_id) VALUES (?, ?)";
+        $this->pdo->prepare($query)->execute([$this->id, $roleId]);
+    }
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
+    }
+
+    public function attachPermission(int $permissionId)
+    {
+        $query = "INSERT INTO permission_user (user_id, permission_id) VALUES (?, ?)";
+        $this->pdo->prepare($query)->execute([$this->id, $permissionId]);
     }
 
     public function likes()
@@ -54,5 +66,15 @@ class User extends Model
         }
 
         return false;
+    }
+
+    public function detachAllPermissions()
+    {
+        $this->query("DELETE FROM permission_user WHERE user_id = :user_id", ['user_id' => $this->id]);
+    }
+
+    public function detachAllRoles()
+    {
+        $this->query("DELETE FROM role_user WHERE user_id = :user_id", ['user_id' => $this->id]);
     }
 }

@@ -157,7 +157,6 @@ class RoleController extends Controller
                 // Rollback the transaction
                 $db->rollback();
 
-                // You can add an error message or redirect to an error page here
                 return redirect('/admin-panel/roles/' . $roleId);
             }
         }
@@ -194,7 +193,6 @@ class RoleController extends Controller
                 // Rollback the transaction
                 $db->rollback();
 
-                // You can add an error message or redirect to an error page here
                 return redirect('/admin-panel/roles');
             }
         }

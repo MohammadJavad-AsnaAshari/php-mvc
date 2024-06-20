@@ -50,6 +50,26 @@
                                 <span style="color: red; font-weight: bolder">{{ $errors->first('confirm_password') }}</span>
                             @endif
                         </div>
+                        <div class="form-group pb-3">
+                            <label for="permissions" class="col-sm-2 control-label">Permissions</label>
+                            <select name="permissions[]" id="permissions" class="form-select" multiple>
+                                @foreach($permissions as $permission)
+                                    <option value="{{$permission->id}}">
+                                        {{$permission->name}} - {{$permission->label}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group pb-3">
+                            <label for="roles" class="col-sm-2 control-label">roles</label>
+                            <select name="roles[]" id="roles" class="form-select" multiple>
+                                @foreach($roles as $role)
+                                    <option value="{{$role->id}}">
+                                        {{$role->name}} - {{$role->label}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
 {{--                        <div class="form-check">--}}
 {{--                            <input type="checkbox" name="verify" class="form-check-input" id="verify">--}}
 {{--                            <label for="verify" class="form-check-label">Active Account</label>--}}

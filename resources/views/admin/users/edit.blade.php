@@ -50,6 +50,32 @@
                                 <span style="color: red; font-weight: bolder">{{ $errors->first('confirm_password') }}</span>
                             @endif
                         </div>
+                        <div class="form-group pb-3">
+                            <label for="permissions[]" class="col-sm-2 control-label">Permissions</label>
+                            <select name="permissions[]" id="permissions" class="form-select" multiple>
+                                @foreach($allPermissions as $permission)
+                                    <option value="{{$permission->id}}" {{ !empty($userPermissions) && in_array($permission->id, array_column($userPermissions ?? '', 'id')) ? 'selected' : '' }}>
+                                        {{$permission->name}} - {{$permission->label}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('permissions'))
+                                <span style="color: red; font-weight: bolder">{{ $errors->first('permissions') }}</span>
+                            @endif
+                        </div>
+                        <div class="form-group pb-3">
+                            <label for="roles[]" class="col-sm-2 control-label">Roles</label>
+                            <select name="roles[]" id="roles" class="form-select" multiple>
+                                @foreach($allRoles as $role)
+                                    <option value="{{$role->id}}" {{ !empty($userRoles) && in_array($role->id, array_column($userRoles ?? '', 'id')) ? 'selected' : '' }}>
+                                        {{$role->name}} - {{$role->label}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('roles'))
+                                <span style="color: red; font-weight: bolder">{{ $errors->first('roles') }}</span>
+                            @endif
+                        </div>
 {{--                        <div class="form-check">--}}
 {{--                            <input type="checkbox" name="verify" class="form-check-input" id="verify">--}}
 {{--                            <label for="verify" class="form-check-label">Active Account</label>--}}

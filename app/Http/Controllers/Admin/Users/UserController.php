@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Mj\PocketCore\Controller;
+use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Request;
 
 class UserController extends Controller
@@ -31,7 +33,10 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('admin.users.create');
+        $permissions = (new Permission())->get();
+        $roles = (new Role())->get();
+
+        return view('admin.users.create', compact('permissions', 'roles'));
     }
 
     public function store()
@@ -43,6 +48,8 @@ class UserController extends Controller
                 'email' => 'required|email||max:255|unique:users,email',
                 'password' => 'required|min:6||max:255',
                 'confirm_password' => 'required|same:password',
+                'permissions' => 'array',
+                'roles' => 'array'
             ]
         );
 
@@ -52,21 +59,69 @@ class UserController extends Controller
         }
 
         $validatedData = $validation->getValidatedData();
+        $validatedPermissions = $validatedData['permissions'];
+        $validatedRoles = $validatedData['roles'];
+
         unset($validatedData['confirm_password']);
+        unset($validatedData['permissions']);
+        unset($validatedData['roles']);
 
-        (new User())->create([
-            ...$validatedData,
-            'password' => password_hash($validatedData['password'], PASSWORD_DEFAULT)
-        ]);
+        // Start a new transaction
+        $db = new Database();
+        $db->beginTransaction();
 
-        return redirect('/admin-panel/users');
+        try {
+            $user = (new User());
+            $user->create([
+                ...$validatedData,
+                'password' => password_hash($validatedData['password'], PASSWORD_DEFAULT)
+            ]);
+
+            $user = $user
+                ->where('name', $validatedData['name'])
+                ->where('email', $validatedData['email'])
+                ->first();
+
+            // Attach permissions to the user
+            if (!empty($validatedPermissions)) {
+                foreach ($validatedPermissions as $key => $permissionId) {
+                    $user->attachPermission($permissionId);
+                }
+            }
+
+            // Attach roles to the user
+            if (!empty($validatedRoles)) {
+                foreach ($validatedRoles as $key => $roleId) {
+                    $user->attachRole($roleId);
+                }
+            }
+
+            $db->commit();
+
+            return redirect('/admin-panel/users');
+        } catch (\Exception $e) {
+            // Log the error
+            error_log($e->getMessage());
+
+            // Rollback the transaction
+            $db->rollback();
+
+            return redirect('/admin-panel/users');
+        }
     }
 
     public function edit(int $userId)
     {
         $user = (new User())->find($userId);
+        $allPermissions = (new Permission())->get();
+        $allRoles = (new Role())->get();
 
-        return view('admin.users.edit', compact('user'));
+        $userPermissions = $user->permissions();
+        $userRoles = $user->roles();
+
+        return view('admin.users.edit',
+            compact('user', 'allPermissions', 'allRoles', 'userPermissions', 'userRoles')
+        );
     }
 
     public function update()
@@ -82,6 +137,8 @@ class UserController extends Controller
                     'email' => 'required|email|max:255|unique:users,email,' . $user->email,
                     'password' => 'min:6|max:255',
                     'confirm_password' => 'same:password',
+                    'permissions' => 'array',
+                    'roles' => 'array'
                 ]
             );
 
@@ -92,8 +149,13 @@ class UserController extends Controller
 
             $validatedData = $validation->getValidatedData();
             $validatedUserId = $validatedData['user_id'];
-            unset($validatedData['confirm_password']);
+            $validatedPermissions = $validatedData['permissions'];
+            $validatedRoles = $validatedData['roles'];
+
             unset($validatedData['user_id']);
+            unset($validatedData['confirm_password']);
+            unset($validatedData['permissions']);
+            unset($validatedData['roles']);
 
 
             if (empty($validatedData['password'])) {
@@ -102,9 +164,42 @@ class UserController extends Controller
                 $validatedData['password'] = password_hash($validatedData['password'], PASSWORD_DEFAULT);
             }
 
-            (new User())->update($validatedUserId, [...$validatedData]);
+            // Start a new transaction
+            $db = new Database();
+            $db->beginTransaction();
 
-            return redirect('/admin-panel/users');
+            try {
+                $user = (new User())->find($validatedUserId);
+                if ($user) {
+                    $user->update($validatedUserId, [...$validatedData]);
+
+                    // Detach all existing permissions and roles
+                    $user->detachAllPermissions();
+                    $user->detachAllRoles();
+
+                    // Attach new permissions and roles
+                    foreach ($validatedPermissions as $permissionId) {
+                        $user->attachPermission($permissionId);
+                    }
+
+                    foreach ($validatedRoles as $roleId) {
+                        $user->attachRole($roleId);
+                    }
+
+                    // Commit the transaction
+                    $db->commit();
+                }
+
+                return redirect('/admin-panel/users');
+            } catch (\Exception $e) {
+                // Log the error
+                error_log($e->getMessage());
+
+                // Rollback the transaction
+                $db->rollback();
+
+                return redirect('/admin-panel/users');
+            }
         }
 
         return redirect('/admin-panel/users');
