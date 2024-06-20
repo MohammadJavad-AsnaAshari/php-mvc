@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Client;
 
+use App\Models\Comment;
 use App\Models\Product;
 use App\Models\User;
 use Mj\PocketCore\Controller;
@@ -39,7 +40,15 @@ class ShopController extends Controller
         $product = (new Product())->where('id', $product)->first();
         $productLikes = is_null($product->likes()) ? 0 : count($product->likes());
 
-        return view('client.single-shop', compact('product', 'productLikes'));
+        $sql = "SELECT comments.*, users.name as user_name
+            FROM comments
+            INNER JOIN users ON comments.user_id = users.id
+            WHERE comments.product_id = :product_id
+            ORDER BY comments.created_at DESC";
+
+        $comments = (new Comment())->query($sql, ['product_id' => $product->id]);
+
+        return view('client.single-shop', compact('product', 'productLikes', 'comments'));
     }
 
     public function popular()

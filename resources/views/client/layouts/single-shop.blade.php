@@ -74,3 +74,33 @@
         </a>
     </div>
 </section>
+
+<section class="shop_section layout_padding py-5">
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-12 col-md-6">
+                @if(auth()->user())
+                    <div class="detail-box comment-box">
+                        <h6 class="text-uppercase"><i class="fa fa-comments"></i> Add Comment : </h6>
+                        <form action="/shop/{{ $product->id }}/comments" method="POST">
+                            <textarea name="comment" class="form-control" rows="5" required></textarea>
+                            <button type="submit" class="btn btn-primary mt-3">Submit Comment</button>
+                        </form>
+                    </div>
+                @else
+                    <p class="text-center">Please <a href="/auth/login">login</a> to add a comment.</p>
+                @endif
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="detail-box comments-box">
+                    <h6 class="text-uppercase mb-3"><i class="fa fa-comments"></i> Comments : </h6>
+                    <div class="comments-list">
+                        @foreach($comments as $comment)
+                            <p><strong>{{ $comment->user_name }}:</strong> {{ $comment->comment }}</p>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

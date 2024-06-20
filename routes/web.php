@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\CommentController;
 use App\Http\Controllers\Client\Dashboard\UserPanelController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\ShopController;
@@ -21,6 +22,8 @@ Router::get('/shop/{product}', [ShopController::class, 'show']);
 Router::post('/shop/{product}/like', [ShopController::class, 'like']);
 Router::post('/shop/{product}/unlike', [ShopController::class, 'unlike']);
 Router::get('/popular', [ShopController::class, 'popular']);
+
+Router::post('/shop/{productId}/comments', [CommentController::class, 'store']);
 
 Router::get('/auth/register', [RegisterController::class, 'registerView'], ['guest']);
 Router::post('/auth/register', [RegisterController::class, 'register'], ['guest']);
