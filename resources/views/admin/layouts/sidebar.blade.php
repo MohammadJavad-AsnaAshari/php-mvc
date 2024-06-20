@@ -121,21 +121,35 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-tree-fill"></i>
+                <li class="nav-item {{ isActive(['/admin-panel/comments'], "menu-open") }}">
+                    <a href="#" class="nav-link"> <i class="nav-icon bi bi-chat-fill"></i>
                         <p>
-                            UI Elements
+                            Comments
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item"><a href="./UI/general.html" class="nav-link"> <i
-                                        class="nav-icon bi bi-circle"></i>
-                                <p>General</p>
-                            </a></li>
-                        <li class="nav-item"><a href="./UI/timeline.html" class="nav-link"> <i
-                                        class="nav-icon bi bi-circle"></i>
-                                <p>Timeline</p>
-                            </a></li>
+                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
+                            <a href="/admin-panel/comments"
+                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-person-fill' : 'bi-person' }}"></i>
+                                <p>Index</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
+                            <a href="/admin-panel/comments"
+                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-person-fill' : 'bi-person' }}"></i>
+                                <p>Edit</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
+                            <a href="/admin-panel/comments"
+                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-person-fill' : 'bi-person' }}"></i>
+                                <p>Delete</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-pencil-square"></i>

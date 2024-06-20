@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Comments\CommentController;
 use App\Http\Controllers\Admin\Dashboard\AdminPanelController;
 use App\Http\Controllers\Admin\Permissions\PermissionController;
 use App\Http\Controllers\Admin\Products\ProductController;
@@ -39,3 +40,8 @@ Router::post('/admin-panel/products/store', [ProductController::class, 'store'],
 Router::get('/admin-panel/products/edit/{productId}', [ProductController::class, 'edit'], ['auth', 'admin']);
 Router::post('/admin-panel/products/update', [ProductController::class, 'update'], ['auth', 'admin']);
 Router::post('/admin-panel/products/delete', [ProductController::class, 'delete'], ['auth', 'admin']);
+
+Router::get('/admin-panel/comments', [CommentController::class, 'index'], ['auth', 'admin']);
+Router::get('/admin-panel/comments/edit/{commentId}', [CommentController::class, 'edit'], ['auth', 'admin']);
+Router::post('/admin-panel/comments/update', [CommentController::class, 'update'], ['auth', 'admin']);
+Router::post('/admin-panel/comments/delete', [CommentController::class, 'delete'], ['auth', 'admin']);

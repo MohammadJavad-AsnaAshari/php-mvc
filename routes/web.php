@@ -23,7 +23,7 @@ Router::post('/shop/{product}/like', [ShopController::class, 'like']);
 Router::post('/shop/{product}/unlike', [ShopController::class, 'unlike']);
 Router::get('/popular', [ShopController::class, 'popular']);
 
-Router::post('/shop/{productId}/comments', [CommentController::class, 'store']);
+Router::post('/shop/{productId}/comments', [CommentController::class, 'store'], ['auth']);
 
 Router::get('/auth/register', [RegisterController::class, 'registerView'], ['guest']);
 Router::post('/auth/register', [RegisterController::class, 'register'], ['guest']);
