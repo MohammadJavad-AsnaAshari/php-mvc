@@ -68,16 +68,16 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                        <li class="nav-item {{ isActive('/admin-panel/permissions') }}">
+                            <a href="/admin-panel/permissions" class="nav-link {{ isUrl('/admin-panel/permissions')}}">
+                                <i class="nav-icon bi bi-universal-access"></i>
+                                <p>Permissions</p>
+                            </a>
+                        </li>
                         <li class="nav-item {{ isActive('/admin-panel/roles') }}">
                             <a href="/admin-panel/roles" class="nav-link {{ isUrl('/admin-panel/roles') }}">
                                 <i class="nav-icon bi bi-check"></i>
                                 <p>Roles</p>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ isActive('/admin-panel/permissions') }}">
-                            <a href="/admin-panel/users" class="nav-link {{ isUrl('/admin-panel/permissions')}}">
-                                <i class="nav-icon bi bi-universal-access"></i>
-                                <p>Permissions</p>
                             </a>
                         </li>
                     </ul>
