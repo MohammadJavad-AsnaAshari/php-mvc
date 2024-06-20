@@ -6,6 +6,21 @@
 
         <div class="heading-center navbar-collapse innerpage_navbar search-container d-flex justify-content-center align-items-center pt-3"
              id="navbarSupportedContent">
+
+            @if(request()->has('order-by') && strtoupper(request('order-by') === 'DESC'))
+                <a href="/shop?order-by=ASC"
+                   class="btn nav_search-btn order-btn {{ request()->has('order-by') && strtoupper(request('order-by')) === 'ASC' ? 'active' : '' }}">
+                    ASC
+                    <i class="fa fa-sort" aria-hidden="true"></i>
+                </a>
+            @else
+                <a href="/shop?order-by=DESC"
+                   class="btn nav_search-btn order-btn {{ request()->has('order-by') && strtoupper(request('order-by')) === 'DESC' ? 'active' : '' }}">
+                    DESC
+                    <i class="fa fa-sort" aria-hidden="true"></i>
+                </a>
+            @endif
+
             <form action="/shop" class="form-inline search-bar d-flex align-items-center rounded-pill bg-light p-2"
                   method="GET">
                 <div class="input-group">
