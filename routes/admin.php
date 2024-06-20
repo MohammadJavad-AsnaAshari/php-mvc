@@ -3,7 +3,7 @@
 use App\Http\Controllers\Admin\Dashboard\AdminPanelController;
 use App\Http\Controllers\Admin\Permissions\PermissionController;
 use App\Http\Controllers\Admin\Products\ProductController;
-use App\Http\Controllers\Admin\Rules\RuleController;
+use App\Http\Controllers\Admin\Roles\RoleController;
 use App\Http\Controllers\Admin\Users\UserController;
 use Mj\PocketCore\Router;
 
@@ -17,13 +17,13 @@ Router::post('/admin-panel/users/store', [UserController::class, 'store'], ['aut
 Router::post('/admin-panel/users/update', [UserController::class, 'update'], ['auth', 'admin']);
 Router::post('/admin-panel/users/delete', [UserController::class, 'delete'], ['auth', 'admin']);
 
-Router::get('/admin-panel/roles', [RuleController::class, 'index'], ['auth', 'admin']);
-Router::get('/admin-panel/roles/{roleId}', [RuleController::class, 'show'], ['auth', 'admin']);
-Router::get('/admin-panel/roles/create', [RuleController::class, 'create'], ['auth', 'admin']);
-Router::get('/admin-panel/roles/edit/{roleId}', [RuleController::class, 'edit'], ['auth', 'admin']);
-Router::post('/admin-panel/roles/store', [RuleController::class, 'store'], ['auth', 'admin']);
-Router::post('/admin-panel/roles/update', [RuleController::class, 'update'], ['auth', 'admin']);
-Router::post('/admin-panel/roles/delete', [RuleController::class, 'delete'], ['auth', 'admin']);
+Router::get('/admin-panel/roles', [RoleController::class, 'index'], ['auth', 'admin']);
+Router::get('/admin-panel/roles/{roleId}', [RoleController::class, 'show'], ['auth', 'admin']);
+Router::get('/admin-panel/roles/create', [RoleController::class, 'create'], ['auth', 'admin']);
+Router::get('/admin-panel/roles/edit/{roleId}', [RoleController::class, 'edit'], ['auth', 'admin']);
+Router::post('/admin-panel/roles/store', [RoleController::class, 'store'], ['auth', 'admin']);
+Router::post('/admin-panel/roles/update', [RoleController::class, 'update'], ['auth', 'admin']);
+Router::post('/admin-panel/roles/delete', [RoleController::class, 'delete'], ['auth', 'admin']);
 
 Router::get('/admin-panel/permissions', [PermissionController::class, 'index'], ['auth', 'admin']);
 Router::get('/admin-panel/permissions/{permissionId}', [PermissionController::class, 'show'], ['auth', 'admin']);

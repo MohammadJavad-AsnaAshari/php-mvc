@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Rules;
+namespace App\Http\Controllers\Admin\Roles;
 
 use App\Models\Permission;
 use App\Models\Role;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 
-class RuleController extends Controller
+class RoleController extends Controller
 {
     public function index()
     {
@@ -126,11 +126,7 @@ class RuleController extends Controller
             $db->beginTransaction();
 
             try {
-                $role = (new Role())
-                    ->where('name', $validatedData['name'])
-                    ->where('label', $validatedData['label'])
-                    ->first();
-
+                $role = (new Role())->find($validatedRoleId);
                 if ($role) {
                     // Update the role
                     $role->update(
