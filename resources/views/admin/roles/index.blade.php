@@ -37,6 +37,7 @@
                             <th>Role Name</th>
                             <th>Label</th>
                             <th>Date</th>
+                            <th>Access</th>
                             <th>Action</th>
                         </tr>
                         @foreach($roles as $role)
@@ -45,6 +46,7 @@
                                 <td>{{ $role->name }}</td>
                                 <td>{{ $role->label }}</td>
                                 <td>{{ $role->created_at }}</td>
+                                <td>{{ $role->permissions }}</td>
                                 <td class="d-flex">
                                     <a href="/admin-panel/roles/edit/{{ $role->id }}" class="btn btn-sm btn-primary">
                                         edit

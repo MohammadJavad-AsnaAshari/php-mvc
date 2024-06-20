@@ -32,6 +32,16 @@
                                 <span style="color: red; font-weight: bolder">{{ $errors->first('label') }}</span>
                             @endif
                         </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">Permissions</label>
+                            <select name="permissions[]" id="permissions" class="form-select" multiple>
+                                @foreach($permissions as $permission)
+                                    <option value="{{$permission->id}}" {{ in_array($permission->id, $rolePermissionIds) ? 'selected' : '' }}>
+                                        {{$permission->name}} - {{$permission->label}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer d-flex"
