@@ -23,6 +23,11 @@ class User extends Model
         return $this->belongsToMany(Role::class);
     }
 
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
+
     public function likes()
     {
         return $this->belongsToMany(Product::class, 'product_like', 'user_id', 'product_id');
