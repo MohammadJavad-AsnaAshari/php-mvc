@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin\Permissions;
 
 use App\Models\Permission;
-use App\Models\Role;
 use Mj\PocketCore\Controller;
+use Mj\PocketCore\Database\Database;
 
 class PermissionController extends Controller
 {
@@ -13,11 +13,6 @@ class PermissionController extends Controller
         $permissions = (new Permission())->get();
 
         return view('admin.permissions.index', compact('permissions'));
-    }
-
-    public function show(int $userId)
-    {
-
     }
 
     public function create()
@@ -37,31 +32,31 @@ class PermissionController extends Controller
 
         if ($validation->fails()) {
             // handling errors
-            return redirect('/admin-panel/users/create');
+            return redirect('/admin-panel/permissions/create');
         }
 
         $validatedData = $validation->getValidatedData();
 
-        (new Role())->create([...$validatedData]);
+        (new Permission())->create([...$validatedData]);
 
         return redirect('/admin-panel/permissions');
     }
 
-    public function edit(int $roleId)
+    public function edit(int $permissionId)
     {
-        $role = (new Role())->find($roleId);
+        $permission = (new Permission())->find($permissionId);
 
-        return view('admin.permissions.edit', compact('role'));
+        return view('admin.permissions.edit', compact('permission'));
     }
 
     public function update()
     {
-        if (request()->has('role_id')) {
-            $roleId = request()->input('role_id');
+        if (request()->has('permission_id')) {
+            $permissionId = request()->input('permission_id');
             $validation = $this->validate(
                 request()->all(),
                 [
-                    'role_id' => 'required|numeric|exists:permissions,id',
+                    'permission_id' => 'required|numeric|exists:permissions,id',
                     'name' => 'required|min:3|max:255',
                     'label' => 'required|min:3|max:255',
                 ]
@@ -69,14 +64,14 @@ class PermissionController extends Controller
 
             if ($validation->fails()) {
                 // handling errors
-                return redirect('/admin-panel/permissions/' . $roleId);
+                return redirect('/admin-panel/permissions/edit/' . $permissionId);
             }
 
             $validatedData = $validation->getValidatedData();
-            $validatedRoleId = $validatedData['role_id'];
-            unset($validatedData['role_id']);
+            $validatedRoleId = $validatedData['permission_id'];
+            unset($validatedData['permission_id']);
 
-            (new Role())->update($validatedRoleId, [...$validatedData]);
+            (new Permission())->update($validatedRoleId, [...$validatedData]);
 
             return redirect('/admin-panel/permissions');
         }
@@ -86,11 +81,36 @@ class PermissionController extends Controller
 
     public function delete()
     {
-        if (request()->has('role_id')) {
-            $roleId = request()->input('role_id');
-            (new Role())->delete($roleId);
+        if (request()->has('permission_id')) {
+            $permissionId = request()->input('permission_id');
 
-            return redirect('/admin-panel/permissions');
+            // Start a new transaction
+            $db = new Database();
+            $db->beginTransaction();
+
+            try {
+                $permission = (new Permission())->find($permissionId);
+
+                if ($permission) {
+                    // Detach the permission from the permission
+                    $permission->detachAllRoles();
+                    $permission->delete($permissionId);
+
+                    // Commit the transaction
+                    $db->commit();
+                }
+
+                return redirect('/admin-panel/permissions');
+            } catch (\Exception $e) {
+                // Log the error
+                error_log($e->getMessage());
+
+                // Rollback the transaction
+                $db->rollback();
+
+                // You can add an error message or redirect to an error page here
+                return redirect('/admin-panel/permissions');
+            }
         }
 
         return redirect('/admin-panel/permissions');

@@ -40,7 +40,8 @@
                             </a>
                         </li>
                         <li class="nav-item {{ isActive('/admin-panel/create') }}">
-                            <a href="/admin-panel/users/create" class="nav-link {{ isUrl('/admin-panel/users/create')}}">
+                            <a href="/admin-panel/users/create"
+                               class="nav-link {{ isUrl('/admin-panel/users/create')}}">
                                 <i class="nav-icon bi {{ request()->isUrl('/admin-panel/users/create') ? 'bi-person-fill' : 'bi-person' }}"></i>
                                 <p>Create</p>
                             </a>
@@ -59,7 +60,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ isActive(['/admin-panel/roles', '/admin-panel/roles/create', '/admin-panel/permissions'], "menu-open") }}">
+                <li class="nav-item {{ isActive(['/admin-panel/roles', '/admin-panel/roles/create', '/admin-panel/permissions', '/admin-panel/permissions/create'], "menu-open") }}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-shield-fill"></i>
                         <p>
@@ -68,14 +69,16 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item {{ isActive('/admin-panel/permissions') }}">
-                            <a href="/admin-panel/permissions" class="nav-link {{ isUrl('/admin-panel/permissions')}}">
+                        <li class="nav-item {{ isActive(['/admin-panel/permissions', '/admin-panel/permissions/create']) }}">
+                            <a href="/admin-panel/permissions"
+                               class="nav-link {{ isActive(['/admin-panel/permissions', '/admin-panel/permissions/create'])}}">
                                 <i class="nav-icon bi bi-universal-access"></i>
                                 <p>Permissions</p>
                             </a>
                         </li>
-                        <li class="nav-item {{ isActive('/admin-panel/roles') }}">
-                            <a href="/admin-panel/roles" class="nav-link {{ isUrl('/admin-panel/roles') }}">
+                        <li class="nav-item {{ isActive(['/admin-panel/roles', '/admin-panel/roles/create']) }}">
+                            <a href="/admin-panel/roles"
+                               class="nav-link {{ isActive(['/admin-panel/roles', '/admin-panel/roles/create']) }}">
                                 <i class="nav-icon bi bi-check"></i>
                                 <p>Roles</p>
                             </a>
@@ -98,7 +101,8 @@
                             </a>
                         </li>
                         <li class="nav-item {{ isActive('/admin-panel/create') }}">
-                            <a href="/admin-panel/products/create" class="nav-link {{ isUrl('/admin-panel/products/create')}}">
+                            <a href="/admin-panel/products/create"
+                               class="nav-link {{ isUrl('/admin-panel/products/create')}}">
                                 <i class="nav-icon bi {{ request()->isUrl('/admin-panel/products/create') ? 'bi-patch-check-fill' : 'bi-patch-check' }}"></i>
                                 <p>Create</p>
                             </a>

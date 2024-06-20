@@ -114,7 +114,7 @@ class RuleController extends Controller
 
             if ($validation->fails()) {
                 // handling errors
-                return redirect('/admin-panel/roles/' . $roleId);
+                return redirect('/admin-panel/roles/edit/' . $roleId);
             }
 
             $validatedData = $validation->getValidatedData();
@@ -183,7 +183,7 @@ class RuleController extends Controller
 
                 if ($role) {
                     // Detach the permission from the role
-                    $role->detachPermission();
+                    $role->detachAllPermissions();
                     $role->delete($roleId);
 
                     // Commit the transaction

@@ -26,9 +26,9 @@ Router::post('/admin-panel/roles/update', [RuleController::class, 'update'], ['a
 Router::post('/admin-panel/roles/delete', [RuleController::class, 'delete'], ['auth', 'admin']);
 
 Router::get('/admin-panel/permissions', [PermissionController::class, 'index'], ['auth', 'admin']);
-Router::get('/admin-panel/permissions/{roleId}', [PermissionController::class, 'show'], ['auth', 'admin']);
+Router::get('/admin-panel/permissions/{permissionId}', [PermissionController::class, 'show'], ['auth', 'admin']);
 Router::get('/admin-panel/permissions/create', [PermissionController::class, 'create'], ['auth', 'admin']);
-Router::get('/admin-panel/permissions/edit/{roleId}', [PermissionController::class, 'edit'], ['auth', 'admin']);
+Router::get('/admin-panel/permissions/edit/{permissionId}', [PermissionController::class, 'edit'], ['auth', 'admin']);
 Router::post('/admin-panel/permissions/store', [PermissionController::class, 'store'], ['auth', 'admin']);
 Router::post('/admin-panel/permissions/update', [PermissionController::class, 'update'], ['auth', 'admin']);
 Router::post('/admin-panel/permissions/delete', [PermissionController::class, 'delete'], ['auth', 'admin']);

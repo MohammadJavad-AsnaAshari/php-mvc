@@ -12,7 +12,7 @@
                     <h3 class="card-title">Create New Permission</h3>
                 </div>
                 <!-- /.card-header -->
-                <form action="/admin-panel/permission/store" method="POST">
+                <form action="/admin-panel/permissions/store" method="POST">
                     <div class="card-body">
                         <div class="form-group pb-3">
                             <label for="name" class="col-sm-2 control-label">Permissions Name</label>
