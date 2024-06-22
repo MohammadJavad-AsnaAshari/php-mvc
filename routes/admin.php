@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\Categories\CategoryController;
 use App\Http\Controllers\Admin\Comments\CommentController;
 use App\Http\Controllers\Admin\Dashboard\AdminPanelController;
 use App\Http\Controllers\Admin\Permissions\PermissionController;
@@ -45,3 +46,10 @@ Router::get('/admin-panel/comments', [CommentController::class, 'index'], ['auth
 Router::get('/admin-panel/comments/edit/{commentId}', [CommentController::class, 'edit'], ['auth', 'admin']);
 Router::post('/admin-panel/comments/update', [CommentController::class, 'update'], ['auth', 'admin']);
 Router::post('/admin-panel/comments/delete', [CommentController::class, 'delete'], ['auth', 'admin']);
+
+Router::get('/admin-panel/categories', [CategoryController::class, 'index'], ['auth', 'admin']);
+Router::get('/admin-panel/categories/create', [CategoryController::class, 'create'], ['auth', 'admin']);
+Router::post('/admin-panel/categories/store', [CategoryController::class, 'store'], ['auth', 'admin']);
+Router::get('/admin-panel/categories/edit/{categoryId}', [CategoryController::class, 'edit'], ['auth', 'admin']);
+Router::post('/admin-panel/categories/update', [CategoryController::class, 'update'], ['auth', 'admin']);
+Router::post('/admin-panel/categories/delete', [CategoryController::class, 'delete'], ['auth', 'admin']);
