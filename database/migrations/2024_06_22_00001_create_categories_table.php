@@ -14,7 +14,7 @@ return new class{
         $sql = "CREATE TABLE IF NOT EXISTS `categories` (
               `id` INT AUTO_INCREMENT PRIMARY KEY,
               `parent_id` INT DEFAULT NULL,
-              `name` VARCHAR(255) NOT NULL,
+              `name` VARCHAR(255) NOT NULL UNIQUE,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               CONSTRAINT `fk_categories_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `categories`(`id`)

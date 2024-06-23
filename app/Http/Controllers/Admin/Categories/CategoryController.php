@@ -4,13 +4,17 @@ namespace App\Http\Controllers\Admin\Categories;
 
 use App\Models\Category;
 use Mj\PocketCore\Controller;
+use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
 
 class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = (new Category())->get();
+        $sql = "SELECT c1.id, c2.name as parent_name, c1.name, c1.created_at
+                FROM categories as c1
+                LEFT JOIN categories as c2 ON c1.parent_id = c2.id";
+        $categories = (new Category())->query($sql);
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -18,6 +22,7 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = (new Category())->get();
+
         return view('admin.categories.create', compact('categories'));
     }
 
@@ -27,7 +32,7 @@ class CategoryController extends Controller
             request()->all(),
             [
                 'parent_id' => 'numeric',
-                'name' => 'required|min:3|max:255',
+                'name' => 'required|min:3|max:255|unique:categories,name',
             ]
         );
 
@@ -53,16 +58,60 @@ class CategoryController extends Controller
 
     public function edit(int $categoryId)
     {
-        throw new ServerException();
+        $selfCategory = (new Category())->find($categoryId);
+
+        $sql = "SELECT c1.id, c1.name
+                FROM categories as c1
+                LEFT JOIN categories as c2 ON c1.parent_id = c2.id";
+        $categories = (new Category())->get();
+
+        return view('admin.categories.edit', compact('selfCategory', 'categories'));
     }
 
     public function update()
     {
+        if (request()->has('category_id')) {
+            $categoryId = request()->input('category_id');
+            $category = (new Category())->find($categoryId);
+            $validation = $this->validate(
+                request()->all(),
+                [
+                    'parent_id' => 'numeric',
+                    'name' => 'required|min:3|max:255|unique:categories,name,' . $category->name,
+                ]
+            );
 
+            if ($validation->fails()) {
+                // handling errors
+                return redirect('/admin-panel/categories/edit/' . $categoryId);
+            }
+
+            $validatedData = $validation->getValidatedData();
+
+            try {
+                $category->update($categoryId, $validatedData);
+
+                return redirect('/admin-panel/categories');
+            } catch (\Exception $e) {
+                error_log($e->getMessage());
+
+                // Throw an exception to stop further execution
+                throw new ServerException();
+            }
+        }
+
+        throw new NotFoundException('This category not fount!');
     }
 
     public function delete()
     {
-        throw new ServerException();
+        if (request()->has('category_id')) {
+            $categoryId = request()->input('category_id');
+            (new Category())->delete($categoryId);
+
+            return redirect('/admin-panel/categories');
+        }
+
+        throw new NotFoundException('This category not fount!');
     }
 }

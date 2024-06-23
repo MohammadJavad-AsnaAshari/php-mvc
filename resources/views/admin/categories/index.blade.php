@@ -34,7 +34,7 @@
                         <tbody>
                         <tr>
                             <th>Id</th>
-                            <th>Parent Id</th>
+                            <th>Parent Name</th>
                             <th>Category Name</th>
                             <th>Created At</th>
                             <th>Action</th>
@@ -42,7 +42,7 @@
                         @foreach($categories as $category)
                             <tr>
                                 <td>{{ $category->id }}</td>
-                                <td>{{ $category->parent_id }}</td>
+                                <td>{{ $category->parent_name }}</td>
                                 <td>{{ $category->name }}</td>
                                 <td>{{ $category->created_at }}</td>
                                 <td class="d-flex">
