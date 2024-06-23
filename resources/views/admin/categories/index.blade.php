@@ -1,7 +1,7 @@
 @component('admin.layouts.content', ['title' => 'Categories'])
 
     @slot('breadcrumb')
-        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
         <li class="breadcrumb-item active" aria-current="page">Categories</li>
     @endslot
 
@@ -34,16 +34,16 @@
                         <tbody>
                         <tr>
                             <th>Id</th>
-                            <th>Parent Name</th>
                             <th>Category Name</th>
+                            <th>Parent Name</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
                         @foreach($categories as $category)
                             <tr>
                                 <td>{{ $category->id }}</td>
-                                <td>{{ $category->parent_name }}</td>
                                 <td>{{ $category->name }}</td>
+                                <td>{{ $category->parent_name }}</td>
                                 <td>{{ $category->created_at }}</td>
                                 <td class="d-flex">
                                     <a href="/admin-panel/categories/edit/{{ $category->id }}"

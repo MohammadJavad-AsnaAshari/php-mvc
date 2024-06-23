@@ -121,37 +121,6 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item {{ isActive(['/admin-panel/comments'], "menu-open") }}">
-                    <a href="#" class="nav-link"> <i class="nav-icon bi bi-chat-fill"></i>
-                        <p>
-                            Comments
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
-                            <a href="/admin-panel/comments"
-                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
-                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-chat-fill' : 'bi-chat' }}"></i>
-                                <p>Index</p>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
-                            <a href="/admin-panel/comments"
-                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
-                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-chat-fill' : 'bi-chat' }}"></i>
-                                <p>Edit</p>
-                            </a>
-                        </li>
-                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
-                            <a href="/admin-panel/comments"
-                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
-                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-chat-fill' : 'bi-chat' }}"></i>
-                                <p>Delete</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
                 <li class="nav-item {{ isActive(['/admin-panel/categories'], "menu-open") }}">
                     <a href="#" class="nav-link"> <i class="nav-icon bi-card-checklist"></i>
                         <p>
@@ -185,6 +154,37 @@
                             <a href="/admin-panel/categories"
                                class="nav-link {{ isUrl('/admin-panel/categories')}}">
                                 <i class="nav-icon bi bi-card-list"></i>
+                                <p>Delete</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item {{ isActive(['/admin-panel/comments'], "menu-open") }}">
+                    <a href="#" class="nav-link"> <i class="nav-icon bi bi-chat-fill"></i>
+                        <p>
+                            Comments
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
+                            <a href="/admin-panel/comments"
+                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-chat-fill' : 'bi-chat' }}"></i>
+                                <p>Index</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
+                            <a href="/admin-panel/comments"
+                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-chat-fill' : 'bi-chat' }}"></i>
+                                <p>Edit</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ isActive('/admin-panel/comments') }}">
+                            <a href="/admin-panel/comments"
+                               class="nav-link {{ isUrl('/admin-panel/comments')}}">
+                                <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-chat-fill' : 'bi-chat' }}"></i>
                                 <p>Delete</p>
                             </a>
                         </li>
