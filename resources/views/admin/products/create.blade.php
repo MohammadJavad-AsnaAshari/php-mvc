@@ -24,6 +24,19 @@
                             @endif
                         </div>
                         <div class="form-group pb-3">
+                            <label for="categories" class="col-sm-2 control-label">Categories</label>
+                            <select name="categories[]" id="categories" class="form-select" multiple>
+                                @foreach($categories as $category)
+                                    <option value="{{$category->id}}">
+                                        {{$category->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('categories'))
+                                <span style="color: red; font-weight: bolder">{{ $errors->first('categories') }}</span>
+                            @endif
+                        </div>
+                        <div class="form-group pb-3">
                             <label for="inputDescription" class="col-sm-2 control-label">Description</label>
                             <textarea name="description" class="form-control" id="inputDescription"
                                       placeholder="Enter product's description" autocomplete="description"

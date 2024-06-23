@@ -35,6 +35,7 @@
                         <tr>
                             <th>Id</th>
                             <th>Name</th>
+                            <th>Categories</th>
                             <th>Description</th>
                             <th>Specification</th>
                             <th>Image</th>
@@ -51,6 +52,7 @@
                                         {{ $product->name }}
                                     </a>
                                 </td>
+                                <td>{{ $product->categories }}</td>
                                 <td style="vertical-align: middle;">{{ $product->description }}</td>
                                 <td style="vertical-align: middle;">{{ $product->specification }}</td>
                                 <td style="vertical-align: middle;">
