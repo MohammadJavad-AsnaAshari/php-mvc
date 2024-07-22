@@ -11,7 +11,7 @@
             <div class="row pt-5">
                 @foreach($categories as $category)
                     <div class="col-md-4 col-sm-6">
-                        <div class="card">
+                        <div class="card m-1">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $category->name }}</h5>
                                 <p class="card-text">{{ $category->description, 100 }}</p>
