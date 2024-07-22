@@ -14,16 +14,16 @@
                 <!-- /.card-header -->
                 <form action="/admin-panel/categories/store" method="POST">
                     <div class="card-body">
-                        <div class="form-group pb-3">
-                            <label for="parent_id" class="col-sm-2 control-label">Parent Categories</label>
-                            <select name="parent_id" id="parent_id" class="form-select" multiple>
-                                @foreach($categories as $category)
-                                    <option value="{{$category->id}}">
-                                        {{$category->name}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+{{--                        <div class="form-group pb-3">--}}
+{{--                            <label for="parent_id" class="col-sm-2 control-label">Parent Categories</label>--}}
+{{--                            <select name="parent_id" id="parent_id" class="form-select" multiple>--}}
+{{--                                @foreach($categories as $category)--}}
+{{--                                    <option value="{{$category->id}}">--}}
+{{--                                        {{$category->name}}--}}
+{{--                                    </option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
                         <div class="form-group pb-3">
                             <label for="name" class="col-sm-2 control-label">Categories Name</label>
                             <input type="text" name="name" class="form-control" id="name"
