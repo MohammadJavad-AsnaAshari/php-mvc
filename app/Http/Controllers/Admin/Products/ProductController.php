@@ -188,13 +188,30 @@ class ProductController extends Controller
 
     public function delete()
     {
-        if (request()->has('product_id')) {
-            $productId = request()->input('product_id');
-            (new Product())->delete($productId);
+        if (request()->has('product_id') && $product = (new Product())->find(request()->input('product_id'))) {
+            $db = new Database();
 
-            return redirect('/admin-panel/products');
+            // Start a new transaction
+            $db->beginTransaction();
+
+            try {
+                $product->detachAllCategories();
+                $product->delete($product->id);
+
+                // Commit the transaction
+                $db->commit();
+
+                return redirect('/admin-panel/products');
+            } catch (\Exception $e) {
+                error_log($e->getMessage());
+
+                // Rollback the transaction
+                $db->rollback();
+
+                throw new ServerException($e);
+            }
         }
 
-        return redirect('/admin-panel/products');
+        throw new NotFoundException('This product does not exist!');
     }
 }
