@@ -26,6 +26,11 @@
                         Popular
                     </a>
                 </li>
+                <li class="nav-item {{ isUrl('/categories') }}">
+                    <a class="nav-link" href="/categories">
+                        Categories
+                    </a>
+                </li>
                 <li class="nav-item {{ isUrl('/about-us')}}">
                     <a class="nav-link" href="/about-us">
                         About Us
