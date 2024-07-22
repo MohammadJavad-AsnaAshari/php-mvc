@@ -37,8 +37,20 @@ class ShopController extends Controller
 
     public function show(int $product)
     {
-        $product = (new Product())->where('id', $product)->first();
-        $productLikes = is_null($product->likes()) ? 0 : count($product->likes());
+        $productId = $product;
+
+        $sql = "SELECT products.*,
+            GROUP_CONCAT(DISTINCT categories.name) as categories,
+            COUNT(DISTINCT product_like.id) as likes
+           FROM products
+            LEFT JOIN product_like ON products.id = product_like.product_id
+            LEFT JOIN category_product ON products.id = category_product.product_id
+            LEFT JOIN categories ON category_product.category_id = categories.id
+            LEFT JOIN comments ON products.id = comments.product_id
+            WHERE products.id = :product_id
+            GROUP BY products.id";
+
+        $product = (new Product())->query($sql, ["product_id" => $productId])[0];
 
         $sql = "SELECT comments.*, users.name as user_name
             FROM comments
@@ -48,7 +60,7 @@ class ShopController extends Controller
 
         $comments = (new Comment())->query($sql, ['product_id' => $product->id]);
 
-        return view('client.single-shop', compact('product', 'productLikes', 'comments'));
+        return view('client.single-shop', compact('product', 'comments'));
     }
 
     public function popular()

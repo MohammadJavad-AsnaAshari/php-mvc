@@ -17,13 +17,16 @@
                     <h5>{{ $product->name }}</h5>
 
                     <h6 class="text-uppercase mt-4"><i class="fa fa-heart"></i> Likes :</h6>
-                    <h5 class="text-success">{{ $productLikes }}</h5>
+                    <h5 class="text-success">{{ $product->likes }}</h5>
 
                     <h6 class="text-uppercase mt-4"><i class="fa fa-ticket"></i> Description : </h6>
                     <p>{{ $product->description }}</p>
 
                     <h6 class="text-uppercase mt-4"><i class="fa fa-archive"></i> Specification : </h6>
                     <p>{{ $product->specification }}</p>
+
+                    <h6 class="text-uppercase mt-4"><i class="fa fa-folder-open"></i> Categories : </h6>
+                    <p>{{ $product->categories }}</p>
 
                     <h6 class="text-uppercase mt-4"><i class="fa fa-dollar"></i> Price : </h6>
                     <h5 class="text-success">{{ $product->price }} $</h5>
@@ -49,21 +52,21 @@
                 <form action="/shop/{{ $product->id }}/unlike" method="POST">
                     <button type="submit" class="fw-light nav-link fs-6">
                         <span class="fa fa-heart me-1"></span>
-                        {{ $productLikes }}
+                        {{ $product->likes }}
                     </button>
                 </form>
             @else
                 <form action="/shop/{{ $product->id }}/like" method="POST">
                     <button type="submit" class="fw-light nav-link fs-6">
                         <span class="fa fa-heart-o me-1"></span>
-                        {{ $productLikes }}
+                        {{ $product->likes }}
                     </button>
                 </form>
             @endif
         @else
             <a href="/auth/login" class="fw-light nav-link fs-5">
                 <i class="fa fa-heart-o"></i>
-                {{ $productLikes }}
+                {{ $product->likes }}
             </a>
         @endif
     </div>
