@@ -59,7 +59,6 @@ class Product extends Model
         $categoryIds = $this->getCategoryIds();
 
         if (empty($categoryIds)) {
-            dd('here');
             return;
         }
 
