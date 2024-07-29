@@ -20,6 +20,7 @@
                             <th>User Name</th>
                             <th>Product</th>
                             <th>Comment</th>
+                            <th>Status</th>
                             <th>Date</th>
                             <th>Action</th>
                         </tr>
@@ -33,10 +34,11 @@
                                 </td>
                                 <td>
                                     <a href="/shop/{{ $comment->product_id }}">
-                                        Product {{ $comment->product_name }}
+                                        {{ $comment->product_name }}
                                     </a>
                                 </td>
                                 <td>{{ $comment->comment }}</td>
+                                <td>{{ $comment->status }}</td>
                                 <td>{{ $comment->created_at }}</td>
                                 <td class="d-flex">
                                     <a href="/admin-panel/comments/edit/{{ $comment->id }}" class="btn btn-sm btn-primary">

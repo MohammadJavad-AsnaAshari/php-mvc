@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Comments;
 use App\Models\Comment;
 use App\Models\Product;
 use Mj\PocketCore\Controller;
+use Mj\PocketCore\Exceptions\NotFoundException;
 
 class CommentController extends Controller
 {
@@ -37,6 +38,7 @@ class CommentController extends Controller
                 request()->all(),
                 [
                     'comment' => 'required|min:3|max:255',
+                    'status' => 'boolean'
                 ]
             );
 
@@ -51,7 +53,7 @@ class CommentController extends Controller
             return redirect('/admin-panel/comments');
         }
 
-        return redirect('/admin-panel/comments');
+        throw new NotFoundException('Comment not exist!');
     }
 
     public function delete()

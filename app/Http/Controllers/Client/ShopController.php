@@ -56,6 +56,7 @@ class ShopController extends Controller
             FROM comments
             INNER JOIN users ON comments.user_id = users.id
             WHERE comments.product_id = :product_id
+            AND comments.status = 1
             ORDER BY comments.created_at DESC";
 
         $comments = (new Comment())->query($sql, ['product_id' => $product->id]);

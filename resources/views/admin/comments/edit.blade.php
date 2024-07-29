@@ -24,7 +24,17 @@
                                 <span style="color: red; font-weight: bolder">{{ $errors->first('comment') }}</span>
                             @endif
                         </div>
-
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="hidden" name="status" value="0">
+                                <input type="checkbox" name="status" class="form-check-input" id="status"
+                                       value="1" {{ $comment->status ? 'checked' : '' }}>
+                                <label for="status" class="form-check-label">Accept</label>
+                            </div>
+                            @if($errors->has('status'))
+                                <span style="color: red; font-weight: bolder">{{ $errors->first('status') }}</span>
+                            @endif
+                        </div>
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer d-flex"
