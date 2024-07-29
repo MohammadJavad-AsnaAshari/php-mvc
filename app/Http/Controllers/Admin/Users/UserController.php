@@ -13,14 +13,31 @@ class UserController extends Controller
 {
     public function index()
     {
-        $sql = "SELECT users.*, GROUP_CONCAT(roles.name) as roles, GROUP_CONCAT(permissions.name) as permissions
+        $sql = "SELECT users.*, GROUP_CONCAT(permissions.name) as permissions
                 FROM users
-                LEFT JOIN role_user ON users.id = role_user.user_id
-                LEFT JOIN roles ON role_user.role_id = roles.id
                 LEFT JOIN permission_user ON users.id = permission_user.user_id
                 LEFT JOIN permissions ON permission_user.permission_id = permissions.id
                 GROUP BY users.id
                 ";
+        $users = (new User())->query($sql);
+
+        return view('admin.users.index', compact('users'));
+    }
+
+    public function admin()
+    {
+        $sql = "SELECT users.*, GROUP_CONCAT(permissions.name) as permissions
+            FROM users
+            LEFT JOIN permission_user ON users.id = permission_user.user_id
+            LEFT JOIN permissions ON permission_user.permission_id = permissions.id
+            WHERE users.id IN (
+                SELECT user_id
+                FROM permission_user
+                JOIN permissions ON permission_user.permission_id = permissions.id
+                WHERE permissions.name = 'admin'
+            )
+            GROUP BY users.id
+            ";
         $users = (new User())->query($sql);
 
         return view('admin.users.index', compact('users'));

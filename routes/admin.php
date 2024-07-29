@@ -12,6 +12,7 @@ use Mj\PocketCore\Router;
 Router::get('/admin-panel', [AdminPanelController::class, 'index'], ['auth', 'admin']);
 
 Router::get('/admin-panel/users', [UserController::class, 'index'], ['auth', 'admin']);
+Router::get('/admin-panel/users/admin', [UserController::class, 'admin'], ['auth', 'admin']);
 Router::get('/admin-panel/users/{userId}', [UserController::class, 'show'], ['auth', 'admin']);
 Router::get('/admin-panel/users/create', [UserController::class, 'create'], ['auth', 'admin']);
 Router::get('/admin-panel/users/edit/{userId}', [UserController::class, 'edit'], ['auth', 'admin']);
