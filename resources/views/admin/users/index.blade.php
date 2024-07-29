@@ -14,7 +14,7 @@
                     <div class="card-tools d-flex">
                         <div class="btn-group-sm" style="margin-right: 1rem;">
                             <a href="/admin-panel/users/create" class="btn btn-info">Create New User</a>
-                            <a href="" class="btn btn-warning">Admin Users</a>
+                            <a href="/admin-panel/users/admin" class="btn btn-warning">Admin Users</a>
                         </div>
 
                         <form action="">
@@ -39,7 +39,6 @@
                             <th>Email</th>
                             <th>Date</th>
                             <th>Permissions</th>
-                            <th>Rules</th>
                             <th>Action</th>
                         </tr>
                         @foreach($users as $user)
@@ -59,9 +58,6 @@
 {{--                                @endif--}}
                                 <td>
                                    {{ $user->permissions }}
-                                </td>
-                                <td>
-                                   {{ $user->roles }}
                                 </td>
                                 <td class="d-flex">
                                     <a href="/admin-panel/users/edit/{{ $user->id }}" class="btn btn-sm btn-primary">

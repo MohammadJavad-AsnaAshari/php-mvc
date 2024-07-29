@@ -63,19 +63,6 @@
                                 <span style="color: red; font-weight: bolder">{{ $errors->first('permissions') }}</span>
                             @endif
                         </div>
-                        <div class="form-group pb-3">
-                            <label for="roles[]" class="col-sm-2 control-label">Roles</label>
-                            <select name="roles[]" id="roles" class="form-select" multiple>
-                                @foreach($allRoles as $role)
-                                    <option value="{{$role->id}}" {{ !empty($userRoles) && in_array($role->id, array_column($userRoles ?? '', 'id')) ? 'selected' : '' }}>
-                                        {{$role->name}} - {{$role->label}}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('roles'))
-                                <span style="color: red; font-weight: bolder">{{ $errors->first('roles') }}</span>
-                            @endif
-                        </div>
 {{--                        <div class="form-check">--}}
 {{--                            <input type="checkbox" name="verify" class="form-check-input" id="verify">--}}
 {{--                            <label for="verify" class="form-check-label">Active Account</label>--}}

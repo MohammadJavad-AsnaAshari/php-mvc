@@ -60,16 +60,6 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group pb-3">
-                            <label for="roles" class="col-sm-2 control-label">roles</label>
-                            <select name="roles[]" id="roles" class="form-select" multiple>
-                                @foreach($roles as $role)
-                                    <option value="{{$role->id}}">
-                                        {{$role->name}} - {{$role->label}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
 {{--                        <div class="form-check">--}}
 {{--                            <input type="checkbox" name="verify" class="form-check-input" id="verify">--}}
 {{--                            <label for="verify" class="form-check-label">Active Account</label>--}}
