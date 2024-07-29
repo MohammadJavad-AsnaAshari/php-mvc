@@ -76,13 +76,6 @@
                                 <p>Permissions</p>
                             </a>
                         </li>
-{{--                        <li class="nav-item {{ isActive(['/admin-panel/roles', '/admin-panel/roles/create']) }}">--}}
-{{--                            <a href="/admin-panel/roles"--}}
-{{--                               class="nav-link {{ isActive(['/admin-panel/roles', '/admin-panel/roles/create']) }}">--}}
-{{--                                <i class="nav-icon bi bi-check"></i>--}}
-{{--                                <p>Roles</p>--}}
-{{--                            </a>--}}
-{{--                        </li>--}}
                     </ul>
                 </li>
                 <li class="nav-item {{ isActive(['/admin-panel/products', '/admin-panel/products/create'], "menu-open") }}">
