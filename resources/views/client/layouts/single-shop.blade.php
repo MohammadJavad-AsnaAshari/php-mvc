@@ -39,13 +39,16 @@
     </div>
     <div class="btn-box">
         <div class="pr-2">
-            <a href="#" class="btn btn-success"
-               style="background-color: #28a745; border-color: #28a745; color: #fff;
+            <form action="/cart/store" method="POST">
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <button class="btn btn-success"
+                   style="background-color: #28a745; border-color: #28a745; color: #fff; font-size: 1.2rem; padding: 0.5rem 1rem;
               transition: background-color 0.3s, border-color 0.3s, color 0.3s;"
-               onmouseover="this.style.backgroundColor='#fff'; this.style.borderColor='#28a745'; this.style.color='#28a745';"
-               onmouseout="this.style.backgroundColor='#28a745'; this.style.borderColor='#28a745'; this.style.color='#fff';">
-                Purchase Now
-            </a>
+                   onmouseover="this.style.backgroundColor='#fff'; this.style.borderColor='#28a745'; this.style.color='#28a745';"
+                   onmouseout="this.style.backgroundColor='#28a745'; this.style.borderColor='#28a745'; this.style.color='#fff';">
+                    Purchase Now
+                </button>
+            </form>
         </div>
         @if(auth()->user())
             @if(auth()->user()->likesPost($product->id))

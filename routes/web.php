@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CategoryController;
 use App\Http\Controllers\Client\CommentController;
 use App\Http\Controllers\Client\Dashboard\UserPanelController;
@@ -39,6 +40,11 @@ Router::get('/user-panel/{userId}', [UserPanelController::class, 'show'], ['auth
 Router::get('/user-panel/edit/{userId}', [UserPanelController::class, 'edit'], ['auth']);
 Router::post('/user-panel/update', [UserPanelController::class, 'update'], ['auth']);
 Router::post('/user-panel/delete', [UserPanelController::class, 'delete'], ['auth']);
+
+Router::get('/cart', [CartController::class, 'index'], ['auth']);
+Router::post('/cart/store', [CartController::class, 'storeProduct'], ['auth']);
+Router::post('/cart/quantity/update', [CartController::class, 'updateQuantity'], ['auth']);
+Router::post('/cart/delete', [CartController::class, 'delete'], ['auth']);
 
 
 

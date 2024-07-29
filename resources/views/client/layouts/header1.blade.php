@@ -39,7 +39,13 @@
                 <li class="nav-item {{ isUrl('/contact-us')}}">
                     <a class="nav-link" href="/contact-us">Contact Us</a>
                 </li>
+                <li class="nav-item {{ isUrl('/cart')}}">
+                    <a class="nav-link" href="/cart">
+                        <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                    </a>
+                </li>
             </ul>
+
             <div class="user_option">
                 @if(auth()->check())
                     @if(auth()->user()->hasPermission('admin'))
@@ -70,9 +76,6 @@
                         </span>
                     </a>
                 @endif
-                <a href="">
-                    <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                </a>
             </div>
         </div>
     </nav>
