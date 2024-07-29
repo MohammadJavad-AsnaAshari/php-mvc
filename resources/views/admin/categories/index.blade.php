@@ -35,7 +35,6 @@
                         <tr>
                             <th>Id</th>
                             <th>Category Name</th>
-                            <th>Parent Name</th>
                             <th>Created At</th>
                             <th>Action</th>
                         </tr>
@@ -43,7 +42,6 @@
                             <tr>
                                 <td>{{ $category->id }}</td>
                                 <td>{{ $category->name }}</td>
-                                <td>{{ $category->parent_name }}</td>
                                 <td>{{ $category->created_at }}</td>
                                 <td class="d-flex">
                                     <a href="/admin-panel/categories/edit/{{ $category->id }}"

@@ -15,21 +15,6 @@
                 <form action="/admin-panel/categories/update" method="POST">
                     <div class="card-body">
                         <div class="form-group pb-3">
-                            <label for="parent_id" class="col-sm-2 control-label">Parent Categories</label>
-                            <select name="parent_id" id="parent_id" class="form-select" multiple>
-                                @foreach($categories as $category)
-                                    @if($selfCategory->id != $category->id)
-                                        <option value="{{$category->id}}" {{ $selfCategory->parent_id == $category->id ? 'selected' : '' }}>
-                                            {{$category->name}}
-                                        </option>
-                                    @endif
-                                @endforeach
-                            </select>
-                            @if($errors->has('parent_id'))
-                                <span style="color: red; font-weight: bolder">{{ $errors->first('parent_id') }}</span>
-                            @endif
-                        </div>
-                        <div class="form-group pb-3">
                             <label for="name" class="col-sm-2 control-label">Categories Name</label>
                             <input type="text" name="name" class="form-control" id="name"
                                    placeholder="Enter category's name" autocomplete="name"

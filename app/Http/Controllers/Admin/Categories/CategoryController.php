@@ -11,10 +11,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $sql = "SELECT c1.id, c2.name as parent_name, c1.name, c1.created_at
-                FROM categories as c1
-                LEFT JOIN categories as c2 ON c1.parent_id = c2.id";
-        $categories = (new Category())->query($sql);
+        $categories = (new Category())->get();
 
         return view('admin.categories.index', compact('categories'));
     }
@@ -31,7 +28,6 @@ class CategoryController extends Controller
         $validation = $this->validate(
             request()->all(),
             [
-//                'parent_id' => 'numeric',
                 'name' => 'required|min:3|max:255|unique:categories,name',
             ]
         );
@@ -60,12 +56,7 @@ class CategoryController extends Controller
     {
         $selfCategory = (new Category())->find($categoryId);
 
-        $sql = "SELECT c1.id, c1.name
-                FROM categories as c1
-                LEFT JOIN categories as c2 ON c1.parent_id = c2.id";
-        $categories = (new Category())->get();
-
-        return view('admin.categories.edit', compact('selfCategory', 'categories'));
+        return view('admin.categories.edit', compact('selfCategory'));
     }
 
     public function update()
@@ -76,7 +67,6 @@ class CategoryController extends Controller
             $validation = $this->validate(
                 request()->all(),
                 [
-//                    'parent_id' => 'numeric',
                     'name' => 'required|min:3|max:255|unique:categories,name,' . $category->name,
                 ]
             );
@@ -87,17 +77,6 @@ class CategoryController extends Controller
             }
 
             $validatedData = $validation->getValidatedData();
-
-            // Check if the selected parent category is a descendant of the current category
-//            $parentId = $validatedData['parent_id'];
-//            $descendants = $this->getCategoryDescendants($categoryId);
-//            if ($parentId !== null) {
-//                foreach ($descendants as $child) {
-//                    if ($child['id'] == $parentId) {
-//                        throw new ServerException("You can't chosen category's children");
-//                    }
-//                }
-//            }
 
             try {
                 $category->update($categoryId, $validatedData);
@@ -125,18 +104,4 @@ class CategoryController extends Controller
 
         throw new NotFoundException('This category not fount!');
     }
-
-//    private function getCategoryDescendants($categoryId, $descendants = [])
-//    {
-//        $children = (new Category())->where('parent_id', $categoryId)->get();
-//
-//        foreach ($children as $child) {
-//            $descendants[] = [
-//                'id' => $child->id,
-//            ];
-//            $descendants = array_merge($descendants, $this->getCategoryDescendants($child->id, $descendants));
-//        }
-//
-//        return $descendants;
-//    }
 }
