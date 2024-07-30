@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Categories\CategoryController;
 use App\Http\Controllers\Admin\Comments\CommentController;
 use App\Http\Controllers\Admin\Dashboard\AdminPanelController;
+use App\Http\Controllers\Admin\Order\OrderController;
 use App\Http\Controllers\Admin\Permissions\PermissionController;
 use App\Http\Controllers\Admin\Products\ProductController;
 use App\Http\Controllers\Admin\Roles\RoleController;
@@ -46,3 +47,6 @@ Router::post('/admin-panel/categories/store', [CategoryController::class, 'store
 Router::get('/admin-panel/categories/edit/{categoryId}', [CategoryController::class, 'edit'], ['auth', 'admin']);
 Router::post('/admin-panel/categories/update', [CategoryController::class, 'update'], ['auth', 'admin']);
 Router::post('/admin-panel/categories/delete', [CategoryController::class, 'delete'], ['auth', 'admin']);
+
+Router::get('/admin-panel/orders', [OrderController::class, 'index'], ['auth', 'admin']);
+Router::get('/admin-panel/orders/{orderId}', [OrderController::class, 'show'], ['auth', 'admin']);

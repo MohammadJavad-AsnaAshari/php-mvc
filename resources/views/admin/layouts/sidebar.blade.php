@@ -183,194 +183,23 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-pencil-square"></i>
+                <li class="nav-item {{ isActive(['/admin-panel/orders'], "menu-open") }}">
+                    <a href="#" class="nav-link"> <i class="nav-icon bi bi-shop"></i>
                         <p>
-                            Forms
+                            Orders
                             <i class="nav-arrow bi bi-chevron-right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item"><a href="./forms/general.html" class="nav-link"> <i
-                                        class="nav-icon bi bi-circle"></i>
-                                <p>General Elements</p>
-                            </a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-table"></i>
-                        <p>
-                            Tables
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item"><a href="./tables/simple.html" class="nav-link"> <i
-                                        class="nav-icon bi bi-circle"></i>
-                                <p>Simple Tables</p>
-                            </a></li>
-                    </ul>
-                </li>
-                <li class="nav-header">EXAMPLES</li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-box-arrow-in-right"></i>
-                        <p>
-                            Auth
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item"><a href="#" class="nav-link"> <i
-                                        class="nav-icon bi bi-box-arrow-in-right"></i>
-                                <p>
-                                    Version 1
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
+                        <li class="nav-item {{ isActive('/admin-panel/orders') }}">
+                            <a href="/admin-panel/orders"
+                               class="nav-link {{ isUrl('/admin-panel/orders')}}">
+                                <i class="nav-icon bi bi bi-shop"></i>
+                                <p>Index</p>
                             </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item"><a href="./examples/login.html" class="nav-link"> <i
-                                                class="nav-icon bi bi-circle"></i>
-                                        <p>Login</p>
-                                    </a></li>
-                                <li class="nav-item"><a href="./examples/register.html" class="nav-link"> <i
-                                                class="nav-icon bi bi-circle"></i>
-                                        <p>Register</p>
-                                    </a></li>
-                            </ul>
                         </li>
-                        <li class="nav-item"><a href="#" class="nav-link"> <i
-                                        class="nav-icon bi bi-box-arrow-in-right"></i>
-                                <p>
-                                    Version 2
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item"><a href="./examples/login-v2.html" class="nav-link"> <i
-                                                class="nav-icon bi bi-circle"></i>
-                                        <p>Login</p>
-                                    </a></li>
-                                <li class="nav-item"><a href="./examples/register-v2.html" class="nav-link"> <i
-                                                class="nav-icon bi bi-circle"></i>
-                                        <p>Register</p>
-                                    </a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a href="./examples/lockscreen.html" class="nav-link"> <i
-                                        class="nav-icon bi bi-circle"></i>
-                                <p>Lockscreen</p>
-                            </a></li>
                     </ul>
                 </li>
-                <li class="nav-header">DOCUMENTATIONS</li>
-                <li class="nav-item"><a href="./docs/introduction.html" class="nav-link"> <i
-                                class="nav-icon bi bi-download"></i>
-                        <p>Installation</p>
-                    </a></li>
-                <li class="nav-item"><a href="./docs/layout.html" class="nav-link"> <i
-                                class="nav-icon bi bi-grip-horizontal"></i>
-                        <p>Layout</p>
-                    </a></li>
-                <li class="nav-item"><a href="./docs/color-mode.html" class="nav-link"> <i
-                                class="nav-icon bi bi-star-half"></i>
-                        <p>Color Mode</p>
-                    </a></li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-ui-checks-grid"></i>
-                        <p>
-                            Components
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item"><a href="./docs/components/main-header.html" class="nav-link"> <i
-                                        class="nav-icon bi bi-circle"></i>
-                                <p>Main Header</p>
-                            </a></li>
-                        <li class="nav-item"><a href="./docs/components/main-sidebar.html" class="nav-link"> <i
-                                        class="nav-icon bi bi-circle"></i>
-                                <p>Main Sidebar</p>
-                            </a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-filetype-js"></i>
-                        <p>
-                            Javascript
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item"><a href="./docs/javascript/treeview.html" class="nav-link"> <i
-                                        class="nav-icon bi bi-circle"></i>
-                                <p>Treeview</p>
-                            </a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a href="./docs/browser-support.html" class="nav-link"> <i
-                                class="nav-icon bi bi-browser-edge"></i>
-                        <p>Browser Support</p>
-                    </a></li>
-                <li class="nav-item"><a href="./docs/how-to-contribute.html" class="nav-link"> <i
-                                class="nav-icon bi bi-hand-thumbs-up-fill"></i>
-                        <p>How To Contribute</p>
-                    </a></li>
-                <li class="nav-item"><a href="./docs/faq.html" class="nav-link"> <i
-                                class="nav-icon bi bi-question-circle-fill"></i>
-                        <p>FAQ</p>
-                    </a></li>
-                <li class="nav-item"><a href="./docs/license.html" class="nav-link"> <i
-                                class="nav-icon bi bi-patch-check-fill"></i>
-                        <p>License</p>
-                    </a></li>
-                <li class="nav-header">MULTI LEVEL EXAMPLE</li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle-fill"></i>
-                        <p>Level 1</p>
-                    </a></li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle-fill"></i>
-                        <p>
-                            Level 1
-                            <i class="nav-arrow bi bi-chevron-right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>Level 2</p>
-                            </a></li>
-                        <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>
-                                    Level 2
-                                    <i class="nav-arrow bi bi-chevron-right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item"><a href="#" class="nav-link"> <i
-                                                class="nav-icon bi bi-record-circle-fill"></i>
-                                        <p>Level 3</p>
-                                    </a></li>
-                                <li class="nav-item"><a href="#" class="nav-link"> <i
-                                                class="nav-icon bi bi-record-circle-fill"></i>
-                                        <p>Level 3</p>
-                                    </a></li>
-                                <li class="nav-item"><a href="#" class="nav-link"> <i
-                                                class="nav-icon bi bi-record-circle-fill"></i>
-                                        <p>Level 3</p>
-                                    </a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle"></i>
-                                <p>Level 2</p>
-                            </a></li>
-                    </ul>
-                </li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle-fill"></i>
-                        <p>Level 1</p>
-                    </a></li>
-                <li class="nav-header">LABELS</li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle text-danger"></i>
-                        <p class="text">Important</p>
-                    </a></li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle text-warning"></i>
-                        <p>Warning</p>
-                    </a></li>
-                <li class="nav-item"><a href="#" class="nav-link"> <i class="nav-icon bi bi-circle text-info"></i>
-                        <p>Informational</p>
-                    </a></li>
             </ul> <!--end::Sidebar Menu-->
         </nav>
     </div> <!--end::Sidebar Wrapper-->
