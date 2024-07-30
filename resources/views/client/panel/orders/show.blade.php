@@ -32,7 +32,10 @@
                             @endphp
                             <tr>
                                 <td style="vertical-align: middle;">{{ $product->id }}</td>
-                                <td style="vertical-align: middle;">{{ $product->name }}</td>
+                                <td style="vertical-align: middle;">
+                                    <a href="/shop/{{ $product->id }}">
+                                        {{ $product->name }}
+                                    </a></td>
                                 <td style="vertical-align: middle;">
                                     <img src="/storage/app/product/{{ $product->image }}" alt="{{ $product->name }}"
                                          style="max-width: 100px; max-height: 100px;">
