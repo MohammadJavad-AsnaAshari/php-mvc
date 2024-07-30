@@ -15,7 +15,7 @@ return new class{
               `id` INT AUTO_INCREMENT PRIMARY KEY,
               `user_id` INT NOT NULL,
               `price` INT NOT NULL DEFAULT 0,
-              `status` ENUM('unpaid', 'paid', 'preparation', 'posted', 'received', 'canceled') NOT NULL,
+              `status` ENUM('unpaid', 'paid') NOT NULL,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               CONSTRAINT `fk_orders_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`)

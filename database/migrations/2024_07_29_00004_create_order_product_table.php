@@ -12,6 +12,7 @@ return new class{
     public function up(): void
     {
         $sql = "CREATE TABLE IF NOT EXISTS `order_product` (
+              `id` INT AUTO_INCREMENT PRIMARY KEY,
               `order_id` INT NOT NULL,
               `product_id` INT NOT NULL,
               `quantity` INT DEFAULT 1,
