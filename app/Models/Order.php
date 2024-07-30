@@ -19,8 +19,14 @@ class Order extends Model
         return $this->belongsToMany(Product::class, 'order_product');
     }
 
-    public function payments()
+    public function attachProduct(int $productId, int $quantity)
     {
-        return $this->hasMany(Payment::class);
+        $sql = "INSERT INTO order_product (order_id, product_id, quantity) VALUES (:order_id, :product_id, :quantity)";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'order_id' => $this->id,
+            'product_id' => $productId,
+            'quantity' => $quantity
+        ]);
     }
 }

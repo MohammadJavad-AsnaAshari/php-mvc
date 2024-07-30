@@ -96,10 +96,11 @@
                             <!-- / Shopping cart table -->
                             <div class="d-flex flex-wrap justify-content-between align-items-center pb-4">
                                 <div class="float-left">
-                                    <form action="/cart/payment" method="POST" id="cart-payment">
+                                    <form action="/cart/orders" method="POST" id="cart-payment">
                                     </form>
                                     <button onclick="document.getElementById('cart-payment').submit()" type="button"
-                                            class="btn btn-lg btn-primary mt-2">Checkout
+                                            class="btn btn-lg btn-primary mt-2" id="order-button">
+                                        Order
                                     </button>
                                 </div>
                                 <div class="mt-4"></div>
@@ -114,10 +115,22 @@
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 
     @include('client.layouts.info-section')
 @endsection
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var totalPrice = {{ $totalPrice }};
+        var orderButton = document.getElementById('order-button');
+
+        if (totalPrice == 0) {
+            orderButton.disabled = true;
+        }
+    });
+</script>
 
 <style>
     .table th, .table td {

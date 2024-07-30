@@ -12,7 +12,7 @@
     <div class="sidebar-wrapper">
         <nav class="mt-2"> <!--begin::Sidebar Menu-->
             <ul class="nav sidebar-menu flex-column" data-lte-toggle="treeview" role="menu" data-accordion="false">
-                <li class="nav-item menu-open">
+                <li class="nav-item {{ isActive(["/user-panel/$userId", "/user-panel/edit/$userId"], 'menu-open')}}">
                     <a href="#" class="nav-link">
                         <i class="nav-icon bi bi-people-fill"></i>
                         <p>
@@ -32,6 +32,23 @@
                                class="nav-link {{ isUrl("/user-panel/edit/$userId")}}">
                                 <i class="nav-icon bi {{ request()->isUrl("/user-panel/edit/$userId") ? 'bi-person-fill' : 'bi-person' }}"></i>
                                 <p>Edit</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item {{ isActive(['/user-panel/orders'], 'menu-open')}}">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon bi bi-people-fill"></i>
+                        <p>
+                            Order
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item {{ isActive("/user-panel/orders") }}">
+                            <a href="/user-panel/orders" class="nav-link {{ isUrl("/user-panel/orders")}}">
+                                <i class="nav-icon bi {{ request()->isUrl("/user-panel/orders") ? 'bi-person-fill' : 'bi-person' }}"></i>
+                                <p>Index</p>
                             </a>
                         </li>
                     </ul>

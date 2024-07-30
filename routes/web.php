@@ -8,11 +8,8 @@ use App\Http\Controllers\Client\CategoryController;
 use App\Http\Controllers\Client\CommentController;
 use App\Http\Controllers\Client\Dashboard\UserPanelController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ShopController;
-use App\Models\Comment;
-use App\Models\Product;
-use App\Models\Role;
-use App\Models\User;
 use Mj\PocketCore\Router;
 
 Router::get('/', [HomeController::class, 'index']);
@@ -45,3 +42,8 @@ Router::get('/cart', [CartController::class, 'index'], ['auth']);
 Router::post('/cart/store', [CartController::class, 'storeProduct'], ['auth']);
 Router::post('/cart/quantity/update', [CartController::class, 'updateQuantity'], ['auth']);
 Router::post('/cart/delete', [CartController::class, 'delete'], ['auth']);
+
+Router::get('/user-panel/orders', [OrderController::class, 'index'], ['auth']);
+Router::get('/user-panel/orders/{orderId}', [OrderController::class, 'show'], ['auth']);
+Router::post('/cart/orders', [OrderController::class, 'store'], ['auth']);
+Router::post('/payment', [OrderController::class, 'payment'], ['auth']);
