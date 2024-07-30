@@ -34,7 +34,17 @@ class Model extends Database
             $this->statement->bindValue(":$key", $value);
         }
 
-        return $this->statement->execute();
+        if ($this->statement->execute()) {
+            // Get the last inserted ID and set it to the object
+            $this->id = $this->pdo->lastInsertId();
+            // Set other properties from the data array
+            foreach ($data as $key => $value) {
+                $this->$key = $value;
+            }
+            return true;
+        }
+
+        return false;
     }
 
     /**
