@@ -35,12 +35,12 @@
                                 <a href="/user-panel/edit/{{ $user->id }}" class="btn btn-sm btn-primary">
                                     edit
                                 </a>
-                                <form action="/user-panel/delete" class="delete-form" method="POST">
-                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
-                                    <button class="btn btn-sm btn-danger" style="margin-left: 10px;">
-                                        delete
-                                    </button>
-                                </form>
+{{--                                <form action="/user-panel/delete" class="delete-form" method="POST">--}}
+{{--                                    <input type="hidden" name="user_id" value="{{ $user->id }}">--}}
+{{--                                    <button class="btn btn-sm btn-danger" style="margin-left: 10px;">--}}
+{{--                                        delete--}}
+{{--                                    </button>--}}
+{{--                                </form>--}}
                             </td>
                         </tr>
                         </tbody>

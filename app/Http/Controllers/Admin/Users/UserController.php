@@ -66,7 +66,6 @@ class UserController extends Controller
                 'password' => 'required|min:6||max:255',
                 'confirm_password' => 'required|same:password',
                 'permissions' => 'array',
-                'roles' => 'array'
             ]
         );
 
@@ -77,11 +76,9 @@ class UserController extends Controller
 
         $validatedData = $validation->getValidatedData();
         $validatedPermissions = $validatedData['permissions'];
-        $validatedRoles = $validatedData['roles'];
 
         unset($validatedData['confirm_password']);
         unset($validatedData['permissions']);
-        unset($validatedData['roles']);
 
         // Start a new transaction
         $db = new Database();
@@ -103,13 +100,6 @@ class UserController extends Controller
             if (!empty($validatedPermissions)) {
                 foreach ($validatedPermissions as $key => $permissionId) {
                     $user->attachPermission($permissionId);
-                }
-            }
-
-            // Attach roles to the user
-            if (!empty($validatedRoles)) {
-                foreach ($validatedRoles as $key => $roleId) {
-                    $user->attachRole($roleId);
                 }
             }
 
