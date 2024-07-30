@@ -38,7 +38,7 @@
                 </li>
                 <li class="nav-item {{ isActive(['/user-panel/orders'], 'menu-open')}}">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon bi bi-people-fill"></i>
+                        <i class="nav-icon bi bi-shop"></i>
                         <p>
                             Order
                             <i class="nav-arrow bi bi-chevron-right"></i>
@@ -47,7 +47,7 @@
                     <ul class="nav nav-treeview">
                         <li class="nav-item {{ isActive("/user-panel/orders") }}">
                             <a href="/user-panel/orders" class="nav-link {{ isUrl("/user-panel/orders")}}">
-                                <i class="nav-icon bi {{ request()->isUrl("/user-panel/orders") ? 'bi-person-fill' : 'bi-person' }}"></i>
+                                <i class="nav-icon bi bi-shop"></i>
                                 <p>Index</p>
                             </a>
                         </li>
