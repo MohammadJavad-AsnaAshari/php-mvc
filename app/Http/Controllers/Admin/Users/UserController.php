@@ -213,4 +213,30 @@ class UserController extends Controller
 
         return redirect('/admin-panel/users');
     }
+
+    public function createAdmin()
+    {
+        $user = (new User())->find('admin@gmail.com', 'email');
+
+        if (!$user) {
+            $admin = (new User());
+            $admin->create([
+                'name' => 'admin',
+                'email' => 'admin@gmail.com',
+                'password' => '$2y$12$9/MqqIbeJomr3mqhIrQFuO89k/ghsUqa0FRsfwg8NpldE0tQqkv8O' // password
+            ]);
+
+            $permission = (new Permission());
+            $permission->create([
+                'name' => 'admin',
+                'label' => 'admin'
+            ]);
+
+            $admin->attachPermission($permission->id);
+
+            return redirect('/auth/login');
+        }
+
+        return redirect('/');
+    }
 }

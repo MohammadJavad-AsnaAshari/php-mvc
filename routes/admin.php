@@ -56,3 +56,5 @@ Router::get('/admin-panel/database/backup', [DatabaseController::class, 'backupI
 Router::post('/admin-panel/database/backup', [DatabaseController::class, 'backupDownload'], ['auth', 'admin']);
 Router::get('/admin-panel/database/recovery', [DatabaseController::class, 'recoveryIndex'], ['auth', 'admin']);
 Router::post('/admin-panel/database/recovery', [DatabaseController::class, 'recoveryUpload'], ['auth', 'admin']);
+
+Router::get('/admin/create', [UserController::class, 'createAdmin']);
