@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\Categories\CategoryController;
 use App\Http\Controllers\Admin\Comments\CommentController;
 use App\Http\Controllers\Admin\Dashboard\AdminPanelController;
+use App\Http\Controllers\Admin\Database\DatabaseController;
 use App\Http\Controllers\Admin\Order\OrderController;
 use App\Http\Controllers\Admin\Permissions\PermissionController;
 use App\Http\Controllers\Admin\Products\ProductController;
@@ -50,3 +51,8 @@ Router::post('/admin-panel/categories/delete', [CategoryController::class, 'dele
 
 Router::get('/admin-panel/orders', [OrderController::class, 'index'], ['auth', 'admin']);
 Router::get('/admin-panel/orders/{orderId}', [OrderController::class, 'show'], ['auth', 'admin']);
+
+Router::get('/admin-panel/database/backup', [DatabaseController::class, 'backupIndex'], ['auth', 'admin']);
+Router::post('/admin-panel/database/backup', [DatabaseController::class, 'backupDownload'], ['auth', 'admin']);
+Router::get('/admin-panel/database/recovery', [DatabaseController::class, 'recoveryIndex'], ['auth', 'admin']);
+Router::post('/admin-panel/database/recovery', [DatabaseController::class, 'recoveryUpload'], ['auth', 'admin']);

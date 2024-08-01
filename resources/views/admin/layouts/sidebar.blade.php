@@ -200,6 +200,30 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item {{ isActive(['/admin-panel/database/backup', '/admin-panel/database/recovery'], "menu-open") }}">
+                    <a href="#" class="nav-link"> <i class="nav-icon bi bi-database-fill-gear"></i>
+                        <p>
+                            Database
+                            <i class="nav-arrow bi bi-chevron-right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item {{ isActive('/admin-panel/database/backup') }}">
+                            <a href="/admin-panel/database/backup"
+                               class="nav-link {{ isUrl('/admin-panel/database/backup')}}">
+                                <i class="nav-icon {{ isUrl('/admin-panel/database/backup') ? 'bi bi-database-fill-down' : 'bi bi-database-down' }}"></i>
+                                <p>Backup</p>
+                            </a>
+                        </li>
+                        <li class="nav-item {{ isActive('/admin-panel/database/recovery') }}">
+                            <a href="/admin-panel/database/recovery"
+                               class="nav-link {{ isUrl('/admin-panel/database/recovery')}}">
+                                <i class="nav-icon {{ isUrl('/admin-panel/database/recovery') ? 'bi bi-database-fill-up' : 'bi bi-database-up' }}"></i>
+                                <p>Recovery</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             </ul> <!--end::Sidebar Menu-->
         </nav>
     </div> <!--end::Sidebar Wrapper-->
