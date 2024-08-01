@@ -17,8 +17,8 @@ return new class{
               `user_id` INT NOT NULL,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-              CONSTRAINT `fk_product_like_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),
-              CONSTRAINT `fk_product_like_product_id` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
+              CONSTRAINT `fk_product_like_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+              CONSTRAINT `fk_product_like_product_id` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );";
 
         $this->database->pdo->exec($sql);

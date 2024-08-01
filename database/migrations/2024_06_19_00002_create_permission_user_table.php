@@ -17,8 +17,8 @@ return new class{
               `user_id` INT NOT NULL,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-              CONSTRAINT `fk_permission_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),
-              CONSTRAINT `fk_permission_user_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `permissions`(`id`)
+              CONSTRAINT `fk_permission_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+              CONSTRAINT `fk_permission_user_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `permissions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );";
 
         $this->database->pdo->exec($sql);

@@ -18,8 +18,8 @@ return new class{
               `comment` VARCHAR(255) NOT NULL,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-              CONSTRAINT `fk_comments_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`),
-              CONSTRAINT `fk_comments_product_id` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
+              CONSTRAINT `fk_comments_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+              CONSTRAINT `fk_comments_product_id` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );";
 
         $this->database->pdo->exec($sql);
