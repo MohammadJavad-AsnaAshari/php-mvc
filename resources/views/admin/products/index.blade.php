@@ -52,7 +52,7 @@
                                         {{ $product->name }}
                                     </a>
                                 </td>
-                                <td>{{ $product->categories }}</td>
+                                <td style="vertical-align: middle;">{{ $product->categories }}</td>
                                 <td style="vertical-align: middle;">{{ $product->description }}</td>
                                 <td style="vertical-align: middle;">{{ $product->specification }}</td>
                                 <td style="vertical-align: middle;">

@@ -18,17 +18,6 @@ class User extends Model
         return $this->hasMany(Article::class);
     }
 
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
-    public function attachRole(int $roleId)
-    {
-        $query = "INSERT INTO role_user (user_id, role_id) VALUES (?, ?)";
-        $this->pdo->prepare($query)->execute([$this->id, $roleId]);
-    }
-
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
@@ -71,10 +60,5 @@ class User extends Model
     public function detachAllPermissions()
     {
         $this->query("DELETE FROM permission_user WHERE user_id = :user_id", ['user_id' => $this->id]);
-    }
-
-    public function detachAllRoles()
-    {
-        $this->query("DELETE FROM role_user WHERE user_id = :user_id", ['user_id' => $this->id]);
     }
 }

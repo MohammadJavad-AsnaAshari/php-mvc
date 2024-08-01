@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin\Users;
 
 use App\Models\Permission;
-use App\Models\Role;
 use App\Models\User;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
+use Mj\PocketCore\Exceptions\NotFoundException;
+use Mj\PocketCore\Exceptions\ServerException;
 use Mj\PocketCore\Request;
 
 class UserController extends Controller
@@ -51,9 +52,8 @@ class UserController extends Controller
     public function create()
     {
         $permissions = (new Permission())->get();
-        $roles = (new Role())->get();
 
-        return view('admin.users.create', compact('permissions', 'roles'));
+        return view('admin.users.create', compact('permissions'));
     }
 
     public function store()
@@ -91,11 +91,6 @@ class UserController extends Controller
                 'password' => password_hash($validatedData['password'], PASSWORD_DEFAULT)
             ]);
 
-            $user = $user
-                ->where('name', $validatedData['name'])
-                ->where('email', $validatedData['email'])
-                ->first();
-
             // Attach permissions to the user
             if (!empty($validatedPermissions)) {
                 foreach ($validatedPermissions as $key => $permissionId) {
@@ -121,13 +116,11 @@ class UserController extends Controller
     {
         $user = (new User())->find($userId);
         $allPermissions = (new Permission())->get();
-        $allRoles = (new Role())->get();
 
         $userPermissions = $user->permissions();
-        $userRoles = $user->roles();
 
         return view('admin.users.edit',
-            compact('user', 'allPermissions', 'allRoles', 'userPermissions', 'userRoles')
+            compact('user', 'allPermissions', 'userPermissions')
         );
     }
 
@@ -145,7 +138,6 @@ class UserController extends Controller
                     'password' => 'min:6|max:255',
                     'confirm_password' => 'same:password',
                     'permissions' => 'array',
-                    'roles' => 'array'
                 ]
             );
 
@@ -157,12 +149,10 @@ class UserController extends Controller
             $validatedData = $validation->getValidatedData();
             $validatedUserId = $validatedData['user_id'];
             $validatedPermissions = $validatedData['permissions'];
-            $validatedRoles = $validatedData['roles'];
 
             unset($validatedData['user_id']);
             unset($validatedData['confirm_password']);
             unset($validatedData['permissions']);
-            unset($validatedData['roles']);
 
 
             if (empty($validatedData['password'])) {
@@ -180,24 +170,21 @@ class UserController extends Controller
                 if ($user) {
                     $user->update($validatedUserId, [...$validatedData]);
 
-                    // Detach all existing permissions and roles
+                    // Detach all existing permissions
                     $user->detachAllPermissions();
-                    $user->detachAllRoles();
 
-                    // Attach new permissions and roles
+                    // Attach new permissions
                     foreach ($validatedPermissions as $permissionId) {
                         $user->attachPermission($permissionId);
                     }
 
-                    foreach ($validatedRoles as $roleId) {
-                        $user->attachRole($roleId);
-                    }
-
                     // Commit the transaction
                     $db->commit();
+
+                    return redirect('/admin-panel/users');
                 }
 
-                return redirect('/admin-panel/users');
+                throw new NotFoundException('This user does not exist!');
             } catch (\Exception $e) {
                 // Log the error
                 error_log($e->getMessage());
@@ -205,7 +192,7 @@ class UserController extends Controller
                 // Rollback the transaction
                 $db->rollback();
 
-                return redirect('/admin-panel/users');
+                throw new ServerException('Update user failed!');
             }
         }
 
@@ -216,7 +203,10 @@ class UserController extends Controller
     {
         if (request()->has('user_id')) {
             $userId = request()->input('user_id');
-            (new User())->delete($userId);
+            $user = (new User())->find($userId);
+            // Detach all existing permissions
+            $user->detachAllPermissions();
+            $user->delete($userId);
 
             return redirect('/admin-panel/users');
         }
