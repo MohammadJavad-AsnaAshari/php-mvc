@@ -43,4 +43,9 @@ class Permission extends Model
 
         return $roleIds;
     }
+
+    public function detachAllUsers()
+    {
+        $this->query("DELETE FROM permission_user WHERE permission_id = :permission_id", ['permission_id' => $this->id]);
+    }
 }

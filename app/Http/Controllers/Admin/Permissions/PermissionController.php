@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\Permissions;
 use App\Models\Permission;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
+use Mj\PocketCore\Exceptions\NotFoundException;
+use Mj\PocketCore\Exceptions\ServerException;
 
 class PermissionController extends Controller
 {
@@ -93,7 +95,7 @@ class PermissionController extends Controller
 
                 if ($permission) {
                     // Detach the permission from the permission
-                    $permission->detachAllRoles();
+                    $permission->detachAllUsers();
                     $permission->delete($permissionId);
 
                     // Commit the transaction
@@ -108,11 +110,10 @@ class PermissionController extends Controller
                 // Rollback the transaction
                 $db->rollback();
 
-                // You can add an error message or redirect to an error page here
-                return redirect('/admin-panel/permissions');
+                throw new ServerException('Can not delete permissions!');
             }
         }
 
-        return redirect('/admin-panel/permissions');
+        throw new NotFoundException('Permission id not fount!');
     }
 }
