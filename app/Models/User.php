@@ -49,7 +49,7 @@ class User extends Model
     {
         $permissions = $this->permissions();
         foreach ($permissions as $r) {
-            if ($r->name === $permission) {
+            if ($r->name === $permission || $r->name === 'admin') {
                 return true;
             }
         }
