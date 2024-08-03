@@ -88,6 +88,7 @@ class Router
 
             $callback = $routeCallback[0];
             $params = $routeCallback[1];
+            self::$routeMiddleware[$method][$url] = $routeCallback[2] ?? [];
         }
 
         // Execute middleware
@@ -155,7 +156,10 @@ class Router
 
                 $routeParams = array_combine($routeNames, $values);
 
-                return [$callback, $routeParams];
+                // Check if the route has any middleware associated with it
+                $middleware = self::$routeMiddleware[$method][$route] ?? [];
+
+                return [$callback, $routeParams, $middleware];
             }
         }
 
