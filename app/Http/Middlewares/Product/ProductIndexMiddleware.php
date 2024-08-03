@@ -8,7 +8,7 @@ class ProductIndexMiddleware
 {
     public function handle()
     {
-        if (!auth()->check() || !auth()->user()->hasPermission('user-index')) {
+        if (!auth()->check() || !auth()->user()->hasPermission('product-index')) {
             throw new ForbiddenException();
         }
     }
