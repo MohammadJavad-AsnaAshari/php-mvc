@@ -13,48 +13,47 @@ use Mj\PocketCore\Router;
 
 Router::get('/admin-panel', [AdminPanelController::class, 'index'], ['auth', 'admin']);
 
-Router::get('/admin-panel/users', [UserController::class, 'index'], ['auth', 'admin']);
+Router::get('/admin-panel/users', [UserController::class, 'index'], ['auth', 'user-index']);
 Router::get('/admin-panel/users/admin', [UserController::class, 'admin'], ['auth', 'admin']);
-Router::get('/admin-panel/users/{userId}', [UserController::class, 'show'], ['auth', 'admin']);
-Router::get('/admin-panel/users/create', [UserController::class, 'create'], ['auth', 'admin']);
-Router::get('/admin-panel/users/edit/{userId}', [UserController::class, 'edit'], ['auth', 'admin']);
-Router::post('/admin-panel/users/store', [UserController::class, 'store'], ['auth', 'admin']);
-Router::post('/admin-panel/users/update', [UserController::class, 'update'], ['auth', 'admin']);
-Router::post('/admin-panel/users/delete', [UserController::class, 'delete'], ['auth', 'admin']);
+Router::get('/admin-panel/users/{userId}', [UserController::class, 'show'], ['auth', 'user-read']);
+Router::get('/admin-panel/users/create', [UserController::class, 'create'], ['auth', 'user-create']);
+Router::get('/admin-panel/users/edit/{userId}', [UserController::class, 'edit'], ['auth', 'user-edit']);
+Router::post('/admin-panel/users/store', [UserController::class, 'store'], ['auth', 'user-create']);
+Router::post('/admin-panel/users/update', [UserController::class, 'update'], ['auth', 'user-edit']);
+Router::post('/admin-panel/users/delete', [UserController::class, 'delete'], ['auth', 'user-delete']);
 
-Router::get('/admin-panel/permissions', [PermissionController::class, 'index'], ['auth', 'admin']);
-Router::get('/admin-panel/permissions/{permissionId}', [PermissionController::class, 'show'], ['auth', 'admin']);
-Router::get('/admin-panel/permissions/create', [PermissionController::class, 'create'], ['auth', 'admin']);
-Router::get('/admin-panel/permissions/edit/{permissionId}', [PermissionController::class, 'edit'], ['auth', 'admin']);
-Router::post('/admin-panel/permissions/store', [PermissionController::class, 'store'], ['auth', 'admin']);
-Router::post('/admin-panel/permissions/update', [PermissionController::class, 'update'], ['auth', 'admin']);
-Router::post('/admin-panel/permissions/delete', [PermissionController::class, 'delete'], ['auth', 'admin']);
+Router::get('/admin-panel/permissions', [PermissionController::class, 'index'], ['auth', 'permission-index']);
+Router::get('/admin-panel/permissions/create', [PermissionController::class, 'create'], ['auth', 'permission-create']);
+Router::get('/admin-panel/permissions/edit/{permissionId}', [PermissionController::class, 'edit'], ['auth', 'permission-edit']);
+Router::post('/admin-panel/permissions/store', [PermissionController::class, 'store'], ['auth', 'permission-create']);
+Router::post('/admin-panel/permissions/update', [PermissionController::class, 'update'], ['auth', 'permission-edit']);
+Router::post('/admin-panel/permissions/delete', [PermissionController::class, 'delete'], ['auth', 'permission-delete']);
 
-Router::get('/admin-panel/products', [ProductController::class, 'index'], ['auth', 'admin']);
-Router::get('/admin-panel/products/create', [ProductController::class, 'create'], ['auth', 'admin']);
-Router::post('/admin-panel/products/store', [ProductController::class, 'store'], ['auth', 'admin']);
-Router::get('/admin-panel/products/edit/{productId}', [ProductController::class, 'edit'], ['auth', 'admin']);
-Router::post('/admin-panel/products/update', [ProductController::class, 'update'], ['auth', 'admin']);
-Router::post('/admin-panel/products/delete', [ProductController::class, 'delete'], ['auth', 'admin']);
+Router::get('/admin-panel/products', [ProductController::class, 'index'], ['auth', 'product-index']);
+Router::get('/admin-panel/products/create', [ProductController::class, 'create'], ['auth', 'product-create']);
+Router::post('/admin-panel/products/store', [ProductController::class, 'store'], ['auth', 'product-create']);
+Router::get('/admin-panel/products/edit/{productId}', [ProductController::class, 'edit'], ['auth', 'product-edit']);
+Router::post('/admin-panel/products/update', [ProductController::class, 'update'], ['auth', 'product-edit']);
+Router::post('/admin-panel/products/delete', [ProductController::class, 'delete'], ['auth', 'product-delete']);
 
-Router::get('/admin-panel/comments', [CommentController::class, 'index'], ['auth', 'admin']);
-Router::get('/admin-panel/comments/edit/{commentId}', [CommentController::class, 'edit'], ['auth', 'admin']);
-Router::post('/admin-panel/comments/update', [CommentController::class, 'update'], ['auth', 'admin']);
-Router::post('/admin-panel/comments/delete', [CommentController::class, 'delete'], ['auth', 'admin']);
+Router::get('/admin-panel/comments', [CommentController::class, 'index'], ['auth', 'comment-index']);
+Router::get('/admin-panel/comments/edit/{commentId}', [CommentController::class, 'edit'], ['auth', 'comment-edit']);
+Router::post('/admin-panel/comments/update', [CommentController::class, 'update'], ['auth', 'comment-edit']);
+Router::post('/admin-panel/comments/delete', [CommentController::class, 'delete'], ['auth', 'comment-delete']);
 
-Router::get('/admin-panel/categories', [CategoryController::class, 'index'], ['auth', 'admin']);
-Router::get('/admin-panel/categories/create', [CategoryController::class, 'create'], ['auth', 'admin']);
-Router::post('/admin-panel/categories/store', [CategoryController::class, 'store'], ['auth', 'admin']);
-Router::get('/admin-panel/categories/edit/{categoryId}', [CategoryController::class, 'edit'], ['auth', 'admin']);
-Router::post('/admin-panel/categories/update', [CategoryController::class, 'update'], ['auth', 'admin']);
-Router::post('/admin-panel/categories/delete', [CategoryController::class, 'delete'], ['auth', 'admin']);
+Router::get('/admin-panel/categories', [CategoryController::class, 'index'], ['auth', 'category-index']);
+Router::get('/admin-panel/categories/create', [CategoryController::class, 'create'], ['auth', 'category-create']);
+Router::post('/admin-panel/categories/store', [CategoryController::class, 'store'], ['auth', 'category-create']);
+Router::get('/admin-panel/categories/edit/{categoryId}', [CategoryController::class, 'edit'], ['auth', 'category-edit']);
+Router::post('/admin-panel/categories/update', [CategoryController::class, 'update'], ['auth', 'category-edit']);
+Router::post('/admin-panel/categories/delete', [CategoryController::class, 'delete'], ['auth', 'category-delete']);
 
-Router::get('/admin-panel/orders', [OrderController::class, 'index'], ['auth', 'admin']);
-Router::get('/admin-panel/orders/{orderId}', [OrderController::class, 'show'], ['auth', 'admin']);
+Router::get('/admin-panel/orders', [OrderController::class, 'index'], ['auth', 'order-index']);
+Router::get('/admin-panel/orders/{orderId}', [OrderController::class, 'show'], ['auth', 'order-index']);
 
-Router::get('/admin-panel/database/backup', [DatabaseController::class, 'backupIndex'], ['auth', 'admin']);
-Router::post('/admin-panel/database/backup', [DatabaseController::class, 'backupDownload'], ['auth', 'admin']);
-Router::get('/admin-panel/database/recovery', [DatabaseController::class, 'recoveryIndex'], ['auth', 'admin']);
-Router::post('/admin-panel/database/recovery', [DatabaseController::class, 'recoveryUpload'], ['auth', 'admin']);
+Router::get('/admin-panel/database/backup', [DatabaseController::class, 'backupIndex'], ['auth', 'database-backup']);
+Router::post('/admin-panel/database/backup', [DatabaseController::class, 'backupDownload'], ['auth', 'database-backup']);
+Router::get('/admin-panel/database/recovery', [DatabaseController::class, 'recoveryIndex'], ['auth', 'database-recovery']);
+Router::post('/admin-panel/database/recovery', [DatabaseController::class, 'recoveryUpload'], ['auth', 'database-recovery']);
 
 Router::get('/admin/create', [UserController::class, 'createAdmin']);
