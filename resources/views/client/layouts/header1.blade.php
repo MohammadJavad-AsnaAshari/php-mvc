@@ -53,6 +53,46 @@
                             <i class="fa fa-shield" aria-hidden="true"></i>
                             <span>Admin Panel</span>
                         </a>
+                    @elseif(auth()->user()->hasPermission('user-index'))
+                        <a href="/admin-panel/users">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Users Panel</span>
+                        </a>
+                    @elseif(auth()->user()->hasPermission('permission-index'))
+                        <a href="/admin-panel/permissions">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Permissions Panel</span>
+                        </a>
+                    @elseif(auth()->user()->hasPermission('product-index'))
+                        <a href="/admin-panel/products">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Products Panel</span>
+                        </a>
+                    @elseif(auth()->user()->hasPermission('category-index'))
+                        <a href="/admin-panel/categories">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Categories Panel</span>
+                        </a>
+                    @elseif(auth()->user()->hasPermission('comment-index'))
+                        <a href="/admin-panel/comments">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Comments Panel</span>
+                        </a>
+                    @elseif(auth()->user()->hasPermission('order-index'))
+                        <a href="/admin-panel/orders">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Orders Panel</span>
+                        </a>
+                    @elseif(auth()->user()->hasPermission('database-backup'))
+                        <a href="/admin-panel/database/backup">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Database Backup Panel</span>
+                        </a>
+                    @elseif(auth()->user()->hasPermission('database-recovery'))
+                        <a href="/admin-panel/database/recovery">
+                            <i class="fa fa-shield" aria-hidden="true"></i>
+                            <span>Database Recovery Panel</span>
+                        </a>
                     @endif
                     <a href="/user-panel/{{ auth()->user()->id }}">
                         <i class="fa fa-user" aria-hidden="true"></i>
