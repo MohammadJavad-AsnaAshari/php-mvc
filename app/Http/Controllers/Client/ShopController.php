@@ -12,7 +12,8 @@ class ShopController extends Controller
     public function index(): string
     {
         $products = new Product();
-        $orderBy = 'DESC';
+        $dateOrderBy = null;
+        $priceOrderBy = null;
 
         if (!request()->has('products') || request('products') !== 'all') {
             $products->limit(8);
@@ -23,16 +24,31 @@ class ShopController extends Controller
             $products = $products->where('name', $search, 'LIKE');
         }
 
-        if (request()->has('order-by')) {
-            $param = strtoupper(request('order-by'));
+        if (request()->has('date-order-by')) {
+            $param = strtoupper(request('date-order-by'));
             if ($param === 'ASC' || $param === 'DESC') {
-                $orderBy = $param;
+                $dateOrderBy = $param;
             }
         }
 
-        $products = $products->orderBy('created_at', $orderBy)->get();
+        if (request()->has('price-order-by')) {
+            $param = strtoupper(request('price-order-by'));
+            if ($param === 'ASC' || $param === 'DESC') {
+                $priceOrderBy = $param;
+            }
+        }
 
-        return $this->render('client.shop', compact('products'));
+        if ($dateOrderBy) {
+            $products = $products->orderBy('created_at', $dateOrderBy);
+        }
+
+        if ($priceOrderBy) {
+            $products = $products->orderBy('price', $priceOrderBy);
+        }
+
+        $products = $products->get();
+
+        return $this->render('client.shop', compact('products', 'dateOrderBy', 'priceOrderBy'));
     }
 
     public function show(int $product)

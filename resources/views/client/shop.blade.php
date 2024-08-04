@@ -7,16 +7,36 @@
         <div class="heading-center navbar-collapse innerpage_navbar search-container d-flex justify-content-center align-items-center pt-3"
              id="navbarSupportedContent">
 
-            @if(request()->has('order-by') && strtoupper(request('order-by') === 'DESC'))
-                <a href="/shop?order-by=ASC"
-                   class="btn nav_search-btn order-btn {{ request()->has('order-by') && strtoupper(request('order-by')) === 'ASC' ? 'active' : '' }}">
-                    ASC
+            <!-- Date Order By -->
+            @if($dateOrderBy === 'DESC')
+                <a href="/shop?products=all&date-order-by=ASC"
+                   class="btn nav_search-btn order-btn"
+                   style="{{ $dateOrderBy ? 'background-color: #F89CAB; color: #ffffff;' : '' }}">
+                    Date ASC
                     <i class="fa fa-sort" aria-hidden="true"></i>
                 </a>
             @else
-                <a href="/shop?order-by=DESC"
-                   class="btn nav_search-btn order-btn {{ request()->has('order-by') && strtoupper(request('order-by')) === 'DESC' ? 'active' : '' }}">
-                    DESC
+                <a href="/shop?products=all&date-order-by=DESC"
+                   class="btn nav_search-btn order-btn"
+                   style="{{ $dateOrderBy ? 'background-color: #F89CAB; color: #ffffff;' : '' }}">
+                    Date DESC
+                    <i class="fa fa-sort" aria-hidden="true"></i>
+                </a>
+            @endif
+
+            <!-- Price Order By -->
+            @if($priceOrderBy === 'DESC')
+                <a href="/shop?products=all&price-order-by=ASC"
+                   class="btn nav_search-btn order-btn"
+                   style="{{ $priceOrderBy ? 'background-color: #F89CAB; color: #ffffff;' : '' }}">
+                    Price ASC
+                    <i class="fa fa-sort" aria-hidden="true"></i>
+                </a>
+            @else
+                <a href="/shop?products=all&price-order-by=DESC"
+                   class="btn nav_search-btn order-btn"
+                   style="{{ $priceOrderBy ? 'background-color: #F89CAB; color: #ffffff;' : '' }}">
+                    Price DESC
                     <i class="fa fa-sort" aria-hidden="true"></i>
                 </a>
             @endif
