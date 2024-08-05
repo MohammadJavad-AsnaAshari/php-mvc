@@ -7,7 +7,9 @@ use PDOException;
 
 class Database
 {
-    public PDO $pdo;
+    private static self|null $instance = null;
+
+    private PDO $pdo;
     public Migration $migration;
 
     public function __construct()
@@ -24,6 +26,20 @@ class Database
             echo "Connection failed: " . $e->getMessage();
             exit;
         }
+    }
+
+    public static function getInstance(): Database
+    {
+        if (!self::$instance) {
+            self::$instance = new Database();
+        }
+
+        return self::$instance;
+    }
+
+    public function getPDO(): PDO
+    {
+        return $this->pdo;
     }
 
     public function beginTransaction(): bool

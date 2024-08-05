@@ -2,13 +2,15 @@
 
 namespace Mj\PocketCore\Database;
 
+use PDO;
 use Mj\PocketCore\Database\Trait\Relation;
 use PDOStatement;
 
-class Model extends Database
+class Model
 {
     use Relation;
 
+    protected PDO $pdo;
     protected string $table;
     protected string $sql;
     protected PDOStatement $statement;
@@ -18,6 +20,10 @@ class Model extends Database
     protected ?int $limit = null;
     protected string $orderBy;
 
+    public function __construct()
+    {
+        $this->pdo = Database::getInstance()->getPDO();
+    }
     /**
      * @param array $data
      * @return bool
