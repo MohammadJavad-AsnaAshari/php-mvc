@@ -5,8 +5,11 @@ use Mj\PocketCore\Database\Database;
 return new class{
 
     private Database $database;
+    private PDO $pdo;
+
     public function __construct() {
-        $this->database = new Database();
+        $this->database = Database::getInstance();
+        $this->pdo = $this->database->getPDO();
     }
 
     public function up(): void
@@ -21,13 +24,13 @@ return new class{
               CONSTRAINT `fk_category_product_product_id` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`)
         );";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 
     public function down(): void
     {
         $sql = "DROP TABLE IF EXISTS `category_product`";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 };

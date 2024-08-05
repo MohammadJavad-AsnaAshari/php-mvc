@@ -5,8 +5,11 @@ use Mj\PocketCore\Database\Database;
 return new class{
 
     private Database $database;
+    private PDO $pdo;
+
     public function __construct() {
-        $this->database = new Database();
+        $this->database = Database::getInstance();
+        $this->pdo = $this->database->getPDO();
     }
 
     public function up(): void
@@ -19,13 +22,13 @@ return new class{
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 
     public function down(): void
     {
         $sql = "DROP TABLE IF EXISTS `permissions`";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 };

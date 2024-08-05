@@ -5,10 +5,11 @@ use Mj\PocketCore\Database\Database;
 return new class {
 
     private Database $database;
+    private PDO $pdo;
 
-    public function __construct()
-    {
-        $this->database = new Database();
+    public function __construct() {
+        $this->database = Database::getInstance();
+        $this->pdo = $this->database->getPDO();
     }
 
     public function up(): void
@@ -38,7 +39,7 @@ return new class {
         // Replace placeholders with actual values
         $sql = str_replace(['$backupPath', '$dbUsername', '$dbPassword', '$dbHost', '$dbName'], [$backupPath, $dbUsername, $dbPassword, $dbHost, $dbName], $sql);
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 
     public function down(): void
@@ -48,6 +49,6 @@ return new class {
             DROP PROCEDURE IF EXISTS restore_database;
         ";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 };

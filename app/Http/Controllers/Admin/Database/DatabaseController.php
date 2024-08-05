@@ -38,7 +38,8 @@ class DatabaseController extends Controller
 
         // Execute the backup procedure and get the command
         $sql = "CALL backup_database('$backupPath')";
-        $stmt = $this->database->pdo->query($sql);
+        $pdo = $this->database->getPDO();
+        $stmt = $pdo->query($sql);
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         $command = $result['command'];
 
@@ -103,7 +104,8 @@ class DatabaseController extends Controller
         $sqlCommands = file_get_contents($tempPath);
 
         // Execute the SQL commands
-        $this->database->pdo->exec($sqlCommands);
+        $pdo = $pdo = $this->database->getPDO();
+        $pdo->exec($sqlCommands);
 
         // Remove the temporary file
         unlink($tempPath);

@@ -71,7 +71,8 @@ class Migration
             migration VARCHAR(255) NOT NULL,
             batch INT NOT NULL
         ) ENGINE=INNODB;";
-        $this->database->pdo->exec($sql);
+        $pdo = $this->database->getPDO();
+        $pdo->exec($sql);
     }
 
     private function log($message): void
@@ -88,14 +89,16 @@ class Migration
         $migrations = implode(', ', array_map(fn($migration) => "('$migration', '$batchNumber')", $rows));
 
         $sql = "INSERT INTO migrations (migration, batch) VALUES $migrations";
-        $statement = $this->database->pdo->prepare($sql);
+        $pdo = $this->database->getPDO();
+        $statement = $pdo->prepare($sql);
         $statement->execute();
     }
 
     private function getLastBatchNumber(): int
     {
         $sql = "SELECT MAX(batch) AS MAX FROM migrations";
-        $statement = $this->database->pdo->query($sql);
+        $pdo = $this->database->getPDO();
+        $statement = $pdo->query($sql);
 
         return $statement->fetchColumn() ?? 0;
     }
@@ -103,7 +106,8 @@ class Migration
     private function getAppliedMigrations(): ?array
     {
         $sql = "SELECT * FROM migrations";
-        $statement = $this->database->pdo->query($sql);
+        $pdo = $this->database->getPDO();
+        $statement = $pdo->query($sql);
 
         return $statement->fetchAll(\PDO::FETCH_OBJ);
     }
@@ -112,7 +116,8 @@ class Migration
     {
         $migrationsId = implode(', ', $migration);
         $sql = "DELETE FROM migrations WHERE id IN ($migrationsId)";
-        $statement = $this->database->pdo->prepare($sql);
+        $pdo = $this->database->getPDO();
+        $statement = $pdo->prepare($sql);
         $statement->execute();
     }
 }

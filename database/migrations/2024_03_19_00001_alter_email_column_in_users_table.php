@@ -5,21 +5,24 @@ use Mj\PocketCore\Database\Database;
 return new class{
 
     private Database $database;
+    private PDO $pdo;
+
     public function __construct() {
-        $this->database = new Database();
+        $this->database = Database::getInstance();
+        $this->pdo = $this->database->getPDO();
     }
 
     public function up(): void
     {
         $sql = "ALTER TABLE users ADD CONSTRAINT email_unique UNIQUE (email)";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 
     public function down(): void
     {
         $sql = "ALTER TABLE users DROP CONSTRAINT email_unique";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 };

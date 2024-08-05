@@ -5,8 +5,11 @@ use Mj\PocketCore\Database\Database;
 return new class{
 
     private Database $database;
+    private PDO $pdo;
+
     public function __construct() {
-        $this->database = new Database();
+        $this->database = Database::getInstance();
+        $this->pdo = $this->database->getPDO();
     }
 
     public function up(): void
@@ -14,7 +17,7 @@ return new class{
         $sql = "ALTER TABLE `comments`
                 ADD COLUMN `status` BOOLEAN NOT NULL DEFAULT 0 AFTER `comment`;";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 
     public function down(): void
@@ -22,6 +25,6 @@ return new class{
         $sql = "ALTER TABLE `comments`
                 DROP COLUMN `status`;";
 
-        $this->database->pdo->exec($sql);
+        $this->pdo->exec($sql);
     }
 };
