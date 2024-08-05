@@ -25,7 +25,7 @@
                         <thead>
                         <tr>
                             <th>Order ID</th>
-                            <th>User ID</th>
+                            <th>User Name</th>
                             <th>Status</th>
                             <th>Created At</th>
                             <th>Total Price</th>
@@ -38,7 +38,7 @@
                                 <td>{{ $order->id }}</td>
                                 <td>
                                     <a href="/user-panel/{{ $order->user_id }}">
-                                        {{ $order->user_id }}
+                                        {{ $order->user_name }}
                                     </a>
                                 </td>
                                 <td>{{ $order->status }}</td>

@@ -13,7 +13,10 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = (new Order())->get();
+        $sql = 'SELECT orders.*, users.name as user_name 
+                FROM orders
+                LEFT JOIN users ON users.id = orders.user_id';
+        $orders = (new Order())->query($sql);
 
         return view('admin.orders.index', compact('orders'));
     }
@@ -113,7 +116,10 @@ class OrderController extends Controller
 
     public function exportAll(string $as)
     {
-        $orders = (new Order())->get();
+        $sql = 'SELECT orders.*, users.name as user_name 
+                FROM orders
+                LEFT JOIN users ON users.id = orders.user_id';
+        $orders = (new Order())->query($sql);
 
         if ($as === 'pdf') {
             // Export to PDF
@@ -129,11 +135,12 @@ class OrderController extends Controller
             $pdf->AddPage();
 
             $html = '<table border="1" cellpadding="5">';
-            $html .= '<tr><th width="5%">Id</th><th width="5%">User ID</th><th width="8%">Status</th><th width="10%">Total Price</th><th width="20%">Created At</th></tr>';
+            $html .= '<tr><th width="5%">Id</th><th width="5%">User ID</th><th width="20%">User Name</th><th width="8%">Status</th><th width="10%">Total Price</th><th width="20%">Created At</th></tr>';
             foreach ($orders as $order) {
                 $html .= '<tr>';
                 $html .= '<td>' . $order->id . '</td>';
                 $html .= '<td>' . $order->user_id . '</td>';
+                $html .= '<td>' . $order->user_name . '</td>';
                 $html .= '<td>' . $order->status . '</td>';
                 $html .= '<td>' . $order->price . '$' . '</td>';
                 $html .= '<td>' . $order->created_at . '</td>';
@@ -152,7 +159,6 @@ class OrderController extends Controller
 
     public function exportShow(int $orderId, string $as)
     {
-        $order = (new Order())->find($orderId);
         $sql = "SELECT orders.*, products.*, order_product.quantity, products.price, calculate_total_price(products.price, order_product.quantity) as total_price
                 FROM orders
                 LEFT JOIN order_product ON orders.id = order_product.order_id
