@@ -7,6 +7,8 @@ use App\Models\Payment;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
 
 class OrderController extends Controller
@@ -152,6 +154,32 @@ class OrderController extends Controller
 
         } elseif ($as === 'word') {
             // Export to Word
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection(array('orientation' => 'landscape'));
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(1000)->addText('Id');
+            $table->addCell(2000)->addText('User ID');
+            $table->addCell(5000)->addText('User Name');
+            $table->addCell(2000)->addText('Status');
+            $table->addCell(3000)->addText('Total Price');
+            $table->addCell(5000)->addText('Created At');
+
+            foreach ($orders as $order) {
+                $table->addRow();
+                $table->addCell(1000)->addText($order->id);
+                $table->addCell(2000)->addText($order->user_id);
+                $table->addCell(5000)->addText($order->user_name);
+                $table->addCell(2000)->addText($order->status);
+                $table->addCell(3000)->addText($order->price . '$');
+                $table->addCell(5000)->addText($order->created_at);
+            }
+
+            $writer = new Word2007($phpWord);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            header('Content-Disposition: attachment;filename="all_orders_data.docx"');
+            $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
         }
@@ -199,6 +227,35 @@ class OrderController extends Controller
 
         } elseif ($as === 'word') {
             // Export to Word
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection(array('orientation' => 'landscape'));
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(1000)->addText('Id');
+            $table->addCell(5000)->addText('Product Name');
+            $table->addCell(3000)->addText('Image');
+            $table->addCell(2000)->addText('Price');
+            $table->addCell(2000)->addText('Quantity');
+
+            $totalPrice = 0;
+            foreach ($products as $product) {
+                $totalPrice += $product->total_price;
+                $table->addRow();
+                $table->addCell(1000)->addText($product->id);
+                $table->addCell(5000)->addText($product->name);
+                $table->addCell(3000)->addImage('storage/app/product/' . $product->image, array('width' => 100, 'height' => 100));
+                $table->addCell(2000)->addText($product->price . '$');
+                $table->addCell(2000)->addText($product->quantity);
+            }
+
+            $section->addTextBreak(2);
+            $section->addText('Total Price: ' . $totalPrice . '$', array('bold' => true, 'size' => 14));
+
+            $writer = new Word2007($phpWord);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            header('Content-Disposition: attachment;filename="show_order_data.docx"');
+            $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
         }

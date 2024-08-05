@@ -8,6 +8,8 @@ use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
 
 
@@ -252,6 +254,38 @@ class ProductController extends Controller
 
         } elseif ($as === 'word') {
             // Export to Word
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection(array('orientation' => 'landscape'));
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(500)->addText('Id');
+            $table->addCell(2000)->addText('Name');
+            $table->addCell(1200)->addText('Categories');
+            $table->addCell(3000)->addText('Description');
+            $table->addCell(2000)->addText('Specification');
+            $table->addCell(1500)->addText('Image');
+            $table->addCell(1000)->addText('Price');
+            $table->addCell(800)->addText('Like');
+            $table->addCell(1500)->addText('Created At');
+
+            foreach ($products as $product) {
+                $table->addRow();
+                $table->addCell(500)->addText($product->id);
+                $table->addCell(2000)->addText($product->name);
+                $table->addCell(1200)->addText($product->categories);
+                $table->addCell(3000)->addText($product->description);
+                $table->addCell(2000)->addText($product->specification);
+                $table->addCell(1500)->addImage('storage/app/product/' . $product->image, array('width' => 65, 'height' => 85));
+                $table->addCell(800)->addText($product->likes);
+                $table->addCell(1000)->addText($product->price . '$');
+                $table->addCell(1500)->addText($product->created_at);
+            }
+
+            $writer = new Word2007($phpWord);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            header('Content-Disposition: attachment;filename="products_data.docx"');
+            $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
         }

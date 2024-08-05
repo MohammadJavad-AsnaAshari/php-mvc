@@ -6,6 +6,8 @@ use App\Models\Category;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
 
 class CategoryController extends Controller
@@ -138,6 +140,26 @@ class CategoryController extends Controller
 
         } elseif ($as === 'word') {
             // Export to Word
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection(array('orientation' => 'landscape'));
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(500)->addText('Id');
+            $table->addCell(5000)->addText('Name');
+            $table->addCell(3000)->addText('Created At');
+
+            foreach ($categories as $category) {
+                $table->addRow();
+                $table->addCell(500)->addText($category->id);
+                $table->addCell(5000)->addText($category->name);
+                $table->addCell(3000)->addText($category->created_at);
+            }
+
+            $writer = new Word2007($phpWord);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            header('Content-Disposition: attachment;filename="categories_data.docx"');
+            $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
         }

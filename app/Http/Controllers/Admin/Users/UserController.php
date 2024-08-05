@@ -9,6 +9,8 @@ use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
 use Mj\PocketCore\Request;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
 
 class UserController extends Controller
@@ -285,6 +287,30 @@ class UserController extends Controller
 
         } elseif ($as === 'word') {
             // Export to Word
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection(array('orientation' => 'landscape'));
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(500)->addText('Id');
+            $table->addCell(2200)->addText('User Name');
+            $table->addCell(3600)->addText('Email');
+            $table->addCell(2000)->addText('Date');
+            $table->addCell(5000)->addText('Permissions');
+
+            foreach ($users as $user) {
+                $table->addRow();
+                $table->addCell(500)->addText($user->id);
+                $table->addCell(2200)->addText($user->name);
+                $table->addCell(3600)->addText($user->email);
+                $table->addCell(2000)->addText($user->created_at);
+                $table->addCell(5000)->addText($user->permissions);
+            }
+
+            $writer = new Word2007($phpWord);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            header('Content-Disposition: attachment;filename="users_data.docx"');
+            $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
         }

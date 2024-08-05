@@ -7,6 +7,8 @@ use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
 
 class PermissionController extends Controller
@@ -151,6 +153,28 @@ class PermissionController extends Controller
 
         } elseif ($as === 'word') {
             // Export to Word
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection(array('orientation' => 'landscape'));
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(1000)->addText('Id');
+            $table->addCell(3000)->addText('Name');
+            $table->addCell(3000)->addText('Label');
+            $table->addCell(2000)->addText('Date');
+
+            foreach ($permissions as $permission) {
+                $table->addRow();
+                $table->addCell(1000)->addText($permission->id);
+                $table->addCell(3000)->addText($permission->name);
+                $table->addCell(3000)->addText($permission->label);
+                $table->addCell(2000)->addText($permission->created_at);
+            }
+
+            $writer = new Word2007($phpWord);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            header('Content-Disposition: attachment;filename="permissions_data.docx"');
+            $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
         }

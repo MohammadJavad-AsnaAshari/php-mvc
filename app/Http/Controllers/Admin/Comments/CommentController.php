@@ -6,6 +6,8 @@ use App\Models\Comment;
 use App\Models\Product;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Exceptions\NotFoundException;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
 
 class CommentController extends Controller
@@ -101,6 +103,32 @@ class CommentController extends Controller
 
         } elseif ($as === 'word') {
             // Export to Word
+            $phpWord = new PhpWord();
+            $section = $phpWord->addSection(array('orientation' => 'landscape'));
+
+            $table = $section->addTable();
+            $table->addRow();
+            $table->addCell(500)->addText('Id');
+            $table->addCell(2000)->addText('User Name');
+            $table->addCell(3000)->addText('Product Name');
+            $table->addCell(6000)->addText('Comment');
+            $table->addCell(500)->addText('Status');
+            $table->addCell(2000)->addText('Created At');
+
+            foreach ($comments as $comment) {
+                $table->addRow();
+                $table->addCell(500)->addText($comment->id);
+                $table->addCell(2000)->addText($comment->user_name);
+                $table->addCell(3000)->addText($comment->product_name);
+                $table->addCell(6000)->addText($comment->comment);
+                $table->addCell(500)->addText($comment->status);
+                $table->addCell(2000)->addText($comment->created_at);
+            }
+
+            $writer = new Word2007($phpWord);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+            header('Content-Disposition: attachment;filename="comments_data.docx"');
+            $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
         }
