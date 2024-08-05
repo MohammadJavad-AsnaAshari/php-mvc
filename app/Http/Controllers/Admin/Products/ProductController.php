@@ -8,6 +8,7 @@ use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
+use TCPDF;
 
 
 class ProductController extends Controller
@@ -211,5 +212,48 @@ class ProductController extends Controller
         }
 
         throw new NotFoundException('This product does not exist!');
+    }
+
+    public function export(string $as)
+    {
+        $sql = "SELECT * FROM product_index";
+        $products = (new Product())->query($sql);
+
+        if ($as === 'pdf') {
+            // Export to PDF
+            $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetTitle('Products Data');
+            $pdf->SetHeaderData('', 30, 'Products table');
+            $pdf->SetHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+            $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+            $pdf->SetMargins(10.0, 20.0, 10.0);
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+            $pdf->SetFont('dejavusans', '', 10);
+            $pdf->AddPage();
+
+            $html = '<table border="1" cellpadding="5">';
+            $html .= '<tr><th width="5%">Id</th><th width="15%">Name</th><th width="10%">Categories</th><th width="20%">Description</th><th width="10%">Specification</th><th width="10%">Image</th><th width="10%">Price</th><th width="5%">Like</th><th width="10%">Created At</th></tr>';            foreach ($products as $product) {
+                $html .= '<tr>';
+                $html .= '<td>' . $product->id . '</td>';
+                $html .= '<td>' . $product->name . '</td>';
+                $html .= '<td>' . $product->categories . '</td>';
+                $html .= '<td>' . $product->description . '</td>';
+                $html .= '<td>' . $product->specification . '</td>';
+                $html .= '<td><img src="' . 'storage/app/product/' . $product->image . '"style="max-width: 100px; max-height: 100px;"></td>';
+                $html .= '<td>' . $product->price . '$' . '</td>';
+                $html .= '<td>' . $product->likes . '</td>';
+                $html .= '<td>' . $product->created_at . '</td>';
+                $html .= '</tr>';
+            }
+            $html .= '</table>';
+            $pdf->writeHTML($html, true, false, true, false, '');
+            $pdf->Output('products_data.pdf', 'D');
+
+        } elseif ($as === 'word') {
+            // Export to Word
+        } elseif ($as === 'excel') {
+            // Export to Excel
+        }
     }
 }

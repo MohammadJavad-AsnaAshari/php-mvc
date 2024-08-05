@@ -12,6 +12,12 @@
                     <h3 class="card-title">Products Index</h3>
 
                     <div class="card-tools d-flex">
+                        <div class="btn-group-sm" style="margin-right: 2rem;">
+                            <a href="/admin-panel/products/export/pdf" class="btn btn-danger">Export to PDF</a>
+                            <a href="/admin-panel/products/export/word" class="btn btn-primary">Export to Word</a>
+                            <a href="/admin-panel/products/export/excel" class="btn btn-success">Export to Excel</a>
+                        </div>
+
                         <div class="btn-group-sm" style="margin-right: 1rem;">
                             <a href="/admin-panel/products/create" class="btn btn-info">Create New Product</a>
                         </div>

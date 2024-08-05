@@ -12,6 +12,12 @@
                     <h3 class="card-title">Users Index</h3>
 
                     <div class="card-tools d-flex">
+                        <div class="btn-group-sm" style="margin-right: 2rem;">
+                            <a href="/admin-panel/users/export/pdf" class="btn btn-danger">Export to PDF</a>
+                            <a href="/admin-panel/users/export/word" class="btn btn-primary">Export to Word</a>
+                            <a href="/admin-panel/users/export/excel" class="btn btn-success">Export to Excel</a>
+                        </div>
+
                         <div class="btn-group-sm" style="margin-right: 1rem;">
                             <a href="/admin-panel/users/create" class="btn btn-info">Create New User</a>
                             <a href="/admin-panel/users/admin" class="btn btn-warning">Admin Users</a>

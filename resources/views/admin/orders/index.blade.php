@@ -10,6 +10,14 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Orders</h3>
+
+                    <div class="card-tools d-flex">
+                        <div class="btn-group-sm" style="margin-right: 2rem;">
+                            <a href="/admin-panel/orders/export/pdf" class="btn btn-danger">Export to PDF</a>
+                            <a href="/admin-panel/orders/export/word" class="btn btn-primary">Export to Word</a>
+                            <a href="/admin-panel/orders/export/excel" class="btn btn-success">Export to Excel</a>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">

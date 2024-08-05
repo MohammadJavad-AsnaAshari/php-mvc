@@ -6,16 +6,13 @@ use App\Models\Comment;
 use App\Models\Product;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Exceptions\NotFoundException;
+use TCPDF;
 
 class CommentController extends Controller
 {
     public function index()
     {
-        $sql = "SELECT comments.*, users.name as user_name, products.name as product_name
-            FROM comments
-            INNER JOIN users ON comments.user_id = users.id
-            INNER JOIN products ON comments.product_id = products.id
-            ORDER BY comments.created_at DESC";
+        $sql = "SELECT * FROM comment_index";
 
         $comments = (new Comment())->query($sql);
 
@@ -66,5 +63,46 @@ class CommentController extends Controller
         }
 
         return redirect('/admin-panel/comments');
+    }
+
+    public function export(string $as)
+    {
+        $sql = "SELECT * FROM comment_index";
+        $comments = (new Comment())->query($sql);
+
+        if ($as === 'pdf') {
+            // Export to PDF
+            $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetTitle('Comments Data');
+            $pdf->SetHeaderData('', 30, 'Comments table');
+            $pdf->SetHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+            $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+            $pdf->SetMargins(10.0, 20.0, 10.0);
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+            $pdf->SetFont('dejavusans', '', 10);
+            $pdf->AddPage();
+
+            $html = '<table border="1" cellpadding="5">';
+            $html .= '<tr><th width="5%">Id</th><th width="15%">User Name</th><th width="20%">Product Name</th><th width="30%">Comment</th><th width="8%">Status</th><th width="15%">Created At</th></tr>';
+            foreach ($comments as $comment) {
+                $html .= '<tr>';
+                $html .= '<td>' . $comment->id . '</td>';
+                $html .= '<td>' . $comment->user_name . '</td>';
+                $html .= '<td>' . $comment->product_name . '</td>';
+                $html .= '<td>' . $comment->comment . '</td>';
+                $html .= '<td>' . $comment->status . '</td>';
+                $html .= '<td>' . $comment->created_at . '</td>';
+                $html .= '</tr>';
+            }
+            $html .= '</table>';
+            $pdf->writeHTML($html, true, false, true, false, '');
+            $pdf->Output('comments_data.pdf', 'D');
+
+        } elseif ($as === 'word') {
+            // Export to Word
+        } elseif ($as === 'excel') {
+            // Export to Excel
+        }
     }
 }

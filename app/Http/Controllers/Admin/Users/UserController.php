@@ -9,17 +9,13 @@ use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
 use Mj\PocketCore\Request;
+use TCPDF;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $sql = "SELECT users.*, GROUP_CONCAT(permissions.name) as permissions
-                FROM users
-                LEFT JOIN permission_user ON users.id = permission_user.user_id
-                LEFT JOIN permissions ON permission_user.permission_id = permissions.id
-                GROUP BY users.id
-                ";
+        $sql = "SELECT * FROM user_index";
         $users = (new User())->query($sql);
 
         return view('admin.users.index', compact('users'));
@@ -209,16 +205,16 @@ class UserController extends Controller
             $pdo->beginTransaction();
 
             try {
-            $userId = request()->input('user_id');
-            $user = (new User())->find($userId);
-            // Detach all existing permissions
-            $user->detachAllPermissions();
-            $user->delete($userId);
+                $userId = request()->input('user_id');
+                $user = (new User())->find($userId);
+                // Detach all existing permissions
+                $user->detachAllPermissions();
+                $user->delete($userId);
 
-            $pdo->commit();
+                $pdo->commit();
 
-            return redirect('/admin-panel/users');
-        } catch (\Exception $exception) {
+                return redirect('/admin-panel/users');
+            } catch (\Exception $exception) {
                 $pdo->rollBack();
 
                 throw new ServerException('Delete user failed!');
@@ -252,5 +248,45 @@ class UserController extends Controller
         }
 
         return redirect('/');
+    }
+
+    public function export(string $as)
+    {
+        $sql = "SELECT * FROM user_index";
+        $users = (new User())->query($sql);
+
+        if ($as === 'pdf') {
+            // Export to PDF
+            $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetTitle('Users Data');
+            $pdf->SetHeaderData('', 30, 'Users table');
+            $pdf->SetHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+            $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+            $pdf->SetMargins(10.0, 20.0, 10.0);
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+            $pdf->SetFont('dejavusans', '', 10);
+            $pdf->AddPage();
+
+            $html = '<table border="1" cellpadding="5">';
+            $html .= '<tr><th width="5%">Id</th><th width="20%">User Name</th><th width="20%">Email</th><th width="20%">Date</th><th width="35%">Permissions</th></tr>';
+            foreach ($users as $user) {
+                $html .= '<tr>';
+                $html .= '<td>' . $user->id . '</td>';
+                $html .= '<td>' . $user->name . '</td>';
+                $html .= '<td>' . $user->email . '</td>';
+                $html .= '<td>' . $user->created_at . '</td>';
+                $html .= '<td>' . $user->permissions . '</td>';
+                $html .= '</tr>';
+            }
+            $html .= '</table>';
+            $pdf->writeHTML($html, true, false, true, false, '');
+            $pdf->Output('users_data.pdf', 'D');
+
+        } elseif ($as === 'word') {
+            // Export to Word
+        } elseif ($as === 'excel') {
+            // Export to Excel
+        }
     }
 }

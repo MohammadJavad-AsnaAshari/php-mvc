@@ -7,6 +7,7 @@ use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
+use TCPDF;
 
 class PermissionController extends Controller
 {
@@ -115,5 +116,43 @@ class PermissionController extends Controller
         }
 
         throw new NotFoundException('Permission id not fount!');
+    }
+
+    public function export(string $as)
+    {
+        $permissions = (new Permission())->get();
+
+        if ($as === 'pdf') {
+            // Export to PDF
+            $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetTitle('Permissions Data');
+            $pdf->SetHeaderData('', 30, 'Permissions table');
+            $pdf->SetHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+            $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+            $pdf->SetMargins(10.0, 20.0, 10.0);
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+            $pdf->SetFont('dejavusans', '', 10);
+            $pdf->AddPage();
+
+            $html = '<table border="1" cellpadding="5">';
+            $html .= '<tr><th width="5%">Id</th><th width="30%">Name</th><th width="30%">Label</th><th width="20%">Date</th></tr>';
+            foreach ($permissions as $permission) {
+                $html .= '<tr>';
+                $html .= '<td>' . $permission->id . '</td>';
+                $html .= '<td>' . $permission->name . '</td>';
+                $html .= '<td>' . $permission->label . '</td>';
+                $html .= '<td>' . $permission->created_at . '</td>';
+                $html .= '</tr>';
+            }
+            $html .= '</table>';
+            $pdf->writeHTML($html, true, false, true, false, '');
+            $pdf->Output('permissions_data.pdf', 'D');
+
+        } elseif ($as === 'word') {
+            // Export to Word
+        } elseif ($as === 'excel') {
+            // Export to Excel
+        }
     }
 }

@@ -10,6 +10,14 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Comments Index</h3>
+
+                    <div class="card-tools d-flex">
+                        <div class="btn-group-sm" style="margin-right: 2rem;">
+                            <a href="/admin-panel/comments/export/pdf" class="btn btn-danger">Export to PDF</a>
+                            <a href="/admin-panel/comments/export/word" class="btn btn-primary">Export to Word</a>
+                            <a href="/admin-panel/comments/export/excel" class="btn btn-success">Export to Excel</a>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
@@ -41,7 +49,8 @@
                                 <td>{{ $comment->status }}</td>
                                 <td>{{ $comment->created_at }}</td>
                                 <td class="d-flex">
-                                    <a href="/admin-panel/comments/edit/{{ $comment->id }}" class="btn btn-sm btn-primary">
+                                    <a href="/admin-panel/comments/edit/{{ $comment->id }}"
+                                       class="btn btn-sm btn-primary">
                                         edit
                                     </a>
                                     <form action="/admin-panel/comments/delete" class="delete-form" method="POST">

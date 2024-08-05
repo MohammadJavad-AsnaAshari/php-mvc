@@ -7,6 +7,7 @@ use App\Models\Payment;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
+use TCPDF;
 
 class OrderController extends Controller
 {
@@ -108,5 +109,92 @@ class OrderController extends Controller
         $userId = auth()->user()->id;
 
         return 'cart_user_' . $userId;
+    }
+
+    public function exportAll(string $as)
+    {
+        $orders = (new Order())->get();
+
+        if ($as === 'pdf') {
+            // Export to PDF
+            $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetTitle('All Orders Data');
+            $pdf->SetHeaderData('', 30, 'All Orders table');
+            $pdf->SetHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+            $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+            $pdf->SetMargins(10.0, 20.0, 10.0);
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+            $pdf->SetFont('dejavusans', '', 10);
+            $pdf->AddPage();
+
+            $html = '<table border="1" cellpadding="5">';
+            $html .= '<tr><th width="5%">Id</th><th width="5%">User ID</th><th width="8%">Status</th><th width="10%">Total Price</th><th width="20%">Created At</th></tr>';
+            foreach ($orders as $order) {
+                $html .= '<tr>';
+                $html .= '<td>' . $order->id . '</td>';
+                $html .= '<td>' . $order->user_id . '</td>';
+                $html .= '<td>' . $order->status . '</td>';
+                $html .= '<td>' . $order->price . '$' . '</td>';
+                $html .= '<td>' . $order->created_at . '</td>';
+                $html .= '</tr>';
+            }
+            $html .= '</table>';
+            $pdf->writeHTML($html, true, false, true, false, '');
+            $pdf->Output('all_orders_data.pdf', 'D');
+
+        } elseif ($as === 'word') {
+            // Export to Word
+        } elseif ($as === 'excel') {
+            // Export to Excel
+        }
+    }
+
+    public function exportShow(int $orderId, string $as)
+    {
+        $order = (new Order())->find($orderId);
+        $sql = "SELECT orders.*, products.*, order_product.quantity, products.price, calculate_total_price(products.price, order_product.quantity) as total_price
+                FROM orders
+                LEFT JOIN order_product ON orders.id = order_product.order_id
+                LEFT JOIN products ON order_product.product_id = products.id
+                WHERE orders.id = :orderId";
+        $products = (new Order())->query($sql, ['orderId' => $orderId]);
+
+        if ($as === 'pdf') {
+            // Export to PDF
+            $pdf = new TCPDF('L', PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+            $pdf->SetCreator(PDF_CREATOR);
+            $pdf->SetTitle('Show Order Data');
+            $pdf->SetHeaderData('', 30, 'Show Order table');
+            $pdf->SetHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+            $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+            $pdf->SetMargins(10.0, 20.0, 10.0);
+            $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+            $pdf->SetFont('dejavusans', '', 10);
+            $pdf->AddPage();
+
+            $html = '<table border="1" cellpadding="5">';
+            $html .= '<tr><th width="5%">Id</th><th width="20%">Product Name</th><th width="10%">Image</th><th width="10%">Price</th><th width="8%">Quantity</th></tr>';
+            $totalPrice = 0;
+            foreach ($products as $product) {
+                $totalPrice += $product->total_price;
+                $html .= '<tr>';
+                $html .= '<td>' . $product->id . '</td>';
+                $html .= '<td>' . $product->name . '</td>';
+                $html .= '<td><img src="' . 'storage/app/product/' . $product->image . '"style="max-width: 100px; max-height: 100px;"></td>';
+                $html .= '<td>' . $product->price . '$' . '</td>';
+                $html .= '<td>' . $product->quantity . '</td>';
+                $html .= '</tr>';
+            }
+            $html .= '</table>';
+            $html .= '<h3>' . 'Total Price: ' . $totalPrice . '$' . '</h3>';
+            $pdf->writeHTML($html, true, false, true, false, '');
+            $pdf->Output('show_order_data.pdf', 'D');
+
+        } elseif ($as === 'word') {
+            // Export to Word
+        } elseif ($as === 'excel') {
+            // Export to Excel
+        }
     }
 }
