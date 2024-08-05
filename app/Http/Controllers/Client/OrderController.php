@@ -7,6 +7,7 @@ use App\Models\Payment;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
+use Mj\PocketCore\Exceptions\ServerException;
 
 class OrderController extends Controller
 {
@@ -48,8 +49,9 @@ class OrderController extends Controller
         }
 
         // Start a new transaction
-        $db = new Database();
-        $db->beginTransaction();
+        $db = Database::getInstance();
+        $pdo = $db->getPDO();
+        $pdo->beginTransaction();
 
         try {
             // Create the order
@@ -68,7 +70,7 @@ class OrderController extends Controller
             // Clear the cart
             session()->remove($cartKey);
 
-            $db->commit();
+            $pdo->commit();
 
             return redirect('/user-panel/orders');
         } catch (\Exception $e) {
@@ -76,11 +78,10 @@ class OrderController extends Controller
             error_log($e->getMessage());
 
             // Rollback the transaction
-            $db->rollback();
+            $pdo->rollback();
 
-            return redirect('/cart');
+            throw new ServerException('Create Order failed!');
         }
-
     }
 
     public function payment()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client\Dashboard;
 
 use App\Models\User;
 use Mj\PocketCore\Controller;
+use Mj\PocketCore\Exceptions\ForbiddenException;
 use Mj\PocketCore\Exceptions\UnauthorizedException;
 
 class UserPanelController extends Controller
@@ -27,7 +28,7 @@ class UserPanelController extends Controller
             return view('client.panel.edit', compact('user'));
         }
 
-        throw new UnauthorizedException();
+        throw new ForbiddenException();
     }
 
     public function update()
@@ -65,7 +66,7 @@ class UserPanelController extends Controller
                 return redirect('/user-panel/' . $userId);
             }
 
-            throw new UnauthorizedException();
+            throw new ForbiddenException();
         }
 
         return redirect('/');
@@ -83,7 +84,7 @@ class UserPanelController extends Controller
                 return redirect('/');
             }
 
-            throw new UnauthorizedException();
+            throw new ForbiddenException();
         }
 
         return redirect('/');

@@ -40,7 +40,6 @@ class ProductController extends Controller
 
     public function store()
     {
-        $db = new Database();
         $validation = $this->validate(
             request()->all(),
             [
@@ -62,7 +61,9 @@ class ProductController extends Controller
         unset($validatedData['categories']);
 
         // Start a new transaction
-        $db->beginTransaction();
+        $db = Database::getInstance();
+        $pdo = $db->getPDO();
+        $pdo->beginTransaction();
 
         try {
             if (request()->hasFile('image')) {
@@ -89,16 +90,16 @@ class ProductController extends Controller
             }
 
             // Commit the transaction
-            $db->commit();
+            $pdo->commit();
 
             return redirect('/admin-panel/products');
         } catch (\Exception $e) {
             error_log($e->getMessage());
 
             // Rollback the transaction
-            $db->rollback();
+            $pdo->rollback();
 
-            throw new ServerException($e);
+            throw new ServerException('Create Product failed!');
         }
     }
 
@@ -116,7 +117,6 @@ class ProductController extends Controller
     public function update()
     {
         if (request()->has('product_id')) {
-            $db = new Database();
             $product = (new Product())->find(request()->input('product_id'));
             $validation = $this->validate(
                 request()->all(),
@@ -139,7 +139,9 @@ class ProductController extends Controller
             unset($validatedData['categories']);
 
             // Start a new transaction
-            $db->beginTransaction();
+            $db = Database::getInstance();
+            $pdo = $db->getPDO();
+            $pdo->beginTransaction();
 
             try {
                 if (request()->hasFile('image')) {
@@ -170,16 +172,16 @@ class ProductController extends Controller
                 }
 
                 // Commit the transaction
-                $db->commit();
+                $pdo->commit();
 
                 return redirect('/admin-panel/products');
             } catch (\Exception $e) {
                 error_log($e->getMessage());
 
                 // Rollback the transaction
-                $db->rollback();
+                $pdo->rollback();
 
-                throw new ServerException($e);
+                throw new ServerException('Update Product failed!');
             }
         }
 
@@ -189,26 +191,27 @@ class ProductController extends Controller
     public function delete()
     {
         if (request()->has('product_id') && $product = (new Product())->find(request()->input('product_id'))) {
-            $db = new Database();
 
             // Start a new transaction
-            $db->beginTransaction();
+            $db = Database::getInstance();
+            $pdo = $db->getPDO();
+            $pdo->beginTransaction();
 
             try {
                 $product->detachAllCategories();
                 $product->delete($product->id);
 
                 // Commit the transaction
-                $db->commit();
+                $pdo->commit();
 
                 return redirect('/admin-panel/products');
             } catch (\Exception $e) {
                 error_log($e->getMessage());
 
                 // Rollback the transaction
-                $db->rollback();
+                $pdo->rollback();
 
-                throw new ServerException($e);
+                throw new ServerException('Delete Product failed!');
             }
         }
 

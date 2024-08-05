@@ -81,8 +81,9 @@ class UserController extends Controller
         unset($validatedData['permissions']);
 
         // Start a new transaction
-        $db = new Database();
-        $db->beginTransaction();
+        $db = Database::getInstance();
+        $pdo = $db->getPDO();
+        $pdo->beginTransaction();
 
         try {
             $user = (new User());
@@ -98,7 +99,7 @@ class UserController extends Controller
                 }
             }
 
-            $db->commit();
+            $pdo->commit();
 
             return redirect('/admin-panel/users');
         } catch (\Exception $e) {
@@ -106,9 +107,9 @@ class UserController extends Controller
             error_log($e->getMessage());
 
             // Rollback the transaction
-            $db->rollback();
+            $pdo->rollback();
 
-            return redirect('/admin-panel/users');
+            throw new ServerException('Create User failed!');
         }
     }
 
@@ -162,8 +163,9 @@ class UserController extends Controller
             }
 
             // Start a new transaction
-            $db = new Database();
-            $db->beginTransaction();
+            $db = Database::getInstance();
+            $pdo = $db->getPDO();
+            $pdo->beginTransaction();
 
             try {
                 $user = (new User())->find($validatedUserId);
@@ -179,7 +181,7 @@ class UserController extends Controller
                     }
 
                     // Commit the transaction
-                    $db->commit();
+                    $pdo->commit();
 
                     return redirect('/admin-panel/users');
                 }
@@ -190,28 +192,40 @@ class UserController extends Controller
                 error_log($e->getMessage());
 
                 // Rollback the transaction
-                $db->rollback();
+                $pdo->rollback();
 
                 throw new ServerException('Update user failed!');
             }
         }
 
-        return redirect('/admin-panel/users');
+        throw new NotFoundException('This User Id does not exist!');
     }
 
     public function delete()
     {
         if (request()->has('user_id')) {
+            $db = Database::getInstance();
+            $pdo = $db->getPDO();
+            $pdo->beginTransaction();
+
+            try {
             $userId = request()->input('user_id');
             $user = (new User())->find($userId);
             // Detach all existing permissions
             $user->detachAllPermissions();
             $user->delete($userId);
 
+            $pdo->commit();
+
             return redirect('/admin-panel/users');
+        } catch (\Exception $exception) {
+                $pdo->rollBack();
+
+                throw new ServerException('Delete user failed!');
+            }
         }
 
-        return redirect('/admin-panel/users');
+        throw new NotFoundException('This User Id does not exist!');
     }
 
     public function createAdmin()
