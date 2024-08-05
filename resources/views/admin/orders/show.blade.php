@@ -28,7 +28,7 @@
                         <tbody>
                         @foreach($products as $product)
                             @php
-                                $totalPrice += $product->price * $product->quantity;
+                                $totalPrice += $product->total_price;
                             @endphp
                             <tr>
                                 <td style="vertical-align: middle;">{{ $product->id }}</td>
@@ -42,7 +42,7 @@
                                 </td>
                                 <td style="vertical-align: middle;">{{ $product->price }} $</td>
                                 <td style="vertical-align: middle;">{{ $product->quantity }}</td>
-                                <td style="vertical-align: middle;">{{ $product->price * $product->quantity }} $</td>
+                                <td style="vertical-align: middle;">{{ $product->total_price }} $</td>
                             </tr>
                         @endforeach
                         </tbody>

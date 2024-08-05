@@ -14,12 +14,7 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $sql = "SELECT products.*, GROUP_CONCAT(categories.name) as categories, COUNT(product_like.id) as likes
-                FROM products
-                LEFT JOIN product_like ON products.id = product_like.product_id
-                LEFT JOIN category_product ON products.id = category_product.product_id
-                LEFT JOIN categories ON category_product.category_id = categories.id
-                GROUP BY products.id";
+        $sql = "SELECT * FROM product_index";
 
         $products = (new Product())->query($sql);
 

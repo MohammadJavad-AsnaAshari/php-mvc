@@ -78,4 +78,14 @@ class Product extends Model
 
         return $categoryIds;
     }
+
+    public function getTotalPrice()
+    {
+        $sql = "SELECT calculate_total_price(price, quantity) as total_price FROM products WHERE id = ?";
+
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute([$this->id]);
+
+        return $statement->fetchColumn();
+    }
 }

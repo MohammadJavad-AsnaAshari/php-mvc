@@ -20,7 +20,7 @@ class OrderController extends Controller
     public function show(int $orderId)
     {
         $order = (new Order())->find($orderId);
-        $sql = "SELECT orders.*, products.*, order_product.quantity, products.price
+        $sql = "SELECT orders.*, products.*, order_product.quantity, products.price, calculate_total_price(products.price, order_product.quantity) as total_price
                 FROM orders
                 LEFT JOIN order_product ON orders.id = order_product.order_id
                 LEFT JOIN products ON order_product.product_id = products.id
