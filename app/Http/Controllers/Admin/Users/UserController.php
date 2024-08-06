@@ -9,6 +9,8 @@ use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
 use Mj\PocketCore\Request;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
@@ -313,6 +315,28 @@ class UserController extends Controller
             $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'Id');
+            $sheet->setCellValue('B1', 'User Name');
+            $sheet->setCellValue('C1', 'Email');
+            $sheet->setCellValue('D1', 'Date');
+            $sheet->setCellValue('E1', 'Permissions');
+
+            $row = 2;
+            foreach ($users as $user) {
+                $sheet->setCellValue('A' . $row, $user->id);
+                $sheet->setCellValue('B' . $row, $user->name);
+                $sheet->setCellValue('C' . $row, $user->email);
+                $sheet->setCellValue('D' . $row, $user->created_at);
+                $sheet->setCellValue('E' . $row, $user->permissions);
+                $row++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="users_data.xlsx"');
+            $writer->save('php://output');
         }
     }
 }

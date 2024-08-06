@@ -6,6 +6,8 @@ use App\Models\Comment;
 use App\Models\Product;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Exceptions\NotFoundException;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
@@ -131,6 +133,30 @@ class CommentController extends Controller
             $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'Id');
+            $sheet->setCellValue('B1', 'User Name');
+            $sheet->setCellValue('C1', 'Product Name');
+            $sheet->setCellValue('D1', 'Comment');
+            $sheet->setCellValue('E1', 'Status');
+            $sheet->setCellValue('F1', 'Created At');
+
+            $row = 2;
+            foreach ($comments as $comment) {
+                $sheet->setCellValue('A' . $row, $comment->id);
+                $sheet->setCellValue('B' . $row, $comment->user_name);
+                $sheet->setCellValue('C' . $row, $comment->product_name);
+                $sheet->setCellValue('D' . $row, $comment->comment);
+                $sheet->setCellValue('E' . $row, $comment->status);
+                $sheet->setCellValue('F' . $row, $comment->created_at);
+                $row++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="comments_data.xlsx"');
+            $writer->save('php://output');
         }
     }
 }

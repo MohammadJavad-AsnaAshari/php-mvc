@@ -7,6 +7,8 @@ use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
@@ -177,6 +179,26 @@ class PermissionController extends Controller
             $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'Id');
+            $sheet->setCellValue('B1', 'Name');
+            $sheet->setCellValue('C1', 'Label');
+            $sheet->setCellValue('D1', 'Date');
+
+            $row = 2;
+            foreach ($permissions as $permission) {
+                $sheet->setCellValue('A' . $row, $permission->id);
+                $sheet->setCellValue('B' . $row, $permission->name);
+                $sheet->setCellValue('C' . $row, $permission->label);
+                $sheet->setCellValue('D' . $row, $permission->created_at);
+                $row++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="permissions_data.xlsx"');
+            $writer->save('php://output');
         }
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin\Order;
 
 use App\Models\Order;
-use App\Models\Payment;
 use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
@@ -182,6 +183,30 @@ class OrderController extends Controller
             $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'Id');
+            $sheet->setCellValue('B1', 'User ID');
+            $sheet->setCellValue('C1', 'User Name');
+            $sheet->setCellValue('D1', 'Status');
+            $sheet->setCellValue('E1', 'Total Price');
+            $sheet->setCellValue('F1', 'Created At');
+
+            $row = 2;
+            foreach ($orders as $order) {
+                $sheet->setCellValue('A' . $row, $order->id);
+                $sheet->setCellValue('B' . $row, $order->user_id);
+                $sheet->setCellValue('C' . $row, $order->user_name);
+                $sheet->setCellValue('D' . $row, $order->status);
+                $sheet->setCellValue('E' . $row, $order->price . '$');
+                $sheet->setCellValue('F' . $row, $order->created_at);
+                $row++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="all_orders_data.xlsx"');
+            $writer->save('php://output');
         }
     }
 
@@ -258,6 +283,35 @@ class OrderController extends Controller
             $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'Id');
+            $sheet->setCellValue('B1', 'Product Name');
+            $sheet->setCellValue('C1', 'Image');
+            $sheet->setCellValue('D1', 'Price');
+            $sheet->setCellValue('E1', 'Quantity');
+            $sheet->setCellValue('F1', 'Total Price');
+
+            $row = 2;
+            $totalPrice = 0;
+            foreach ($products as $product) {
+                $totalPrice += $product->total_price;
+                $sheet->setCellValue('A' . $row, $product->id);
+                $sheet->setCellValue('B' . $row, $product->name);
+                $sheet->setCellValue('C' . $row, $product->image);
+                $sheet->setCellValue('D' . $row, $product->price . '$');
+                $sheet->setCellValue('E' . $row, $product->quantity);
+                $sheet->setCellValue('F' . $row, $product->total_price . '$');
+                $row++;
+            }
+
+            $sheet->setCellValue('A' . $row, 'Total Price:');
+            $sheet->setCellValue('F' . $row, $totalPrice . '$');
+
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="show_product_data.xlsx"');
+            $writer->save('php://output');
         }
     }
 }

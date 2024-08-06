@@ -8,6 +8,8 @@ use Mj\PocketCore\Controller;
 use Mj\PocketCore\Database\Database;
 use Mj\PocketCore\Exceptions\NotFoundException;
 use Mj\PocketCore\Exceptions\ServerException;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\Writer\Word2007;
 use TCPDF;
@@ -288,6 +290,36 @@ class ProductController extends Controller
             $writer->save('php://output');
         } elseif ($as === 'excel') {
             // Export to Excel
+            $spreadsheet = new Spreadsheet();
+            $sheet = $spreadsheet->getActiveSheet();
+            $sheet->setCellValue('A1', 'Id');
+            $sheet->setCellValue('B1', 'Name');
+            $sheet->setCellValue('C1', 'Categories');
+            $sheet->setCellValue('D1', 'Description');
+            $sheet->setCellValue('E1', 'Specification');
+            $sheet->setCellValue('F1', 'Image');
+            $sheet->setCellValue('G1', 'Price');
+            $sheet->setCellValue('H1', 'Like');
+            $sheet->setCellValue('I1', 'Created At');
+
+            $row = 2;
+            foreach ($products as $product) {
+                $sheet->setCellValue('A' . $row, $product->id);
+                $sheet->setCellValue('B' . $row, $product->name);
+                $sheet->setCellValue('C' . $row, $product->categories);
+                $sheet->setCellValue('D' . $row, $product->description);
+                $sheet->setCellValue('E' . $row, $product->specification);
+                $sheet->setCellValue('F' . $row, $product->image);
+                $sheet->setCellValue('G' . $row, $product->price . '$');
+                $sheet->setCellValue('H' . $row, $product->likes);
+                $sheet->setCellValue('I' . $row, $product->created_at);
+                $row++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="products_data.xlsx"');
+            $writer->save('php://output');
         }
     }
 }
