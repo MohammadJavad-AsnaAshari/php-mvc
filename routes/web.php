@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\CartController;
 use App\Http\Controllers\Client\CategoryController;
 use App\Http\Controllers\Client\CommentController;
+use App\Http\Controllers\Client\ContactUsController;
 use App\Http\Controllers\Client\Dashboard\UserPanelController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\OrderController;
@@ -14,7 +15,8 @@ use Mj\PocketCore\Router;
 
 Router::get('/', [HomeController::class, 'index']);
 Router::get('/about-us', [HomeController::class, 'aboutUs']);
-Router::get('/contact-us', [HomeController::class, 'contactUs']);
+Router::get('/contact-us', [ContactUsController::class, 'create']);
+Router::post('/contact-us', [ContactUsController::class, 'store']);
 
 Router::get('/shop', [ShopController::class, 'index']);
 Router::get('/shop/{product}', [ShopController::class, 'show']);

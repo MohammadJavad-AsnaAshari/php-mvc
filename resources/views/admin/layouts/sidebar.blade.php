@@ -166,7 +166,7 @@
                     </li>
                 @endif
                 @if(auth()->user()->hasPermission('comment-index'))
-                    <li class="nav-item {{ isActive(['/admin-panel/comments'], "menu-open") }}">
+                    <li class="nav-item {{ isActive(['/admin-panel/comments', '/admin-panel/contact-us'], "menu-open") }}">
                         <a href="#" class="nav-link"> <i class="nav-icon bi bi-chat-fill"></i>
                             <p>
                                 Comments
@@ -193,6 +193,13 @@
                                    class="nav-link {{ isUrl('/admin-panel/comments')}}">
                                     <i class="nav-icon bi {{ request()->isUrl('/admin-panel/comments') ? 'bi-chat-fill' : 'bi-chat' }}"></i>
                                     <p>Delete</p>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ isActive('/admin-panel/contact-us') }}">
+                                <a href="/admin-panel/contact-us"
+                                   class="nav-link {{ isUrl('/admin-panel/contact-us')}}">
+                                    <i class="nav-icon bi {{ request()->isUrl('/admin-panel/contact-us') ? 'bi-chat-fill' : 'bi-chat' }}"></i>
+                                    <p>Contact Us</p>
                                 </a>
                             </li>
                         </ul>

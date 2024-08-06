@@ -7,8 +7,8 @@ use App\Http\Controllers\Admin\Database\DatabaseController;
 use App\Http\Controllers\Admin\Order\OrderController;
 use App\Http\Controllers\Admin\Permissions\PermissionController;
 use App\Http\Controllers\Admin\Products\ProductController;
-use App\Http\Controllers\Admin\Roles\RoleController;
 use App\Http\Controllers\Admin\Users\UserController;
+use App\Http\Controllers\Admin\ContactUs\ContactUsController;
 use Mj\PocketCore\Router;
 
 Router::get('/admin-panel', [AdminPanelController::class, 'index'], ['auth', 'admin']);
@@ -44,6 +44,8 @@ Router::get('/admin-panel/comments/edit/{commentId}', [CommentController::class,
 Router::post('/admin-panel/comments/update', [CommentController::class, 'update'], ['auth', 'comment-edit']);
 Router::post('/admin-panel/comments/delete', [CommentController::class, 'delete'], ['auth', 'comment-delete']);
 Router::get('/admin-panel/comments/export/{as}', [CommentController::class, 'export'], ['auth', 'comment-export']);
+
+Router::get('/admin-panel/contact-us', [ContactUsController::class, 'index']);
 
 Router::get('/admin-panel/categories', [CategoryController::class, 'index'], ['auth', 'category-index']);
 Router::get('/admin-panel/categories/create', [CategoryController::class, 'create'], ['auth', 'category-create']);
