@@ -86,4 +86,21 @@ if (!function_exists('isUrl')) {
     }
 }
 
+if (!function_exists('logTransaction')) {
+    function logTransaction(string $status, string $class, string $function, string|null $error = null): void
+    {
+        $logDir = ROOT . 'storage/logs/transaction';
+        if (!file_exists($logDir)) {
+            mkdir($logDir, 0777, true);
+        }
+        $logFile = fopen($logDir . '/log.txt', 'a');
+        $message = '[' . $status . '] - ' . $class . '::' . $function . ' | ' . date('Y-m-d H:i:s');
+        if ($error) {
+            $message .= "\n" . '[error message] - ' . $error;
+        }
+        fwrite($logFile, $message . "\n");
+        fclose($logFile);
+    }
+}
+
 

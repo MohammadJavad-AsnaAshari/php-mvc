@@ -100,11 +100,14 @@ class UserController extends Controller
             }
 
             $pdo->commit();
+            // Log the success message
+            logTransaction('success', __CLASS__, __FUNCTION__);
 
             return redirect('/admin-panel/users');
         } catch (\Exception $e) {
-            // Log the error
-            error_log($e->getMessage());
+            // Log the error message
+            logTransaction('failure', __CLASS__, __FUNCTION__, $e);
+
 
             // Rollback the transaction
             $pdo->rollback();
@@ -182,14 +185,16 @@ class UserController extends Controller
 
                     // Commit the transaction
                     $pdo->commit();
+                    // Log the success message
+                    logTransaction('success', __CLASS__, __FUNCTION__);
 
                     return redirect('/admin-panel/users');
                 }
 
                 throw new NotFoundException('This user does not exist!');
             } catch (\Exception $e) {
-                // Log the error
-                error_log($e->getMessage());
+                // Log the error message
+                logTransaction('failure', __CLASS__, __FUNCTION__, $e);
 
                 // Rollback the transaction
                 $pdo->rollback();
@@ -216,9 +221,13 @@ class UserController extends Controller
                 $user->delete($userId);
 
                 $pdo->commit();
+                // Log the success message
+                logTransaction('success', __CLASS__, __FUNCTION__);
 
                 return redirect('/admin-panel/users');
             } catch (\Exception $exception) {
+                // Log the error message
+                logTransaction('failure', __CLASS__, __FUNCTION__, $exception);
                 $pdo->rollBack();
 
                 throw new ServerException('Delete user failed!');

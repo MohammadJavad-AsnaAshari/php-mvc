@@ -72,11 +72,13 @@ class OrderController extends Controller
             session()->remove($cartKey);
 
             $pdo->commit();
+            // Log the success message
+            logTransaction('success', __CLASS__, __FUNCTION__);
 
             return redirect('/user-panel/orders');
         } catch (\Exception $e) {
-            // Log the error
-            error_log($e->getMessage());
+            // Log the error message
+            logTransaction('failure', __CLASS__, __FUNCTION__, $e);
 
             // Rollback the transaction
             $pdo->rollback();

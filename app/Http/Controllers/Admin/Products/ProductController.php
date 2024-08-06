@@ -91,10 +91,13 @@ class ProductController extends Controller
 
             // Commit the transaction
             $pdo->commit();
+            // Log the success message
+            logTransaction('success', __CLASS__, __FUNCTION__);
 
             return redirect('/admin-panel/products');
         } catch (\Exception $e) {
-            error_log($e->getMessage());
+            // Log the error message
+            logTransaction('failure', __CLASS__, __FUNCTION__, $e);
 
             // Rollback the transaction
             $pdo->rollback();
@@ -173,10 +176,13 @@ class ProductController extends Controller
 
                 // Commit the transaction
                 $pdo->commit();
+                // Log the success message
+                logTransaction('success', __CLASS__, __FUNCTION__);
 
                 return redirect('/admin-panel/products');
             } catch (\Exception $e) {
-                error_log($e->getMessage());
+                // Log the error message
+                logTransaction('failure', __CLASS__, __FUNCTION__, $e);
 
                 // Rollback the transaction
                 $pdo->rollback();
@@ -203,10 +209,13 @@ class ProductController extends Controller
 
                 // Commit the transaction
                 $pdo->commit();
+                // Log the success message
+                logTransaction('success', __CLASS__, __FUNCTION__);
 
                 return redirect('/admin-panel/products');
             } catch (\Exception $e) {
-                error_log($e->getMessage());
+                // Log the error message
+                logTransaction('failure', __CLASS__, __FUNCTION__, $e);
 
                 // Rollback the transaction
                 $pdo->rollback();
@@ -229,7 +238,7 @@ class ProductController extends Controller
             $pdf->SetCreator(PDF_CREATOR);
             $pdf->SetTitle('Products Data');
             $pdf->SetHeaderData('', 30, 'Products table');
-            $pdf->SetHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+            $pdf->SetHeaderFont(array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
             $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
             $pdf->SetMargins(10.0, 20.0, 10.0);
             $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
@@ -237,7 +246,8 @@ class ProductController extends Controller
             $pdf->AddPage();
 
             $html = '<table border="1" cellpadding="5">';
-            $html .= '<tr><th width="5%">Id</th><th width="15%">Name</th><th width="10%">Categories</th><th width="20%">Description</th><th width="10%">Specification</th><th width="10%">Image</th><th width="10%">Price</th><th width="5%">Like</th><th width="10%">Created At</th></tr>';            foreach ($products as $product) {
+            $html .= '<tr><th width="5%">Id</th><th width="15%">Name</th><th width="10%">Categories</th><th width="20%">Description</th><th width="10%">Specification</th><th width="10%">Image</th><th width="10%">Price</th><th width="5%">Like</th><th width="10%">Created At</th></tr>';
+            foreach ($products as $product) {
                 $html .= '<tr>';
                 $html .= '<td>' . $product->id . '</td>';
                 $html .= '<td>' . $product->name . '</td>';
