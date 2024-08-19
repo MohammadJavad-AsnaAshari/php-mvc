@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index(): string
     {
-        $sql = "SELECT products.*, COUNT(product_like.id) as likes
+        $sql = "SELECT products.*, COUNT(DISTINCT CONCAT(product_like.product_id, product_like.user_id)) as likes
             FROM products
             LEFT JOIN product_like ON products.id = product_like.product_id
             GROUP BY products.id

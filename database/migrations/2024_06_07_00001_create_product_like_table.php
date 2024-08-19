@@ -15,11 +15,11 @@ return new class{
     public function up(): void
     {
         $sql = "CREATE TABLE IF NOT EXISTS `product_like` (
-              `id` INT AUTO_INCREMENT PRIMARY KEY,
               `product_id` INT NOT NULL,
               `user_id` INT NOT NULL,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              PRIMARY KEY (`product_id`, `user_id`),
               CONSTRAINT `fk_product_like_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
               CONSTRAINT `fk_product_like_product_id` FOREIGN KEY (`product_id`) REFERENCES `products`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );";

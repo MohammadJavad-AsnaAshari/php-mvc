@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Product;
 use App\Models\User;
 use Mj\PocketCore\Controller;
+use Mj\PocketCore\Database\Model;
 
 class ShopController extends Controller
 {
@@ -57,7 +58,7 @@ class ShopController extends Controller
 
         $sql = "SELECT products.*,
             GROUP_CONCAT(DISTINCT categories.name) as categories,
-            COUNT(DISTINCT product_like.id) as likes
+            COUNT(DISTINCT CONCAT(product_like.product_id, product_like.user_id)) as likes
            FROM products
             LEFT JOIN product_like ON products.id = product_like.product_id
             LEFT JOIN category_product ON products.id = category_product.product_id
@@ -82,7 +83,7 @@ class ShopController extends Controller
 
     public function popular()
     {
-        $sql = "SELECT products.*, COUNT(product_like.id) as likes
+        $sql = "SELECT products.*, COUNT(DISTINCT CONCAT(product_like.product_id, product_like.user_id)) as likes
             FROM products
             LEFT JOIN product_like ON products.id = product_like.product_id
             GROUP BY products.id
@@ -114,17 +115,18 @@ class ShopController extends Controller
 
     public function unlike(int $product)
     {
-        $product = (new Product())->where('id', $product)->first();
+        $product = (new Product())->find($product);
         $liker = auth()->user();
 
-        if ($product && $liker) {
-            if ($liker->likesPost($product->id)) {
-                $pivotModel = new User();
-                $pivotModel->from('product_like');
-                $pivotModel->where('user_id', $liker->id)->where('product_id', $product->id);
-                $pivotResult = $pivotModel->first();
-                $pivotModel->delete($pivotResult->id);
-            }
+        if ($product && $liker && $liker->likesPost($product->id)) {
+            $pivotModel = new Model();
+            $pivotModel->deletePivot(
+                'product_like',
+                'product_id',
+                $product->id,
+                'user_id',
+                $liker->id
+            );
         }
 
         return redirect("/shop/$product->id");

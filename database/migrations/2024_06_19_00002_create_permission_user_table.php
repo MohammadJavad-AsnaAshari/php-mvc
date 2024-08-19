@@ -15,11 +15,11 @@ return new class{
     public function up(): void
     {
         $sql = "CREATE TABLE IF NOT EXISTS `permission_user` (
-              `id` INT AUTO_INCREMENT PRIMARY KEY,
               `permission_id` INT NOT NULL,
               `user_id` INT NOT NULL,
               `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
               `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+              PRIMARY KEY (`permission_id`, `user_id`),
               CONSTRAINT `fk_permission_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE ON UPDATE CASCADE,
               CONSTRAINT `fk_permission_user_permission_id` FOREIGN KEY (`permission_id`) REFERENCES `permissions`(`id`) ON DELETE CASCADE ON UPDATE CASCADE
         );";
