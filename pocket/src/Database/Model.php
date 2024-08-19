@@ -124,6 +124,16 @@ class Model
         return $this->statement->execute();
     }
 
+    public function deletePivot(string $table, string $primaryKey1, int $primaryKey1Id, string $primaryKey2, int $primaryKey2Id): bool
+    {
+        $this->sql = "DELETE FROM $table WHERE $primaryKey1 = :primaryKey1Id AND $primaryKey2 = :primaryKey2Id";
+        $this->statement = $this->pdo->prepare($this->sql);
+        $this->statement->bindValue(':primaryKey1Id', $primaryKey1Id);
+        $this->statement->bindValue(':primaryKey2Id', $primaryKey2Id);
+
+        return $this->statement->execute();
+    }
+
     /**
      * @return $this
      */
