@@ -25,46 +25,46 @@ class DatabaseController extends Controller
     // Handle the backup creation and download
     public function backupDownload(Request $request)
     {
-// Define a default backup path
-        $backupPath = $_ENV['BACKUP_PATH'];
+        try {
+            // Ensure the backup procedure is defined and accessible
+            $sql = "CALL backup_database()";
+            $pdo = $this->database->getPDO();
+            $stmt = $pdo->query($sql);
+            $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+            $command = $result['command'];
 
-        // Ensure the backup path is valid
-        if (!is_dir($backupPath) || !is_writable($backupPath)) {
-            throw new ServerException('Invalid or non-writable backup path', 400);
+            // Execute the shell command to create the backup
+            exec($command, $output, $return_var);
+
+            if ($return_var !== 0) {
+                throw new ServerException('Backup failed');
+            }
+
+            // Search for the latest backup file in the temporary directory
+            $backupFiles = glob('/tmp/*.sql');
+            if (empty($backupFiles)) {
+                throw new ServerException('Backup file not found');
+            }
+
+            // Sort files by modification time (latest first)
+            array_multisort(array_map('filemtime', $backupFiles), SORT_DESC, $backupFiles);
+
+            // Get the latest backup file
+            $latestBackup = reset($backupFiles);
+
+            // Set headers for the response
+            header('Content-Type: application/octet-stream');
+            header('Content-Disposition: attachment; filename="' . basename($latestBackup) . '"');
+            header('Content-Length: ' . filesize($latestBackup));
+
+            // Output the file content
+            readfile($latestBackup);
+
+            // Exit to prevent further output
+            exit;
+        } catch (\Exception $e) {
+            throw new ServerException($e);
         }
-
-        // Generate the backup file name
-        $backupFile = $backupPath . '/' . date('Y-m-d_H-i-s') . '.sql';
-
-        // Execute the backup procedure and get the command
-        $sql = "CALL backup_database('$backupPath')";
-        $pdo = $this->database->getPDO();
-        $stmt = $pdo->query($sql);
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        $command = $result['command'];
-
-        // Execute the shell command to create the backup
-        exec($command, $output, $return_var);
-
-        if ($return_var !== 0) {
-            throw new ServerException('Backup failed');
-        }
-
-        // Ensure the backup file was created
-        if (!file_exists($backupFile)) {
-            throw new ServerException('Backup file not found');
-        }
-
-        // Set headers for the response
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="' . basename($backupFile) . '"');
-        header('Content-Length: ' . filesize($backupFile));
-
-        // Output the file content
-        readfile($backupFile);
-
-        // Exit to prevent further output
-        exit;
     }
 
     // Display the recovery form
